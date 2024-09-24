@@ -10,16 +10,14 @@ import MeetingNotification from "./components/Modal/MeetingNotification";
 import { getLocalStorage } from "./utills/LocalStorageUtills";
 import OfferNotification from "./components/Modal/OfferNotification";
 function App() {
-  const {meetLink,meetingData,rid,offerdata } = useContext(SocketContext);
-  
-const getroom = getLocalStorage('notificationData')?.roomId;
-console.log(offerdata,'nbana');
+  const { meetLink, meetingData, rid, offerdata } = useContext(SocketContext);
 
+  const getroom = getLocalStorage("notificationData")?.roomId;
 
   return (
     <>
       {meetLink && <MeetingNotification data={meetingData} />}
-      {rid && <OfferNotification data={offerdata}/>}
+      {rid && <OfferNotification data={offerdata} />}
 
       <Toaster reverseOrder={false} />
       <RouterProvider router={router} />

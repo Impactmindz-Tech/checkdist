@@ -248,7 +248,7 @@ function Book_Experience_Details() {
                     </p>
                   </div> */}
                 </div>
-                <div className="2xl:text-lg font-bold 4xl:text-xl">
+                {/* <div className="2xl:text-lg font-bold 4xl:text-xl">
                   Note For User
                 </div>
                 <div className="my-2">
@@ -261,7 +261,10 @@ function Book_Experience_Details() {
                     className="input"
                     disabled
                   />
-                </div>
+                </div> */}
+
+                <h5 className="font-medium my-2">About this Tour</h5>
+                <p className="text-grey-800 mb-5">{item?.about}</p>
 
                 <div className="map">
                   <h1 className="font-bold">Your Avatar Tour will be Here..</h1>
@@ -284,8 +287,6 @@ function Book_Experience_Details() {
                   <h4 className="font-bold">
                     {item?.State && item?.State + " ,"} {item?.country}
                   </h4>
-                  <h5 className="font-medium my-2">About this Tour</h5>
-                  <p className="text-grey-800">{item?.about}</p>
                 </div>
 
                 <div className="reviewContainer my-5">

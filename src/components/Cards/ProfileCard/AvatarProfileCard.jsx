@@ -13,7 +13,6 @@ export default function AvatarProfileCard({ avatardetail }) {
   };
 
   const averageRating = calculateAverageRating(avatardetail?.Reviews);
-console.log(avatardetail);
   return (
     <div
       className="w-full gap-4 my-8 flex justify-center border border-slate-100 rounded-lg p-4"
@@ -32,7 +31,10 @@ console.log(avatardetail);
             {avatardetail?.userName}
           </h1>
           <p className="text-center text-grey-800">Avatar</p>
-          <p className="text-center text-grey-900"> <span className="text-grey-800">{avatardetail?.about}</span></p>
+          <p className="text-center text-grey-900">
+            {" "}
+            <span className="text-grey-800">{avatardetail?.about}</span>
+          </p>
         </div>
 
         <div className="">

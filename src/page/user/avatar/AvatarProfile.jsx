@@ -33,6 +33,7 @@ function AvatarProfile() {
   useEffect(() => {
     fetchprofile();
   }, []);
+  console.log(avatardetail.userName);
   return (
     <>
       {loader && <Loader />}
@@ -51,7 +52,11 @@ function AvatarProfile() {
             <UserAvatarTourCardSwiper avatardetail={avatardetail} />
           </div>
 
-          <TitleHeading title="What users are saying about Jane Copper" />
+          <TitleHeading
+            title={`What users are saying about ${
+              avatardetail.userName ? avatardetail.userName : "Avatar"
+            }.`}
+          />
           <AvatarReviewCardSwiper avatardetail={avatardetail} />
 
           <div

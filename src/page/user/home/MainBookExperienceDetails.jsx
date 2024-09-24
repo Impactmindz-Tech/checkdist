@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import moment from "moment-timezone";
+import { convertTo12HourFormats } from "@/constant/date-time-format/DateTimeFormat";
+
 function MainBookExperienceDetails() {
   const params = useParams();
 
@@ -117,6 +119,12 @@ function MainBookExperienceDetails() {
   let detail = formatDateTime(experinceList?.data?.getAvailable?.to);
   console.log(detail);
 
+  const from = experinceList?.data?.getAvailable.from;
+  const too = experinceList?.data?.getAvailable.to;
+
+  const avatarfrom = convertTo12HourFormats(from);
+  const avatarto = convertTo12HourFormats(too);
+
   return (
     <>
       {loading && <Loader />}
@@ -184,7 +192,64 @@ function MainBookExperienceDetails() {
                       <p className="text-grey-800">{item?.about}</p>
                     </div>
                   </Link>
-                  <div className="rounded-lg p-4 bg-[#F2F2F2] sm:w-full sm:mt-2">
+                  <div className="max-w-[600px] mt-4 sm:max-w-full sm:w-full">
+                    <h2 className="text-xl font-semibold mb-4">Availability</h2>
+                    <div className="rounded-md border border-[#e2e2e2] BoxShadow py-[6px] sm:py-0 overflow-hidden sm:shadow-none">
+                      <table className="table-time sm:text-[14px] table-responsive-custom">
+                        <tr>
+                          <th>
+                            <img
+                              src={Images.clock}
+                              alt=""
+                              className="inline-block mr-[10px] w-[22px] sm:w-[18px]"
+                            />
+                            From:
+                          </th>
+                          <td style={{ textAlign: "right" }}>{avatarfrom}</td>
+                        </tr>
+                        <tr>
+                          <th>
+                            <img
+                              src={Images.clock}
+                              alt=""
+                              className="inline-block mr-[10px] w-[22px] sm:w-[18px]"
+                            />
+                            To:
+                          </th>
+                          <td style={{ textAlign: "right" }}>{avatarto}</td>
+                        </tr>
+                        <tr>
+                          <th>
+                            <img
+                              src={Images.iconGlobeClock}
+                              alt=""
+                              className="inline-block mr-[10px] w-[24px] relative left-[-2px] sm:w-[20px]"
+                            />
+                            Their time zone:
+                          </th>
+                          <td style={{ textAlign: "right" }}>
+                            {experinceList?.data?.getAvailable.timeZone}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>
+                            <img
+                              src={Images.clock}
+                              alt=""
+                              className="inline-block mr-[10px] w-[22px] sm:w-[18px]"
+                            />
+                            Avatar current date & time:
+                          </th>
+                          <td style={{ textAlign: "right" }}>
+                            {getDateTimeForTimezone(
+                              experinceList?.data?.getAvailable.timeZone
+                            )}
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  {/* <div className="rounded-lg p-4 bg-[#F2F2F2] sm:w-full sm:mt-2">
                     <h1 className="sm:text-sm mb-[5px]">Availability</h1>
                     <p className="sm:text-xs">
                       {experinceList?.data?.getAvailable.from} -{" "}
@@ -203,9 +268,9 @@ function MainBookExperienceDetails() {
                         experinceList?.data?.getAvailable.timeZone
                       )}
                     </p>
-                  </div>
+                  </div> */}
                 </div>
-                <div className="2xl:text-lg font-bold 4xl:text-xl">
+                {/* <div className="2xl:text-lg font-bold 4xl:text-xl">
                   Note For User
                 </div>
                 <div className="my-2">
@@ -218,7 +283,10 @@ function MainBookExperienceDetails() {
                     className="input"
                     disabled
                   />
-                </div>
+                </div> */}
+
+                <h5 className="font-medium my-2">About this Tour</h5>
+                <p className="text-grey-800 mb-5">{item?.about}</p>
 
                 <div className="map">
                   <h1 className="font-bold">Your Avatar Tour will be Here..</h1>
@@ -241,8 +309,6 @@ function MainBookExperienceDetails() {
                   <h4 className="font-bold">
                     {item?.State && item?.State + " ,"} {item?.country}
                   </h4>
-                  <h5 className="font-medium my-2">About this Tour</h5>
-                  <p className="text-grey-800">{item?.about}</p>
                 </div>
 
                 <div className="reviewContainer my-5">
