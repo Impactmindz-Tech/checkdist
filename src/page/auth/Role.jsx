@@ -38,13 +38,19 @@ const Role = () => {
     try {
       setLoader(true);
       const response = await userRoleApi(id, data);
+  
 
       if (response?.isSuccess) {
         setLocalStorage("user", response);
+      
         toast.success(response?.message);
-        if (response.Activeprofile == "avatar") {
-          // removeLocalStorage("token");
+        if (response?.Activeprofile == "avatar") {
+          
+    
           navigate("/auth/mobile/" + response._id);
+          if(response?.isAvatarApproved===false){
+            removeLocalStorage("token");
+          }
         }
         if(response.Activeprofile=="user"){
           if(isgooglesignup || isapplesignup){
