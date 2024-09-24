@@ -43,7 +43,7 @@ const Role = () => {
         setLocalStorage("user", response);
         toast.success(response?.message);
         if (response.Activeprofile == "avatar") {
-          removeLocalStorage("token");
+          // removeLocalStorage("token");
           navigate("/auth/mobile/" + response._id);
         }
         if(response.Activeprofile=="user"){
