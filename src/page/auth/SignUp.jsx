@@ -61,6 +61,7 @@ const SignUp = () => {
       if (response?.isSucces) {
         toast.success(response?.message); // Success toast message
         setLocalStorage("user", response?.data); // Store user in local storage
+        setLocalStorage("token", response?.token);
         navigate("/auth/role/" + response?.data?._id); // Redirect to role page
       }
     } catch (error) {
