@@ -55,12 +55,14 @@ const Username = () => {
   
       // Send the FormData to the backend
       const response = await usernameadd(id, formData);
-  
+
       if (response?.isSuccess) {
         // Update local storage with the new username
         const user = getLocalStorage("user");
         if (user) {
-          user.userName = userName; // Update user object
+          user.userName = userName;
+          user.profileimage=response?.data?.profileimage;
+          //user.profileimage=response // Update user object
           setLocalStorage("user", user); // Set updated user object in localStorage
         }
   

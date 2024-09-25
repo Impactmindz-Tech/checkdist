@@ -111,9 +111,9 @@ const Address = () => {
         setLocalStorage("user", user);
       }
       const response = await addAddressApi(id, data);
-   
-      if (response?.isSuccess) {
       
+      if (response?.isSuccess) {
+
         toast.success(response?.message);
         navigate("/user/dashboard");
       }

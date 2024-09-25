@@ -61,7 +61,7 @@ const SignUp = () => {
       if (response?.isSucces) {
         toast.success(response?.message); // Success toast message
         setLocalStorage("user", response?.data); // Store user in local storage
-        setLocalStorage("token", response?.token);
+        // setLocalStorage("token", response?.token);
         navigate("/auth/role/" + response?.data?._id); // Redirect to role page
       }
     } catch (error) {
@@ -100,7 +100,7 @@ const SignUp = () => {
           if (response?.data?.action == "registration") {
             toast.success(response?.message);
             setLocalStorage("user", response?.data);
-            setLocalStorage("token", response?.token);
+            // setLocalStorage("token", response?.token);
             navigate("/auth/role/" + response?.data?._id);
           } else {
             if (response?.isSuccess && response?.data?.length > 1) {
@@ -110,7 +110,7 @@ const SignUp = () => {
               });
             } else {
               setLocalStorage("user", response?.data);
-              setLocalStorage("token", response?.token);
+              // setLocalStorage("token", response?.token);
               navigate("/user/dashboard");
             }
           }

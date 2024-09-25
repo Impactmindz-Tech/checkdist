@@ -41,6 +41,7 @@ const Role = () => {
   
 
       if (response?.isSuccess) {
+        setLocalStorage("token",response?.token);
         setLocalStorage("user", response);
       
         toast.success(response?.message);
