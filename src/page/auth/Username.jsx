@@ -5,6 +5,7 @@ import Loader from "@/components/Loader";
 import { getLocalStorage, setLocalStorage } from "@/utills/LocalStorageUtills";
 import Images from "@/constant/Images";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 const Username = () => {
   const [loader, setLoader] = useState(false);
   const [image, setImage] = useState(null);
@@ -65,8 +66,12 @@ const Username = () => {
           //user.profileimage=response // Update user object
           setLocalStorage("user", user); // Set updated user object in localStorage
         }
+        toast.success(response?.message);
   
         navigate(`/auth/address/${id}`);
+      }
+      if(response?.isSuccess===false){
+        toast(response?.message);
       }
     } catch (error) {
       console.error(error);
