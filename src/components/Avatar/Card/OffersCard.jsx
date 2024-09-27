@@ -93,8 +93,8 @@ export default function OffersCard({ state, item }) {
               <IconText icon={Images.location} text={`${item?.City}, ${item?.Country}, ${item?.ZipCode}`} />
             </div>
             <div>
-              <h5 className="font-medium my-1">{formatDate(item?.Date) || "N/A"}</h5>
-              <h5>{convertTo12HourFormats(item?.bookingTime)} - {convertTo12HourFormats(item?.endTime)}</h5>
+              <h5 className="font-medium my-1 text-end">{formatDate(item?.Date) || "N/A"}</h5>
+              <h5 className="text-end">{convertTo12HourFormats(item?.bookingTime)} - {convertTo12HourFormats(item?.endTime)}</h5>
               <h4 className="ms-12"><IconText icon={Images.clock} text={remainingTime} /></h4>
             </div>
           </div>
