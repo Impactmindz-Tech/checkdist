@@ -31,6 +31,13 @@ const Room = () => {
     iceServers: [
       {
         urls: ["stun:stun.l.google.com:19302"],
+        urls:["stun:private.serverturn.com:3478"],
+        urls:["stun:private.serverturn.com:3478?transport=udp"],
+        urls:["stun:stun1.l.google.com:19302"],
+        urls:["stun:stun2.l.google.com:19302"],
+        urls:["stun:stun3.l.google.com:19302"],
+        urls:["stun:stun4.l.google.com:19302"]
+        
       }, // Free STUN server
       {
         urls: "turn:97.74.90.111:3478", // TURN server URL with "turn:" prefix
