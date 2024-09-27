@@ -87,7 +87,12 @@ const EditProfile = () => {
     }
 
     try {
-    //  const coordinates = await fetchCoordinates(selectedCountry.name, selectedState?.name, selectedCity)
+      const coordinates = await fetchCoordinates(formData.country, formData.state, formData.city);
+   if(coordinates){
+    form.append("lat",coordinates.lat);
+    form.append("lng",coordinates.lon);
+   }
+     
       const response = await editProfileApi(id, form);
       if (response?.isSuccess) {
         toast.success(response?.message);
@@ -117,6 +122,7 @@ const EditProfile = () => {
       setValue("city", user?.City || "");
       setValue("country", user?.Country || "");
       setValue("userName",user?.userName|| "");
+      setValue("state",user?.State || "")
       setPreview(user?.profileimage || "");
 
       // Check if the date is valid
@@ -195,6 +201,13 @@ const EditProfile = () => {
               </label>
               <input className="inputGrayColor" id="country" type="text" placeholder="Country" {...register("country")} />
               {errors.country && <p className="text-red-500 sm:text-sm">{errors.country.message}</p>}
+            </div>
+            <div className="mb-4 w-full">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="state">
+              State
+              </label>
+              <input className="inputGrayColor" id="state" type="text" placeholder="State" {...register("state")} />
+              {errors.state && <p className="text-red-500 sm:text-sm">{errors.state.message}</p>}
             </div>
             <div className="mb-4 w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">

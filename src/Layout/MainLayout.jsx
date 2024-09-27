@@ -15,7 +15,7 @@ const MainLayout = ({ children }) => {
   const dispatch = useDispatch();
   const [current, setCurrentClick] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(
-    getLocalStorage("selectedCountry") || "India"
+    getLocalStorage("selectedCountry") || "United State"
   );
   const [isDropdownOpen, setDropdownOpen] = useState(false); // Location dropdown state
   const [searchQuery, setSearchQuery] = useState("");
@@ -126,7 +126,7 @@ const MainLayout = ({ children }) => {
   }, [dropdownRef]);
 
   const [userCountry, setUserCountry] = useState(
-    getLocalStorage("selectedCountry") || "India"
+    getLocalStorage("selectedCountry") || "United State"
   );
 
   const navigate = useNavigate();

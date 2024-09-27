@@ -20,7 +20,7 @@ function Header() {
   const isCountryChanged = useSelector((state) => state.countrychanged);
   const dispatch = useDispatch();
   const [currentLocation, setCurrentLocation] = useState(
-    getLocalStorage("selectedCountry") || "India"
+    getLocalStorage("selectedCountry") || "United State"
   );
   const [isDropdownOpen, setDropdownOpen] = useState(false); // Location dropdown state
   const [searchQuery, setSearchQuery] = useState("");
@@ -35,7 +35,7 @@ function Header() {
   const [loading, setLoading] = useState(false);
   const [countrys, setCountrys] = useState([]);
   const [role, setRole] = useState(
-    getLocalStorage("user") ? getLocalStorage("user") : "India"
+    getLocalStorage("user") ? getLocalStorage("user") : "United State"
   );
   const [selectedCountry, setSelectedCountry] = useState(
     getLocalStorage("selectedCountry") || getLocalStorage("user")?.Country
@@ -53,7 +53,7 @@ function Header() {
   const pathname = location?.pathname;
   useEffect(() => {
     const storedCountry =
-      getLocalStorage("selectedCountry")?.Country || "India";
+      getLocalStorage("selectedCountry")?.Country || "United State";
     setUserCountry(storedCountry);
     setSelectedCountry(
       getLocalStorage("selectedCountry") ||
@@ -277,7 +277,7 @@ function Header() {
   }, [dropdownRef]);
 
   const [userCountry, setUserCountry] = useState(
-    getLocalStorage("selectedCountry") || "India"
+    getLocalStorage("selectedCountry") || "United State"
   );
 
   useEffect(() => {

@@ -35,47 +35,97 @@ const EditProfileAvatar = () => {
       setPreview(URL.createObjectURL(e.target.files[0]));
     }
   };
+  const fetchCoordinates = async (country, state = "", city = "") => {
+    try {
+      let query = "";
+      if (city) {
+        query = `${city},${state},${country}`;
+      } else if (state) {
+        query = `${state},${country}`;
+      } else {
+        query = `${country}`;
+      }
+  
+      const encodedQuery = encodeURIComponent(query);
+  
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodedQuery}&format=json&limit=1`);
+      const data = await response.json();
+  
+      if (data.length > 0) {
+        const { lat, lon } = data[0];
+    
+        return { lat, lon };
+      }
+  
+  
+      return null;
+    } catch (error) {
+      console.error("Error fetching coordinates:", error);
+      return null;
+    }
+  }
 
   const onSubmit = async (formData) => {
     setLoader(true);
-    const id = getLocalStorage("user")?._id;
-    const form = new FormData();
+    const id = getLocalStorage("user")?._id; // Get user ID from localStorage
+    const form = new FormData(); // Initialize form data
+  
     if (image) {
-      form.append("file", image);
+      form.append("file", image); // Append the image to the form data
     }
+  
+    // Append form data fields (like firstName, lastName, etc.)
     for (const key in formData) {
       form.append(key, formData[key]);
     }
+  
     try {
+      // Fetch coordinates based on the country, state, and city
+      const coordinates = await fetchCoordinates(formData.country, formData.state, formData.city);
+  
+      if (coordinates) {
+        // If coordinates are fetched successfully, append them
+        form.append("lat", coordinates.lat); // Latitude
+        form.append("lng", coordinates.lon); // Longitude
+      }
+  
+      // Call the API to update the profile with all the form data and coordinates
       const response = await editProfileApi(id, form);
+  
       if (response?.isSuccess) {
-        toast.success(response?.message);
-        navigate("/avatar/profile");
+        // If the profile update is successful
+        toast.success(response?.message); // Show success message
+        navigate("/avatar/profile"); // Navigate to profile page
+  
+        // Update local storage with the new user data
         removeLocalStorage("user");
         setLocalStorage("user", response?.data);
       }
     } catch (error) {
-      console.log(error);
+      // Handle errors
+      console.error("Profile update error:", error);
+      toast.error("Something went wrong while updating your profile.");
     } finally {
-      setLoader(false);
+      setLoader(false); // Stop the loader
     }
   };
-
+  
+ 
+  
   useEffect(() => {
     const user = getLocalStorage("user");
     if (user) {
-      setValue("firstName", user?.firstName);
-      setValue("lastName", user?.lastName);
-      setValue("mobileNumber", user?.mobileNumber);
-      setValue("city", user?.City);
-      setValue("country", user?.Country);
-      setValue("Bio",user?.about);
+      setValue("firstName", user?.firstName || "");
+      setValue("lastName", user?.lastName || "");
+      setValue("mobileNumber", user?.mobileNumber || "");
+      setValue("city", user?.City || "");
+      setValue("country", user?.Country || "");
+      setValue("Bio",user?.about || "");
       setValue("userName",user?.userName);
       setPreview(user.profileimage || Images.imagePlaceholder);
       const formattedDob = user?.dob?.split("T")[0];
-      setValue("dob", formattedDob);
-
-      setValue("state", user.State);
+      setValue("dob", formattedDob || "");
+      setValue("state",user?.State || "")
     }
   }, [setValue]);
   return (
@@ -246,6 +296,13 @@ const EditProfileAvatar = () => {
                   {errors.country.message}
                 </p>
               )}
+            </div>
+            <div className="mb-4 w-full">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="state">
+              State
+              </label>
+              <input className="inputGrayColor" id="state" type="text" placeholder="State" {...register("state")} />
+              {errors.state && <p className="text-red-500 sm:text-sm">{errors.state.message}</p>}
             </div>
             <div className="mb-4 w-full">
               <label
