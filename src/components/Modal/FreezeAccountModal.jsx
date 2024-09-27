@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
 import Images from "@/constant/Images";
-import { deleteAccountApi } from "@/utills/service/userSideService/userService/UserHomeService";
+import { useNavigate } from "react-router-dom";
+import { deleteAccountApi, freezeAccountApi } from "@/utills/service/userSideService/userService/UserHomeService";
 import { getLocalStorage } from "@/utills/LocalStorageUtills";
 import toast from "react-hot-toast";
 import Loader from "../Loader";
@@ -13,6 +14,7 @@ const FreezeAccountModal = ({
   const modalRef = useRef();
   const user = getLocalStorage("user") ? getLocalStorage("user") : null;
   const [loader, setLoader] = useState(false);
+  const navigate = useNavigate();
 
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -36,10 +38,15 @@ const FreezeAccountModal = ({
   const freezeAccount = async () => {
     setLoader(true);
     try {
-      let res = await deleteAccountApi(2);
+      let res = await freezeAccountApi(1);
       if (res?.isSuccess) {
         toast.success("Account Freeze Request Raised Successfully");
         setFreezeAccountModalState();
+        setTimeout(() => {
+          navigate("/auth/login");
+
+          localStorage.clear();
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
