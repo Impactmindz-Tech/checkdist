@@ -75,6 +75,8 @@ import Payment_Success_Join_Room from "@/page/user/Payment_Success_Join_Room";
 import NewPage from "@/page/user/NewPage";
 // import Room from "@/page/Room";
 import Username from "@/page/auth/Username";
+import CustomAlert from "@/page/custom_alert/CustomAlert";
+import HaveGimbal from "@/page/have_gimbal/HaveGimbal";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -390,7 +392,7 @@ const router = createBrowserRouter([
         path: "offer_confirm/:id",
         element: (
           <DashboardLayout>
-            <OfferConfirmPay/>
+            <OfferConfirmPay />
           </DashboardLayout>
         ),
       },
@@ -399,6 +401,22 @@ const router = createBrowserRouter([
         element: (
           <DashboardLayout>
             <Payment_Success />
+          </DashboardLayout>
+        ),
+      },
+      {
+        path: "alert",
+        element: (
+          <DashboardLayout>
+            <CustomAlert />
+          </DashboardLayout>
+        ),
+      },
+      {
+        path: "have-gimbal",
+        element: (
+          <DashboardLayout>
+            <HaveGimbal />
           </DashboardLayout>
         ),
       },

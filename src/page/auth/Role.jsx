@@ -2,7 +2,11 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import Images from "@/constant/Images";
 import { loginApi, userRoleApi } from "@/utills/service/authService";
-import { getLocalStorage, removeLocalStorage, setLocalStorage } from "@/utills/LocalStorageUtills";
+import {
+  getLocalStorage,
+  removeLocalStorage,
+  setLocalStorage,
+} from "@/utills/LocalStorageUtills";
 import toast from "react-hot-toast";
 import Loader from "@/components/Loader";
 
@@ -16,7 +20,7 @@ const Role = () => {
   const userRole = getLocalStorage("user")?.Activeprofile;
   const isgooglesignup = getLocalStorage("user")?.isgoogleSignup;
   const isapplesignup = getLocalStorage("user")?.isAppleSignup;
-  
+
   const [role, setRole] = useState({
     user: true,
     avatar: false,
@@ -46,16 +50,13 @@ const Role = () => {
           // removeLocalStorage("token");
           navigate("/auth/mobile/" + response._id);
         }
-        if(response.Activeprofile=="user"){
-          if(isgooglesignup || isapplesignup){
+        if (response.Activeprofile == "user") {
+          if (isgooglesignup || isapplesignup) {
             navigate("/auth/username/" + response?.data?.userId);
-           }
-          
-          else {
-           
+          } else {
             navigate("/auth/address/" + response?.data?.userId);
           }
-        }  
+        }
       }
     } catch (error) {
       console.log(error);
@@ -86,7 +87,9 @@ const Role = () => {
       if (response?.isSuccess) {
         setLocalStorage("user", response?.data);
         setLocalStorage("token", response?.token);
-        userRole == "user" ? navigate("/user/dashboard") : navigate("/avatar/dashboard");
+        userRole == "user"
+          ? navigate("/user/dashboard")
+          : navigate("/avatar/dashboard");
         removeLocalStorage("userDetails");
       }
     } catch (error) {
@@ -102,34 +105,102 @@ const Role = () => {
       <div className="max-w-[50%] mx-auto lg:max-w-full">
         <p className="text-grey-800">Please Choose User Category :</p>
         <div className="flex flex-col gap-5 pt-5">
-          <div className={`${role.user ? "bg-primaryColor-900" : "border border-[#ccc] cursor-pointer"} flex items-center gap-2  p-5 rounded-3xl relative`} onClick={() => changeSelectedState("user")}>
+          <div
+            className={`${
+              role.user
+                ? "bg-primaryColor-900"
+                : "border border-[#ccc] cursor-pointer"
+            } flex items-center gap-2  p-5 rounded-3xl relative`}
+            onClick={() => changeSelectedState("user")}
+          >
             <img className="w-10" src={Images.user_icon} alt="" />
-            <span className={`${role.user ? "text-white" : "text-primaryColor-900"} sm:text-sm`}>As a User</span>
+            <span
+              className={`${
+                role.user ? "text-white" : "text-primaryColor-900"
+              } sm:text-sm`}
+            >
+              As a User
+            </span>
 
             {role.user && (
               <div className="tick bg-[#757575] rounded-full p-1 absolute right-5">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               </div>
             )}
           </div>
 
           <div
-            className={`${role.avatar ? "bg-primaryColor-900" : "border border-[#ccc] cursor-pointer"} flex items-center gap-2  p-5 rounded-3xl relative`}
+            className={`${
+              role.avatar
+                ? "bg-primaryColor-900"
+                : "border border-[#ccc] cursor-pointer"
+            } flex items-center gap-2  p-5 rounded-3xl relative`}
             onClick={() => changeSelectedState("avatar")}
           >
             <img className="w-10 h-10" src={Images.avtar_icon} alt="" />
-            <span className={`${role.avatar ? "text-white" : "text-primaryColor-900"} sm:text-sm`}>As a Avatar</span>
+            <span
+              className={`${
+                role.avatar ? "text-white" : "text-primaryColor-900"
+              } sm:text-sm`}
+            >
+              As a Avatar
+            </span>
             {role.avatar && (
               <div className="tick bg-[#757575] rounded-full p-1 absolute right-5">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               </div>
             )}
           </div>
-          <div onClick={action === "login" ? roleLogin : setRoles} className="cursor-pointer w-full bg-primaryColor-900 p-4 text-center text-white mt-8 rounded-xl">
+          <div className="bg-[#f2f2f2] rounded-md p-[10px]">
+            {role.user && (
+              <p className="text-sm">
+                As a user, you can create a custom tour or book tours provided
+                by local Avatars. Once an Avatar accepts your request, they'll
+                guide you through a live, personalized video tour based on your
+                itinerary.
+              </p>
+            )}
+            {role.avatar && (
+              <p className="text-sm">
+                As an Avatar, you'll be a local guide providing live, virtual
+                tours through video calls. Travelers will create custom
+                itineraries, and if you accept their offer, you'll follow their
+                instructions and show them the sights in real-time. It's a
+                unique way to share your city and earn by guiding remote
+                travelers on personalized tours.
+              </p>
+            )}
+          </div>
+          <div
+            onClick={action === "login" ? roleLogin : setRoles}
+            className="cursor-pointer w-full bg-primaryColor-900 p-4 text-center text-white mt-8 rounded-xl"
+          >
             <button>Next</button>
           </div>
         </div>

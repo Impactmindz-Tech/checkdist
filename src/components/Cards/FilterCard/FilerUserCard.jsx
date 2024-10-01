@@ -1,6 +1,8 @@
 import Images from "@/constant/Images";
 import { Link } from "react-router-dom";
+import { getCurrencySymbol } from "@/constant/CurrencySign";
 const FilterUserCard = ({ product }) => {
+  console.log(product);
   return (
     <Link
       to={{
@@ -14,7 +16,7 @@ const FilterUserCard = ({ product }) => {
             <img
               src={product.thumbnail}
               alt="cardImageCurve"
-              className="object-cover h-full rounded-s-md w-full"
+              className="object-cover h-full rounded-s-md w-full aspect-square"
             />
           </div>
         </div>
@@ -22,8 +24,12 @@ const FilterUserCard = ({ product }) => {
           <h1 className="mt-3 font-large sm:mt-1 sm:text-sm lg:text-sm lg:mt-5 line-clamp-2">
             {product?.ExperienceName || ""}, {product?.country || ""}
           </h1>
-          <p className="text-borderFill-700 sm:text-sm mb-auto">
+          <p className="text-borderFill-700 sm:text-sm">
             {product?.city && product?.city + ","} {product?.country}
+          </p>
+          <p className="sm:text-sm mb-auto mt-[2px]">
+            {product?.AmountsperMinute &&
+              getCurrencySymbol() + product?.AmountsperMinute + "(Per Minute)"}
           </p>
           <div className="bottom-0 flex  justify-between items-center mt-5 mb-2 sm:mt-3">
             <div className="flex items-center px-3 pl-1 py-1 justify-center gap-2 bg-borderFill-900 rounded-full sm:py-0 sm:px-2">

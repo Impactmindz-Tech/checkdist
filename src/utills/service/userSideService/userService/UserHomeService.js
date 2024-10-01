@@ -2,7 +2,7 @@ import axiosInstance from "@/utills/AxiosInstance";
 import toast from "react-hot-toast";
 
 export const userExperienceApi = async (payload) => {
-  console.log("payload", payload);
+  // console.log("payload", payload);
   const { tab, country, search, items_per_page, page } = payload;
   try {
     const res = await axiosInstance.get(`/user/getExperience?filters=${tab}&country=${country}&search=${search}&items_per_page=${items_per_page}&pg=${page}`);
@@ -270,22 +270,22 @@ export const getNotificationApi = async () => {
 };
 
 
-export const getOfferDetails= async(id)=>{
-  try{
-    const res = await axiosInstance.get("/avatar/offerdetails/" +id);
+export const getOfferDetails = async (id) => {
+  try {
+    const res = await axiosInstance.get("/avatar/offerdetails/" + id);
     return res.data;
 
-  }catch(err){
+  } catch (err) {
     console.log(err);
   }
 }
 
 
-export const completeoffer = async(id)=>{
-  try{
-    const res = await axiosInstance.post("/user/completeoffer/" +id);
+export const completeoffer = async (id) => {
+  try {
+    const res = await axiosInstance.post("/user/completeoffer/" + id);
     return res.data;
-  }catch(err){
+  } catch (err) {
     console.log(err);
   }
 
