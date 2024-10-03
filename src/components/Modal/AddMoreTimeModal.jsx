@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import Loader from "../Loader";
+import ConfirmPaymentForm from "@/components/Payment Card/Confirm_Page_Payment";
 
 const AddMoreTime = ({ show, onClose }) => {
   const [loader, setLoader] = useState(false);
   const [requestedTime, setRequestedTime] = useState(null);
+  const [selectedMethod, setSelectedMethod] = useState("stripe");
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const modalRef = useRef();
 
   const handleClickOutside = (event) => {
@@ -37,7 +40,7 @@ const AddMoreTime = ({ show, onClose }) => {
             Want to add more time?
           </h3>
 
-          <div className="my-2">
+          <div className="mt-2 mb-6">
             <div className="mb-2">
               <h3 className="text-lg font-semibold mb-2 sm:text-base">
                 Duration
@@ -78,6 +81,12 @@ const AddMoreTime = ({ show, onClose }) => {
               </div>
             </div>
           </div>
+          {requestedTime !== null && (
+            <ConfirmPaymentForm
+              setSelectedMethod={setSelectedMethod}
+              selectedMethod={selectedMethod}
+            />
+          )}
 
           <div className="flex mt-4 gap-4">
             <button
@@ -90,7 +99,7 @@ const AddMoreTime = ({ show, onClose }) => {
               onClick={onClose}
               className="bg-black text-white py-3 rounded md:text-sm w-full"
             >
-              Yes
+              Pay
             </button>
           </div>
         </div>
