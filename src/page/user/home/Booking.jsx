@@ -10,6 +10,7 @@ import { DateTime } from "luxon";
 import { getLocalStorage, setLocalStorage } from "@/utills/LocalStorageUtills";
 import { getDateTimeForTimezone } from "@/constant/date-time-format/DateTimeFormat";
 import Images from "@/constant/Images";
+import AddMoreTime from "@/components/Modal/AddMoreTimeModal";
 
 function Booking() {
   const [loading, setLoading] = useState(false);
@@ -20,6 +21,7 @@ function Booking() {
   const [duration, setDuration] = useState(null);
   const [type, setType] = useState(null);
   const [color, setColor] = useState(false);
+  const [showAddMoreTimeModal, setShowAddMoreTimeModal] = useState(false);
 
   const formatDate = (date) => {
     if (date instanceof Date) {
@@ -124,7 +126,13 @@ function Booking() {
         <div className="my-4">
           <EditDateCalendar date={date} onDateChange={setDate} />
           <div className="w-full mt-4 sm:max-w-full sm:w-full">
-            <h2 className="text-xl font-semibold mb-4">
+            <h2
+              className="text-xl font-semibold mb-4"
+              onClick={() => {
+                console.log("Hello there!");
+                setShowAddMoreTimeModal(true);
+              }}
+            >
               Please select the experience time as the Avatar time
             </h2>
             <div className="rounded-md border border-[#e2e2e2] BoxShadow py-[6px] sm:py-0 overflow-hidden sm:shadow-none">
@@ -350,6 +358,10 @@ function Booking() {
           </div>
         </div>
       </div>
+      <AddMoreTime
+        show={showAddMoreTimeModal}
+        onClose={() => setShowAddMoreTimeModal(false)}
+      />
     </>
   );
 }
