@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import Loader from "../Loader";
 import ConfirmPaymentForm from "@/components/Payment Card/Confirm_Page_Payment";
-
+import { loadStripe } from "@stripe/stripe-js";
+import { checkout, payaddon, paypalcheckout } from "@/utills/service/userSideService/userService/UserHomeService";
+import { getLocalStorage } from "@/utills/LocalStorageUtills";
 const AddMoreTime = ({ show, onClose }) => {
   const [loader, setLoader] = useState(false);
   const [requestedTime, setRequestedTime] = useState(null);
@@ -14,6 +16,58 @@ const AddMoreTime = ({ show, onClose }) => {
       onClose();
     }
   };
+let meetid = localStorage.getItem("meet")
+
+
+  const handlecheckout = async () => {
+    if (selectedMethod === "stripe") {
+      const stripe = await loadStripe(import.meta.env.VITE_APP_STRIPEKEY);
+
+
+
+      let body = {
+        paymenttype:selectedMethod ,
+        addmoretime:requestedTime,
+        meetingId:meetid
+     
+      };
+      try {
+        setLoader(true);
+        let senddata = await payaddon(body);
+  
+        const result = stripe.redirectToCheckout({
+          sessionId: senddata.id,
+        });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoader(false);
+      }
+    } else {
+
+      let body = {
+        paymenttype:selectedMethod ,
+        addmoretime:requestedTime,
+        meetingId:meetid
+      };
+      try {
+        setLoader(true);
+        let res = await payaddon(body);
+        
+    
+     
+          let link = res.url;
+          window.location.href = link;
+        
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoader(false);
+      }
+    }
+  };
+
+
 
   useEffect(() => {
     if (show) {
@@ -96,7 +150,7 @@ const AddMoreTime = ({ show, onClose }) => {
               No
             </button>
             <button
-              onClick={onClose}
+              onClick={handlecheckout}
               className="bg-black text-white py-3 rounded md:text-sm w-full"
             >
               Pay
