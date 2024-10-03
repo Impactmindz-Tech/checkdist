@@ -25,16 +25,17 @@ export const fetchstripeApi = async () => {
     console.log(res);
 
   } catch (error) {
-    console.log(error )
+    console.log(error)
     // toast.error(res.data.message);
   }
 };
 
 export const withdrawAmountApi = async (payload) => {
   try {
-    const res = await axiosInstance.post("/avatar/withdraw" ,payload);
+    const res = await axiosInstance.post("/avatar/withdraw", payload);
+    console.log(res)
     return res.data;
   } catch (error) {
-    toast.error(error?.response?.data?.message);
+    toast.error(error?.response?.data?.error);
   }
 };

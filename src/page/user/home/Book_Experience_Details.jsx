@@ -329,9 +329,16 @@ function Book_Experience_Details() {
                     </div>
                     <div className="p-4 sm:p-3">
                       <p className="text-grey-800 text-md sm:text-sm">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore. Lorem ipsum
-                        dolor sit amet.
+                        In general, the refund you receive as a User when
+                        canceling an Experience is 20%. From which 10% is kept
+                        by the Platform and 10% will be imbursed to the Avatar.
+                        However, in some cases, different policies may take
+                        precedence and determine the refund amount. If
+                        unforeseen circumstances beyond your control compel you
+                        to cancel an Experience, you may qualify for a partial
+                        or full refund under our Extenuating Circumstances
+                        Policy. In the event of an Avatar cancellation, you will
+                        be eligible for re-scheduling or a full refund.
                       </p>
                     </div>
                   </div>
