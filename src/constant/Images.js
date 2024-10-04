@@ -1,5 +1,6 @@
 import auth_img from "../assets/images/AvatarWalk.png";
 import mail_img from "../assets/images/mail-icon.png";
+import haveGimbal from "../assets/images/have-gimbal.png";
 import google_img from "../assets/images/google.png";
 import iphone_icon from "../assets/images/iphone_icon.png";
 import user_icon from "../assets/images/user.png";
@@ -107,6 +108,7 @@ import imageUserTest from "../assets/images/user-test.png";
 import iconCameraSwitch from "../assets/images/camera-switch.svg";
 import iconRadar from "../assets/images/radar.svg";
 import iconGlobeClock from "../assets/images/globe-clock.svg";
+import iconCheckGray from "../assets/icons/check-gray.svg";
 
 import facebook from "../assets/images/facebook.svg";
 import tiktok from "../assets/images/tik-tok.svg";
@@ -277,5 +279,7 @@ export default {
   iconCameraSwitch,
   closeLight,
   iconRadar,
-  iconGlobeClock
+  iconGlobeClock,
+  iconCheckGray,
+  haveGimbal
 };

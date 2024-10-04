@@ -6,6 +6,7 @@ const axiosInstance = axios.create({
   //baseURL: `${import.meta.env.VITE_APP_VITEAPPLOCAL}/`,
   //baseURL: "https://backend-avatar-local.onrender.com/",
 //baseURL:"http://localhost:3000/"
+
 });
 
 axiosInstance.interceptors.request.use(
@@ -17,6 +18,7 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
+    
     return Promise.reject(error);
   }
 );

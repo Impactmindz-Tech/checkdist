@@ -35,7 +35,7 @@ const BookingCalendar = ({ onDateChange }) => {
 
   return (
     <div className="mx-auto bg-white p-4">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex  justify-between items-center mb-4">
         <button onClick={previousMonth} className="px-3 py-2 border rounded-full">
           <img src={Images.arrowLeftSm} alt="arrowLeftSm" />
         </button>
