@@ -142,7 +142,7 @@ const AvtarHome = () => {
   return (
     <div className="px-4">
       {loader && <Loader />}
-      <UserSearch onsearch={setSearchTerm} />
+      {/* <UserSearch onsearch={setSearchTerm} /> */}
       <div>
         <InstantLiveCard instanreq={instanreq} />
       </div>
