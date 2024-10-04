@@ -12,6 +12,17 @@ export const userExperienceApi = async (payload) => {
     console.log(error);
   }
 };
+export const getmeetdata = async(id)=>{
+
+  try{
+   const res = await axiosInstance.get("user/meetdata/" + id);
+   
+   return res.data;
+  }catch(err){
+   console.log(err);
+ 
+  }
+ }
 
 export const userExperienceListApi = async (id) => {
   try {
