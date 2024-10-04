@@ -622,7 +622,7 @@ const Room = () => {
         )}
         {isBroadcaster && (
           <div className="flex items-center space-x-2 text-white">
-            {/ <span>Streaming Time: {formatTimer(timer)}</span> /}
+            {/* {/ <span>Streaming Time: {formatTimer(timer)}</span> /} */}
             <div className="text-white">
         Remaining Time: {formatTime(remainingTime)}
       </div>
@@ -631,7 +631,7 @@ const Room = () => {
       </div>
 
       <div id="error-message" style={{ display: "none" }}>
-        {/ {/ Error messages are handled via system messages /} /}
+        {/* {/ {/ Error messages are handled via system messages /} /} */}
       </div>
 
       <div
