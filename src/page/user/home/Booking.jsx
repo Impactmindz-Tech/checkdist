@@ -17,7 +17,7 @@ function Booking() {
   const navigate = useNavigate();
   const params = useParams();
   const [date, setDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState('null');
+  const [selectedTime, setSelectedTime] = useState("null");
   const [duration, setDuration] = useState(null);
   const [type, setType] = useState(null);
   const [color, setColor] = useState(false);
@@ -124,12 +124,10 @@ function Booking() {
         <HeaderBack link="/user/book-experience" text={"Set Date"} />
 
         <div className="my-4">
-          <EditDateCalendar date={date} onDateChange={setDate} setSelectedTime={setSelectedTime}/>
-          <div className="w-full mt-4 sm:max-w-full sm:w-full">
+          <div className="w-full my-4 sm:max-w-full sm:w-full">
             <h2
               className="text-xl font-semibold mb-4"
               onClick={() => {
-                console.log("Hello there!");
                 setShowAddMoreTimeModal(true);
               }}
             >
@@ -189,6 +187,12 @@ function Booking() {
               </table>
             </div>
           </div>
+          <EditDateCalendar
+            date={date}
+            onDateChange={setDate}
+            setSelectedTime={setSelectedTime}
+          />
+
           {/* <div className="bg-gray-200 p-4 rounded-lg mt-4">
             <h2 className="text-xl font-semibold mb-2">
               Please select the experience time as the avatar time:

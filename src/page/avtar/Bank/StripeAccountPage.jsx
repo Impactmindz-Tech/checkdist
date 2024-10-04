@@ -78,6 +78,7 @@ function StripeAccountPage() {
   // NEW CODE
 
   const handleClick = async (e) => {
+
     e.preventDefault();
 
   };

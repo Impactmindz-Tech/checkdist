@@ -22,10 +22,10 @@ function Experience() {
   );
 
   const [InstantLiveModal, setInstantLiveModal] = useState(false);
-  const location = useLocation();  
-  const navigate = useNavigate(); 
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const tabs = ["Requested", "Booked", "Completed", "Cancelled","Offers"];
+  const tabs = ["Requested", "Booked", "Completed", "Cancelled", "Offers"];
   const [activeTab, setActiveTab] = useState("");
 
   const [loader, setLoader] = useState(false);
@@ -43,26 +43,28 @@ function Experience() {
   };
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search); 
+    const searchParams = new URLSearchParams(location.search);
     const tab = searchParams.get("tab");
-    const capitalizedTab = tab ? tab.charAt(0).toUpperCase() + tab.slice(1) : "Requested"; 
+    const capitalizedTab = tab
+      ? tab.charAt(0).toUpperCase() + tab.slice(1)
+      : "Requested";
 
     if (tabs.includes(capitalizedTab)) {
-      setActiveTab(capitalizedTab);  
-      experienceGetrequests(capitalizedTab); 
+      setActiveTab(capitalizedTab);
+      experienceGetrequests(capitalizedTab);
     } else {
-      navigate("/user/experience?tab=booked"); 
+      navigate("/user/experience?tab=booked");
     }
   }, [location.search]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
-    navigate(`/user/experience?tab=${tab.toLowerCase()}`); 
+    navigate(`/user/experience?tab=${tab.toLowerCase()}`);
   };
 
   const renderCard = (item) => {
-    if(item?.Type==="Offers"){
-      console.log(item,'sanju');
+    if (item?.Type === "Offers") {
+      console.log(item, "sanju");
 
       return <UseroffersCard key={item._id} item={item} />;
     }
@@ -116,6 +118,33 @@ function Experience() {
             </div>
 
             {/* Display the relevant cards based on the selected tab */}
+            {activeTab.toLocaleLowerCase() === "requested" && (
+              <p className="bg-[#fff0f0] py-[10px] px-[15px] text-[#ff5454] mt-5 rounded-sm">
+                This section shows all the tours you've requested to book.
+              </p>
+            )}
+            {activeTab.toLocaleLowerCase() === "booked" && (
+              <p className="bg-[#fff0f0] py-[10px] px-[15px] text-[#ff5454] mt-5 rounded-sm">
+                Here you'll find tours that have moved from requested to
+                confirmed and officially booked.
+              </p>
+            )}
+            {activeTab.toLocaleLowerCase() === "completed" && (
+              <p className="bg-[#fff0f0] py-[10px] px-[15px] text-[#ff5454] mt-5 rounded-sm">
+                This is where all your completed tours will be displayed.
+              </p>
+            )}
+            {activeTab.toLocaleLowerCase() === "cancelled" && (
+              <p className="bg-[#fff0f0] py-[10px] px-[15px] text-[#ff5454] mt-5 rounded-sm">
+                This section lists all tours that have been cancelled.
+              </p>
+            )}
+            {activeTab.toLocaleLowerCase() === "offers" && (
+              <p className="bg-[#fff0f0] py-[10px] px-[15px] text-[#ff5454] mt-5 rounded-sm">
+                Here you'll find the tours you've created on the offer page,
+                along with their current status.
+              </p>
+            )}
             <div className="my-5 grid grid-cols-3 2xl:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
               {experinceStatusDetails?.isSuccess &&
               experinceStatusDetails?.data?.length > 0 ? (
