@@ -60,14 +60,21 @@ const RequestedCard = ({ item, getRequests, role }) => {
 
   const acceptOffer = async (status, item) => {
     if (status == "reject") {
-      let payload = {
-        bookingId: item.bookingId,
+      const body = { action: status };
+      const reqdata = {
+        userId: item?.userId,
+        startTime: item?.bookingTime,
+        ReqId: item?.reqId,
+        endTime: item?.endTime,
       };
       try {
         setLoader(true);
-        let res = avatarCancelledApi(payload);
-        if (res?.isSuccess) {
-          toast.success("Experience rejected successfully");
+        const response = await handleBookingRequestApi(item?.reqId, body);
+        if (response?.isSuccess) {
+          const targetTab = status === "accept" ? "booked" : "cancelled";
+          navigate(`/avatar/experience?tab=${targetTab}`);
+          setActiveButtonDisable(true);
+          getRequests("Cancelled");
         }
       } catch (error) {
         console.log("sasas", error);
