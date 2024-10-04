@@ -33,6 +33,7 @@ const Room = () => {
   const [showAddMoreTimeModal, setShowAddMoreTimeModal] = useState(false);
   const [popupDismissed, setPopupDismissed] = useState(false);
   const[meetdata,setdata] = useState(null);
+  const [type,settype] = useState(null);
   const params = useParams();
   const navigate = useNavigate();
 
@@ -78,6 +79,7 @@ const Room = () => {
       console.log(res);
       setduration(res.data.duration);
       setdata(res.data.endTime);
+      settype(res.data)
        
     } catch (err) {
       console.error("Failed to fetch meet data:", err);
@@ -545,12 +547,17 @@ const Room = () => {
           if (timeLeft === 0) {
             window.location.href = "/user/dashboard";
           }
+    if(type.tourtype==="Public"){
 
+      if (timeLeft <= 600 && timeLeft > 0 && count <= 1) {
+        setShowAddMoreTimeModal(true);
+        count++;
+      }
+    }else{
+      console.log("nothing")
+    }
           // Show Add More Time popup if timeLeft is less than or equal to 10 minutes and greater than 0
-          if (timeLeft <= 600 && timeLeft > 0 && count <= 1) {
-            setShowAddMoreTimeModal(true);
-            count++;
-          }
+       
         }
 
         return newTime;
