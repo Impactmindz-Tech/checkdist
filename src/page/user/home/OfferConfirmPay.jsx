@@ -63,6 +63,9 @@ function OfferConfirmPay() {
   useEffect(() => {
     getBookingDetails();
   }, [params?.id]);
+const adminfee = offerDetails?.data?.adminFee/100 * offerDetails?.data?.Price;
+console.log(offerDetails);
+
 
   const handlecheckout = async () => {
     if (selectedMethod === "stripe") {
@@ -70,10 +73,10 @@ function OfferConfirmPay() {
       let body = {
      
         avatarId: offerDetails?.data?.avatarId,
-        price: (offerDetails?.data?.Price + parseFloat(offerDetails?.data?.adminFee)).toFixed(2),
+        price: offerDetails?.data?.Price +adminfee ,
         product: offerDetails?.data?.ExperienceName,
         OfferId: offerDetails?.data?._id,
-        Adminfee: offerDetails?.data?.adminFee,
+        Adminfee: adminfee,
         paymentType: selectedMethod,
       
       };
@@ -92,10 +95,10 @@ function OfferConfirmPay() {
         let body = {
      
             avatarId: offerDetails?.data?.avatarId,
-            price: (offerDetails?.data?.Price + parseFloat(offerDetails?.data?.adminFee)).toFixed(2),
+            price: offerDetails?.data?.Price +adminfee ,
             product: offerDetails?.data?.ExperienceName,
             OfferId: offerDetails?.data?._id,
-            Adminfee: offerDetails?.data?.adminFee,
+            Adminfee: adminfee,
             paymentType: selectedMethod,
           
           };
@@ -186,7 +189,7 @@ function OfferConfirmPay() {
                   <div className="title">Avatar Walk Fee</div>
                   <div className="font-medium">
                     {getCurrencySymbol()}
-                    {offerDetails?.data?.adminFee}
+                    {adminfee}
                   </div>
                 </div>
 
@@ -196,7 +199,7 @@ function OfferConfirmPay() {
                     <div className="title font-bold">Total</div>
                     <div className="font-bold">
                       {getCurrencySymbol()}
-                      {( offerDetails?.data?.Price+ parseFloat(offerDetails?.data?.adminFee))}
+                      {( offerDetails?.data?.Price+ adminfee)}
                     </div>
                   </div>
                 </div>

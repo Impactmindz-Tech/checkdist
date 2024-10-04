@@ -3,6 +3,7 @@ import IconText from "../Heading/IconText";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrencySymbol } from "@/constant/CurrencySign";
 import socket from "@/utills/socket/Socket";
+import Loader from "@/components/Loader";
 import { useEffect, useState } from "react";
 import { convertTo12HourFormats, formatDate } from "@/constant/date-time-format/DateTimeFormat";
 import { completeoffer } from "@/utills/service/userSideService/userService/UserHomeService";
@@ -11,6 +12,7 @@ export default function OffersCard({ state, item }) {
   const [rid, setid] = useState(null);
   const [remainingTime, setRemainingTime] = useState(null);
   const [isCountdownOver, setIsCountdownOver] = useState(false);
+  const [loader, setLoader] = useState(false);
   const [, forceUpdate] = useState(0);
   const navigate = useNavigate();
 
@@ -25,19 +27,22 @@ export default function OffersCard({ state, item }) {
 
   const handlecomplete = async (item) => {
     const id = item?._id;
+    setLoader(true);  // Show the loader
+
     try {
       let response = await completeoffer(id);
-     
-        navigate("/user/experience?tab=offers")
       
-    
+      // After the action is completed, navigate to the offers tab
+      navigate("/user/experience?tab=offers");
+
+      setLoader(false);  // Hide the loader
+      forceUpdate((n) => n + 1);  // Force a re-render if necessary
     } catch (err) {
       console.log(err);
+      setLoader(false);  // Hide the loader in case of an error
     }
-
-
   };
- 
+
   useEffect(() => {
     socket.connect();
     socket.on("roomIds", (data) => {
@@ -67,7 +72,7 @@ export default function OffersCard({ state, item }) {
     const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-    setRemainingTime(`${hours}h ${minutes}m ${seconds}s`);
+    setRemainingTime(`${hours}::${minutes}::${seconds}`);
   };
 
   useEffect(() => {
@@ -80,6 +85,8 @@ export default function OffersCard({ state, item }) {
 
   return (
     <>
+      {loader && <Loader />}  {/* Show loader when loader state is true */}
+      
       <div className="squareShadow p-5 text-grey-900 mt-5">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl">
@@ -99,7 +106,7 @@ export default function OffersCard({ state, item }) {
           </div>
           <div>
             <h5 className="font-medium my-1">{formatDate(item?.Date) || "N/A"}</h5>
-            <h5>{convertTo12HourFormats(item?.Time)} - {convertTo12HourFormats(item?.endTime)}</h5>
+            <h5 className="text-end">{convertTo12HourFormats(item?.Time)} - {convertTo12HourFormats(item?.endTime)}</h5>
             <h4 className="ms-12"><IconText icon={Images.clock} text={remainingTime} /></h4>
           </div>
         </div>

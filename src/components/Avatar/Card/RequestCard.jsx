@@ -67,14 +67,24 @@ const RequestedCard = ({ item, getRequests, role }) => {
         ReqId: item?.reqId,
         endTime: item?.endTime,
       };
+ 
+    
       try {
         setLoader(true);
+
+        const body = { action: status };
+
         const response = await handleBookingRequestApi(item?.reqId, body);
         if (response?.isSuccess) {
           const targetTab = status === "accept" ? "booked" : "cancelled";
           navigate(`/avatar/experience?tab=${targetTab}`);
           setActiveButtonDisable(true);
           getRequests("Cancelled");
+
+        }
+        if (res?.isSuccess) {
+          toast.success("Experience rejected successfully");
+
         }
       } catch (error) {
         console.log("sasas", error);

@@ -220,12 +220,19 @@ function Offers() {
                 <p className="text-[red] sm:text-sm">{errors?.ZipCode?.message}</p>
               </div>
               <div className="flex-1">
-                <label htmlFor="Minutes" className="font-semibold">
-                  Minutes
-                </label>
-                <input type="number" name="Minutes" id="Minutes" placeholder="Eg. 15" className="input my-1" {...register("Minutes")} />
-                <p className="text-[red] sm:text-sm">{errors?.Minutes?.message}</p>
-              </div>
+  <label htmlFor="Minutes" className="font-semibold">
+    Minutes
+  </label>
+  <select name="Minutes" id="Minutes" className="input my-1" {...register("Minutes")}>
+    <option value="">Select Minutes</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+    <option value="60">60</option>
+  </select>
+  <p className="text-[red] sm:text-sm">{errors?.Minutes?.message}</p>
+</div>
+
             </div>
 
             <div className="flex gap-2 lg:flex-col lg:gap-0">

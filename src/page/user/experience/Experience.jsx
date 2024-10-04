@@ -88,14 +88,14 @@ function Experience() {
         <div className="my-3">
           <div className="p-4 sm:px-0">
             <div className="flex justify-end">
-              <Link
+              {/* <Link
                 to="/user/recorded"
                 className="flex gap-3 underline mb-2"
                 onClick={() => setInstantLiveModal(true)}
               >
                 <img src={Images.iconCamera} alt="" />
                 Recorded Experience
-              </Link>
+              </Link> */}
             </div>
             <div className="lg:overflow-x-auto lg:overflow-y-hidden border-b">
               <div className="flex border-b">

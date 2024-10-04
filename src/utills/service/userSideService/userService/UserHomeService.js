@@ -143,6 +143,15 @@ export const deleteAccountApi = async (status) => {
     console.log(error);
   }
 };
+export const freezeAccountApi = async (status) => {
+  try {
+    const res = await axiosInstance.patch(`/user/freezeAcc/${status}`, null);
+    return res.data;
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+    console.log(error);
+  }
+};
 export const rateTourApi = async (id, payload) => {
   try {
     const res = await axiosInstance.post("user/giveRating/" + id, payload);

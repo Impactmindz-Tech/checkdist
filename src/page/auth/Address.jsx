@@ -111,9 +111,9 @@ const Address = () => {
         setLocalStorage("user", user);
       }
       const response = await addAddressApi(id, data);
-   
-      if (response?.isSuccess) {
       
+      if (response?.isSuccess) {
+
         toast.success(response?.message);
         navigate("/user/dashboard");
       }
@@ -132,13 +132,16 @@ const Address = () => {
       const data = await response.json();
       if (data && data.address) {
         const { country, city, city_district, postcode } = data.address;
+        const coordinates = await fetchCoordinates(country, city, city_district);
+
         const userId = params?.id;
         const payload = {
           country: country,
           State: city,
           city: city_district,
           zipCode: postcode,
-    
+          lat: coordinates?.lat || null,  // Pass latitude
+          lng: coordinates?.lon || null, // Pass longitude
         };
     
 

@@ -12,6 +12,8 @@ import { getCurrencySymbol } from "@/constant/CurrencySign";
 import { getLocalStorage, setLocalStorage } from "@/utills/LocalStorageUtills";
 
 function PaymentPage({ setPayemntDetails, payemntDetails, tourDetails }) {
+
+
   const [disableStart, setDisableStart] = useState(true);
   const [disableCancel, setDisableCancel] = useState(false);
   const [countdown, setCountdown] = useState("");
@@ -25,7 +27,11 @@ function PaymentPage({ setPayemntDetails, payemntDetails, tourDetails }) {
     mastercard: false,
     stripe: false,
   });
+  const packageprice = totalCharges;
+  const adminfee = tourDetails?.Adminfee/100*packageprice;
+console.log(adminfee+totalCharges);
 
+  
   const changeSelectedState = (name) => {
     if (name == "paypal") {
       setRole({
@@ -81,7 +87,7 @@ function PaymentPage({ setPayemntDetails, payemntDetails, tourDetails }) {
         // calculate charges
         const totalMinutes = hours * 60 + minutes;
         const charges = totalMinutes * tourDetails?.ExpId?.AmountsperMinute;
-        setTotalCharges(charges.toFixed(2));
+        setTotalCharges(charges);
       }
     };
 
@@ -105,12 +111,11 @@ function PaymentPage({ setPayemntDetails, payemntDetails, tourDetails }) {
         avatarId: tourDetails?.avatarId,
         price: totalCharges,
         product: tourDetails?.ExpId.ExperienceName,
-        productId: tourDetails?.packageIds,
-        Adminfee: tourDetails?.Adminfee,
+        adminFee:adminfee,
         paymentType: "stripe",
         userId: user?._id,
-        adminFee: 10,
-       //productId: tourDetails?.ExpId?._id,
+      
+       productId: tourDetails?.ExpId?._id,
       };
 
       try {
@@ -127,11 +132,10 @@ function PaymentPage({ setPayemntDetails, payemntDetails, tourDetails }) {
         avatarId: tourDetails?.avatarId,
         price: totalCharges,
         product: tourDetails?.ExpId.ExperienceName,
-        productId: tourDetails?.packageIds,
-        Adminfee: tourDetails?.Adminfee,
+        adminFee:adminfee,
         paymentType: "paypal",
         userId: user?._id,
-        adminFee: 10,
+      
         productId: tourDetails?.ExpId?._id,
       };
       try {
@@ -174,11 +178,17 @@ function PaymentPage({ setPayemntDetails, payemntDetails, tourDetails }) {
           <h1 className="text-lg sm:text-base">
             <span className="font-normal">Booking Time:</span> {formatTime(tourDetails?.BookingTime)}
           </h1>
+        
           <h1 className="text-lg sm:text-base">
             <span className="font-normal">Remaning Time:</span> {countdown}
+          </h1>  <h1 className="text-lg sm:text-base">
+            <span className="font-normal">Avatar fee:</span> {getCurrencySymbol()}  {adminfee}
           </h1>
           <h1 className="text-lg sm:text-base">
-            <span className="font-normal">Total charges:</span> {getCurrencySymbol()} {totalCharges}
+            <span className="font-normal">Charges:</span> {getCurrencySymbol()}  {totalCharges}
+          </h1>
+          <h1 className="text-lg sm:text-base">
+            <span className="font-normal">Total charges:</span> {getCurrencySymbol()} {totalCharges+adminfee}
           </h1>
           <div className="text-end margin_minus">
  <Link to={`/user/book-experience/${tourDetails?.expId}`}>

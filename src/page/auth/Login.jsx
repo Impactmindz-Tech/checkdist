@@ -56,7 +56,7 @@ const Login = () => {
           if (response?.data?.action == "registration") {
             toast.success(response?.message);
             setLocalStorage("user", response?.data);
-            setLocalStorage("token", response?.token);
+           setLocalStorage("token", response?.token);
             navigate("/auth/role/" + response?.data?._id);
           } else {
             if (response?.isSuccess && response?.data?.length > 1) {
@@ -66,7 +66,7 @@ const Login = () => {
               });
             } else {
               setLocalStorage("user", response?.data);
-              setLocalStorage("token", response?.token);
+             setLocalStorage("token", response?.token);
               navigate("/user/dashboard");
             }
           }
@@ -106,7 +106,7 @@ const Login = () => {
         if (response?.data?.action == "registration") {
           toast.success(response?.message);
           setLocalStorage("user", response?.data);
-          setLocalStorage("token", response?.token);
+          // setLocalStorage("token", response?.token);
           navigate("/auth/role/" + response?.data?._id);
         } else {
           if (response?.isSuccess && response?.data?.length > 1) {

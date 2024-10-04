@@ -42,7 +42,40 @@ const EditProfile = () => {
     }
   };
 
+
+  const fetchCoordinates = async (country, state = "", city = "") => {
+    try {
+      let query = "";
+      if (city) {
+        query = `${city},${state},${country}`;
+      } else if (state) {
+        query = `${state},${country}`;
+      } else {
+        query = `${country}`;
+      }
+  
+      const encodedQuery = encodeURIComponent(query);
+  
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodedQuery}&format=json&limit=1`);
+      const data = await response.json();
+  
+      if (data.length > 0) {
+        const { lat, lon } = data[0];
+    
+        return { lat, lon };
+      }
+  
+  
+      return null;
+    } catch (error) {
+      console.error("Error fetching coordinates:", error);
+      return null;
+    }
+  }
+  
+
   const onSubmit = async (formData) => {
+
     setLoader(true);
     const id = getLocalStorage("user")?._id;
     const form = new FormData();
@@ -54,6 +87,12 @@ const EditProfile = () => {
     }
 
     try {
+      const coordinates = await fetchCoordinates(formData.country, formData.state, formData.city);
+   if(coordinates){
+    form.append("lat",coordinates.lat);
+    form.append("lng",coordinates.lon);
+   }
+     
       const response = await editProfileApi(id, form);
       if (response?.isSuccess) {
         toast.success(response?.message);
@@ -68,6 +107,11 @@ const EditProfile = () => {
       setLoader(false);
     }
   };
+//to fetch coordinates
+
+
+
+
 
   useEffect(() => {
     const user = getLocalStorage("user");
@@ -78,6 +122,7 @@ const EditProfile = () => {
       setValue("city", user?.City || "");
       setValue("country", user?.Country || "");
       setValue("userName",user?.userName|| "");
+      setValue("state",user?.State || "")
       setPreview(user?.profileimage || "");
 
       // Check if the date is valid
@@ -102,7 +147,7 @@ const EditProfile = () => {
           <div className="flex flex-col items-center mb-4">
             <div className="relative">
               <img src={preview || Images.imagePlaceholder} alt="Profile" className="w-32 h-32 rounded-full object-cover border-4 border-dotted border-white sm:w-[90px] sm:h-[90px]" />
-              <input type="file" id="Profile" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onChange={handleImageChange} accept="image/*" />
+              <input type="file" id="Profile" name="Profile" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onChange={handleImageChange} accept="image/*" />
               <div className="absolute bottom-0 right-0 rounded-full p-2 cameraBoxShadow bg-backgroundFill-900 sm:w-[28px] sm:h-[28px] sm:p-[7px]">
                 <label htmlFor="Profile">
                   <img src={Images.whiteCamera} alt="Camera" className="cursor-pointer" />
@@ -156,6 +201,13 @@ const EditProfile = () => {
               </label>
               <input className="inputGrayColor" id="country" type="text" placeholder="Country" {...register("country")} />
               {errors.country && <p className="text-red-500 sm:text-sm">{errors.country.message}</p>}
+            </div>
+            <div className="mb-4 w-full">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="state">
+              State
+              </label>
+              <input className="inputGrayColor" id="state" type="text" placeholder="State" {...register("state")} />
+              {errors.state && <p className="text-red-500 sm:text-sm">{errors.state.message}</p>}
             </div>
             <div className="mb-4 w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">
