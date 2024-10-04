@@ -12,12 +12,12 @@ const Confirm_Page_Payment = ({ selectedMethod, setSelectedMethod }) => {
 
       <div className="space-y-4 mb-4">
         <label className={`payment-option flex items-center justify-between p-4 border rounded-lg cursor-pointer ${selectedMethod === "paypal" ? "active" : ""}`}>
-          {/* <div className="flex items-center">
+          <div className="flex items-center">
             <img src={Images.paypal} alt="PayPal" className="w-6 h-6 mr-2 object-contain" />
             <span className="text-sm font-semibold">PayPal</span>
           </div>
           <input type="radio" name="paymentMethod" value="paypal" onChange={handleselectmethod} className="hidden" />
-          <div className="custom-radio"></div> */}
+          <div className="custom-radio"></div>
         </label>
         <label className={`payment-option flex items-center justify-between p-4 border rounded-lg cursor-pointer ${selectedMethod === "stripe" ? "active" : ""}`}>
           <div className="flex items-center">
