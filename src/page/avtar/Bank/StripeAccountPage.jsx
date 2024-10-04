@@ -40,28 +40,30 @@ function StripeAccountPage() {
   const [loader, setLoader] = useState(false);
 
   // NEW CODE
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm({
+  //   resolver: yupResolver(stripeAccountSchema),
+  // });
+  // Initialize the form with useForm and add resolver for validation
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset, // Reset to set the form values dynamically
   } = useForm({
     resolver: yupResolver(stripeAccountSchema),
+    defaultValues: {} // Initially empty, will be updated with fetched data
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-  // NEW CODE
-
-  const handleClick = async (e) => {
-    e.preventDefault();
+  const onSubmit = async(data) => {
     setLoader(true);
-    const body = {
-      StripeEmail: email,
-    };
+  
 
     try {
-      const res = await AddstripeApi(body);
+      const res = await AddstripeApi(data);
       if (res?.isSuccess) {
         toast.success(res?.message || "Account added/updated successfully.");
       } else {
@@ -73,21 +75,47 @@ function StripeAccountPage() {
       setLoader(false);
     }
   };
+  // NEW CODE
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+
+  };
 
   useEffect(() => {
     const fetchstripe = async () => {
+      setLoader(true);
       try {
         const res = await fetchstripeApi();
+        console.log(res.data)
         if (res?.isSuccess) {
-          setEmail(res?.data?.stripeEmail);
+          // Update the form with fetched values using reset()
+          reset({
+            accountHolderName: res?.data?.stripeAccountHolderName || "",
+            accountNumber: res?.data?.stripeAccountNumber || "",
+            routingNumber: res?.data?.stripeRoutingNumber || "",
+            firstName: res?.data?.firstName || "",
+            lastName: res?.data?.lastName || "",
+            email: res?.data?.stripeEmail || "",
+            phoneNumber: res?.data?.phoneNumber || "",
+            ssnLastDigits: res?.data?.stripeSsnLastDigits || "",
+            address: res?.data?.address || "",
+            city: res?.data?.city || "",
+            state: res?.data?.state || "",
+            postalCode: res?.data?.postalCode || "",
+            country: res?.data?.country || "",
+          });
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoader(false);
       }
     };
     fetchstripe();
-  }, []);
+  }, [reset]);
 
+  
   return (
     <>
       {loader && <Loader />}
@@ -119,7 +147,7 @@ function StripeAccountPage() {
           </div>
         </div> */}
 
-        {/* new fields starts here */}
+        {/ new fields starts here /}
         <div className="bg-[#fefce8] border-l-4 border-[#facc15] text-[#a16207] py-[10px] px-[15px] mt-6">
           Account details must be valid; otherwise, you will not be able to
           withdraw your earnings. Please wait after adding or updating details,
@@ -175,6 +203,7 @@ function StripeAccountPage() {
               </div>
             </div>
           </div>
+
           <div className="flex flex-col gap-2 flex-1 mt-6">
             <h3 className="text-lg">Add Personal Info</h3>
             <div className="flex flex-wrap gap-4 sm:flex-col">
@@ -187,9 +216,7 @@ function StripeAccountPage() {
                   {...register("firstName")}
                 />
                 {errors.firstName && (
-                  <p className="text-[red] text-sm">
-                    {errors.firstName.message}
-                  </p>
+                  <p className="text-[red] text-sm">{errors.firstName.message}</p>
                 )}
               </div>
               <div className="flex flex-col flex-1">
@@ -201,9 +228,7 @@ function StripeAccountPage() {
                   {...register("lastName")}
                 />
                 {errors.lastName && (
-                  <p className="text-[red] text-sm">
-                    {errors.lastName.message}
-                  </p>
+                  <p className="text-[red] text-sm">{errors.lastName.message}</p>
                 )}
               </div>
             </div>
