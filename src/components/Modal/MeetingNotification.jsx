@@ -14,7 +14,9 @@ const MeetingNotification = ({ data }) => {
       localStorage.setItem(
         "notificationData",
         JSON.stringify(notificationData)
+      
       );
+      localStorage.setItem("meet",notificationData?.meetid);
     }
    
     

@@ -7,7 +7,7 @@ import { Toaster, toast } from "react-hot-toast";
 
 // Replace with your ngrok URL or server URL
 const SOCKET_SERVER_URL = `${import.meta.env.VITE_APP_MAINURL}/`;
-// const SOCKET_SERVER_URL = `http://localhost:3000/`;
+//const SOCKET_SERVER_URL = `http://localhost:3000/`;
 const socket = io(SOCKET_SERVER_URL);
 
 const Room = () => {
@@ -31,6 +31,13 @@ const Room = () => {
     iceServers: [
       {
         urls: ["stun:stun.l.google.com:19302"],
+        urls:["stun:private.serverturn.com:3478"],
+        urls:["stun:private.serverturn.com:3478?transport=udp"],
+        urls:["stun:stun1.l.google.com:19302"],
+        urls:["stun:stun2.l.google.com:19302"],
+        urls:["stun:stun3.l.google.com:19302"],
+        urls:["stun:stun4.l.google.com:19302"]
+        
       }, // Free STUN server
       {
         urls: "turn:97.74.90.111:3478", // TURN server URL with "turn:" prefix

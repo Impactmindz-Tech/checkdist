@@ -47,10 +47,8 @@ function EarningPage() {
     };
     try {
       const response = withdrawAmountApi(body);
-      console.log(response);
-      toast.error(response.message);
     } catch (error) {
-      console.log(error);
+      toast.error(response.message);
     }
   };
 
@@ -89,7 +87,7 @@ function EarningPage() {
             <p className="text-grey-800">Withdraw Balance</p>
             <h1 className="text-grey-900 text-2xl">
               {getCurrencySymbol()}
-              { amountDetail?.totalEarnings?amountDetail?.totalEarnings: 0}
+              {amountDetail?.totalEarnings ? amountDetail?.totalEarnings : 0}
             </h1>
           </div>
           <div className="right" onClick={withdrawAmount}>
@@ -118,7 +116,7 @@ function EarningPage() {
             />
             <h1>
               {getCurrencySymbol()}
-              {amountDetail?.totalEarnings ?amountDetail?.totalEarnings:0}
+              {amountDetail?.totalEarnings ? amountDetail?.totalEarnings : 0}
             </h1>
             <p>Total Earnings</p>
           </div>
@@ -128,7 +126,9 @@ function EarningPage() {
               <p>Earnings in (This Month)</p>
               <h1 className="sm:text-base">
                 {getCurrencySymbol()}
-                {amountDetail?.thisMonthEarnings?amountDetail?.thisMonthEarnings:0}
+                {amountDetail?.thisMonthEarnings
+                  ? amountDetail?.thisMonthEarnings
+                  : 0}
               </h1>
             </div>
             {/* <div className="flex justify-between items-center my-2">
@@ -137,7 +137,11 @@ function EarningPage() {
         </div> */}
             <div className="flex justify-between items-center my-2">
               <p>Completed Tours</p>
-              <h1 className="sm:text-base">{amountDetail?.completedTours?amountDetail?.completedTours:0}</h1>
+              <h1 className="sm:text-base">
+                {amountDetail?.completedTours
+                  ? amountDetail?.completedTours
+                  : 0}
+              </h1>
             </div>
             {/* <div className="flex justify-between items-center my-2">
           <p>Average Experience Charges</p>
@@ -147,7 +151,7 @@ function EarningPage() {
               <p>Available for Withdraw</p>
               <h1 className="sm:text-base">
                 {getCurrencySymbol()}
-                {amountDetail?.totalEarnings?amountDetail?.totalEarnings:0}
+                {amountDetail?.totalEarnings ? amountDetail?.totalEarnings : 0}
               </h1>
             </div>
           </div>
@@ -162,7 +166,7 @@ function EarningPage() {
               <p>Today’s Earning</p>
               <h1 className="sm:text-base">
                 {getCurrencySymbol()}
-                {amountDetail?.todayEarnings?amountDetail?.todayEarnings:0}
+                {amountDetail?.todayEarnings ? amountDetail?.todayEarnings : 0}
               </h1>
             </div>
           </div>

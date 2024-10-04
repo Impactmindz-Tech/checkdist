@@ -153,6 +153,17 @@ export const rateTourApi = async (id, payload) => {
   }
 };
 
+
+export const payaddon = async(payload)=>{
+
+  try{
+     const res = await axiosInstance.post("user/payaddon",payload);
+     return res.data;
+
+  }catch(err){
+    toast.error(err?.response?.data.message)
+  }
+}
 export const checkout = async (payload) => {
   try {
     const res = await axiosInstance.post("avatar/checkout", payload);
