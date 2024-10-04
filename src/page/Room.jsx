@@ -1,31 +1,57 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { useParams } from "react-router-dom";
-import { getLocalStorage } from "@/utills/LocalStorageUtills";
+import { getLocalStorage, setLocalStorage } from "@/utills/LocalStorageUtills";
 import Images from "@/constant/Images";
 import { Toaster, toast } from "react-hot-toast";
+import { setRoomData } from "@/store/slice/videoSlice";
+import { useDispatch } from "react-redux";
+import AddMoreTime from "@/components/Modal/AddMoreTimeModal";
+import { getmeetdata } from "@/utills/service/userSideService/userService/UserHomeService";
+import { useNavigate } from "react-router-dom";
 
 // Replace with your ngrok URL or server URL
-const SOCKET_SERVER_URL = `${import.meta.env.VITE_APP_MAINURL}/`;
-//const SOCKET_SERVER_URL = `http://localhost:3000/`;
+//const SOCKET_SERVER_URL = `${import.meta.env.VITE_APP_MAINURL}/`;
+const SOCKET_SERVER_URL = `http://localhost:3000/`;
 const socket = io(SOCKET_SERVER_URL);
 
 const Room = () => {
   const [videoDevices, setVideoDevices] = useState([]);
   const localVideoRef = useRef(null);
+  const dispatch = useDispatch();
+  const[remain,setremain] = useState();
   const videosContainerRef = useRef(null);
   const [joinId, setJoinId] = useState("");
   const [viewers, setViewers] = useState(0);
   const [roomId, setRoomId] = useState("");
+  const [duration,setduration] = useState(0);
   const [localStream, setLocalStream] = useState(null);
   const [peerConnections, setPeerConnections] = useState({});
   const [isBroadcaster, setIsBroadcaster] = useState(false);
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
+  const [showAddMoreTimeModal, setShowAddMoreTimeModal] = useState(false);
+  const [popupDismissed, setPopupDismissed] = useState(false);
+  const[meetdata,setdata] = useState(null);
   const params = useParams();
+  const navigate = useNavigate();
+
+  const [viewerTimer, setViewerTimer] = useState(0);
+
 
   const [timer, setTimer] = useState(0);
   const timerRef = useRef(null);
+
+  const meetId = localStorage.getItem("meet") || getLocalStorage("meetdata")?._id;
+
+ 
+  const endTime = getLocalStorage("roomData")?.endTime || getLocalStorage("meetdata")?.endTime;
+
+
+  const [remaintime,setremaintimer] = useState(0);
+
+  const [remainingTime, setRemainingTime] = useState(0);
+
 
   const configuration = {
     iceServers: [
@@ -46,6 +72,25 @@ const Room = () => {
       },
     ],
   };
+  const getalldata = async (meetId) => {
+    try {
+      let res = await getmeetdata(meetId);
+      console.log(res);
+      setduration(res.data.duration);
+      setdata(res.data.endTime);
+       
+    } catch (err) {
+      console.error("Failed to fetch meet data:", err);
+    }
+  };
+
+  // UseEffect to call the getalldata function once the component mounts
+  useEffect(() => {
+    if (meetId) {
+      getalldata(meetId);  // Fetch data only if meetId is available
+    }
+  }, []);  // Add meetId as a dependency to avoid calling the API unnecessarily
+
 
   useEffect(() => {
     socket.connect();
@@ -70,18 +115,50 @@ const Room = () => {
   }, []);
 
   useEffect(() => {
-    // Start or stop the timer based on streaming state
     if (isBroadcaster && localStream) {
       timerRef.current = setInterval(() => {
         setTimer((prev) => prev + 1);
+        if (meetdata) {
+          const currentTime = new Date(); // Current local time
+          
+          // Remove 'Z' if present in meetdata to ensure it is treated as local time
+          let meetTimeString = meetdata;
+      
+          if (meetTimeString.endsWith('Z')) {
+            meetTimeString = meetTimeString.slice(0, -1); // Remove 'Z'
+          }
+          const meetTime = new Date(meetTimeString); // Local time of the meeting
+  
+          const timeLeft = Math.max(0, (meetTime.getTime() - currentTime.getTime()) / 1000); // time in seconds
+  
+          // Update remaining time state
+          setRemainingTime(timeLeft);
+  
+        
+        }
       }, 1000);
     } else {
-      clearInterval(timerRef.current);
+      setTimer("sanju");
+            // clearInterval(timerRef.current);
       setTimer(0);
     }
-
+  
     return () => clearInterval(timerRef.current);
-  }, [isBroadcaster, localStream]);
+  }, [isBroadcaster, localStream, meetdata,popupDismissed]);
+  const handleCloseModal = () => {
+    setShowAddMoreTimeModal(false);
+    setPopupDismissed(true); // Set flag to true when the popup is closed
+  };
+  // Function to format remaining time into HH:MM:SS
+  const formatTime = (time) => {
+    const hours = Math.floor(time / 3600); // Calculate hours
+    const minutes = Math.floor((time % 3600) / 60); // Calculate remaining minutes
+    const seconds = Math.floor(time % 60); // Calculate remaining seconds
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
+  
+
+
 
   useEffect(() => {
     // Handle socket events
@@ -105,7 +182,8 @@ const Room = () => {
       setIsBroadcaster(true);
       try {
         const stream = await getUserMedia();
-        setLocalStream(stream);
+        setLocalStream(stream)
+;
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = stream;
         }
@@ -119,7 +197,8 @@ const Room = () => {
       setIsBroadcaster(false);
       try {
         const stream = await getUserMedia(false);
-        setLocalStream(stream);
+        setLocalStream(stream)
+;
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = stream;
         }
@@ -221,7 +300,8 @@ const Room = () => {
       if (localStream) {
         localStream.getTracks().forEach((track) => track.stop());
       }
-      addSystemMessage("You have exited the room. Redirecting...");
+      navigate('/user/dashboard');
+     
       setTimeout(() => {
         window.location.href = "/user/dashboard"; // Redirect to dashboard
       }, 3000); // 3 seconds delay for user to read the message
@@ -370,7 +450,8 @@ const Room = () => {
         localVideoRef.current.srcObject = stream;
       }
 
-      setLocalStream(stream);
+      setLocalStream(stream)
+;
 
       Object.values(peerConnections).forEach((peerConnection) => {
         const videoSender = peerConnection
@@ -434,24 +515,103 @@ const Room = () => {
     return `${hrs}:${mins}:${secs}`;
   };
 
+ // Assuming duration is 40 minutes in seconds (2400 seconds)
+ let count=0;
+ useEffect(() => {
+  let count = 0; // Initialize count outside the interval
+  
+  if (!isBroadcaster) {
+    const viewerTimerRef = setInterval(() => {
+      setViewerTimer((prev) => {
+        const newTime = prev + 1;
+
+        if (meetdata) {
+          const currentTime = new Date(); // Current local time
+
+          // Remove 'Z' if present in meetdata to ensure it is treated as local time
+          let meetTimeString = meetdata;
+
+          if (meetTimeString.endsWith('Z')) {
+            meetTimeString = meetTimeString.slice(0, -1); // Remove 'Z'
+          }
+          const meetTime = new Date(meetTimeString); // Local time of the meeting
+
+          const timeLeft = Math.max(0, (meetTime.getTime() - currentTime.getTime()) / 1000); // time in seconds
+
+          // Update remaining time state
+          setremain(timeLeft);
+
+          // Redirect when timeLeft hits 0
+          if (timeLeft === 0) {
+            window.location.href = "/user/dashboard";
+          }
+
+          // Show Add More Time popup if timeLeft is less than or equal to 10 minutes and greater than 0
+          if (timeLeft <= 600 && timeLeft > 0 && count <= 1) {
+            setShowAddMoreTimeModal(true);
+            count++;
+          }
+        }
+
+        return newTime;
+      });
+    }, 1000);
+
+    return () => clearInterval(viewerTimerRef);
+  }
+}, [roomId, meetdata]);
+
+
+ 
+  // Format the viewer's timer
+  const formatViewerTimer = (seconds) => {
+    const hrs = Math.floor(seconds / 3600)
+      .toString()
+      .padStart(2, "0");
+    const mins = Math.floor((seconds % 3600) / 60)
+      .toString()
+      .padStart(2, "0");
+    const secs = Math.floor(seconds % 60)
+      .toString()
+      .padStart(2, "0");
+    return `${hrs}:${mins}:${secs}`;
+  };
+
+
   return (
+  <>
     <div className="relative z-[1] before:block before:absolute before:-inset-0 before:bg-black/10 before:z-[-1] overflow-hidden">
       <Toaster position="top-right" reverseOrder={false} />
 
       <div className="flex flex-col items-center space-y-4 absolute top-[20px] sm:top-[10px] left-auto right-[20px] sm:right-[10px]">
         {isBroadcaster && (
+        <>
+         
           <button
             className="bg-[#2d2d2d] text-white font-semibold py-2 px-4 shadow-lg rounded-full sm:text-xs sm:py-[8px]"
             onClick={stopStream}
           >
             Stop Stream
           </button>
+         
+        
+        </>
+          
+        
         )}
         {!isBroadcaster && (
-          <>
-            <div className="flex items-center space-x-2 text-white">
-              <span>Streaming Time: {formatTimer(timer)}</span>
+          <> 
+          <div className="flex gap-x-5">
+          <div className=" text-white">
+              <span>Streaming Time: {formatViewerTimer(viewerTimer)}</span>
+             
             </div>
+           <div className=" text-white">
+             <span>Remaining Time: {formatViewerTimer(remain)}</span>
+             </div>
+       
+          </div>
+       
             <button
               className="bg-[#2d2d2d] text-white font-semibold py-2 px-4 shadow-lg rounded-full sm:text-xs sm:py-[8px]"
               onClick={exitRoom}
@@ -462,13 +622,16 @@ const Room = () => {
         )}
         {isBroadcaster && (
           <div className="flex items-center space-x-2 text-white">
-            <span>Streaming Time: {formatTimer(timer)}</span>
+            {/ <span>Streaming Time: {formatTimer(timer)}</span> /}
+            <div className="text-white">
+        Remaining Time: {formatTime(remainingTime)}
+      </div>
           </div>
         )}
       </div>
 
       <div id="error-message" style={{ display: "none" }}>
-        {/* {/ Error messages are handled via system messages /} */}
+        {/ {/ Error messages are handled via system messages /} /}
       </div>
 
       <div
@@ -525,6 +688,7 @@ const Room = () => {
                 </p>
               </div>
             ))}
+            
           </div>
           {!isBroadcaster && (
             <form
@@ -546,9 +710,15 @@ const Room = () => {
               </button>
             </form>
           )}
+
         </div>
       </div>
     </div>
+    <AddMoreTime meetId={meetId}
+    show={showAddMoreTimeModal}
+    onClose={handleCloseModal}
+  />
+  </>
   );
 };
 
