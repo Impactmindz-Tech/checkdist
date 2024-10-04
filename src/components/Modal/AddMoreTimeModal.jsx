@@ -4,7 +4,7 @@ import ConfirmPaymentForm from "@/components/Payment Card/Confirm_Page_Payment";
 import { loadStripe } from "@stripe/stripe-js";
 import { checkout, payaddon, paypalcheckout } from "@/utills/service/userSideService/userService/UserHomeService";
 import { getLocalStorage } from "@/utills/LocalStorageUtills";
-const AddMoreTime = ({ show, onClose }) => {
+const AddMoreTime = ({ show, onClose ,meetId}) => {
   const [loader, setLoader] = useState(false);
   const [requestedTime, setRequestedTime] = useState(null);
   const [selectedMethod, setSelectedMethod] = useState("stripe");
@@ -28,7 +28,7 @@ let meetid = localStorage.getItem("meet")
       let body = {
         paymenttype:selectedMethod ,
         addmoretime:requestedTime,
-        meetingId:meetid
+        meetingId:meetId
      
       };
       try {
@@ -48,7 +48,7 @@ let meetid = localStorage.getItem("meet")
       let body = {
         paymenttype:selectedMethod ,
         addmoretime:requestedTime,
-        meetingId:meetid
+        meetingId:meetId
       };
       try {
         setLoader(true);

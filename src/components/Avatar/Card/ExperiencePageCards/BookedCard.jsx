@@ -27,6 +27,7 @@ const BookedCard = ({ item, role }) => {
     };
     const response = await createmeeting(reqdata);
     socket.emit("details", { reqdata, item });
+    localStorage.setItem("meetdata",JSON.stringify(response.data));
     if (response?.isSuccess) {
       const generatedRoomId = roomId || Math.random().toString(36).substr(2, 2);
       setRoomId(generatedRoomId);

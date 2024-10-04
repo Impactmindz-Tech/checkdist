@@ -77,6 +77,7 @@ import NewPage from "@/page/user/NewPage";
 import Username from "@/page/auth/Username";
 import CustomAlert from "@/page/custom_alert/CustomAlert";
 import HaveGimbal from "@/page/have_gimbal/HaveGimbal";
+import AddSuccess from "@/page/user/AddSuccess";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -401,6 +402,14 @@ const router = createBrowserRouter([
         element: (
           <DashboardLayout>
             <Payment_Success />
+          </DashboardLayout>
+        ),
+      },
+      {
+        path: "addtimepaymentsuccess",
+        element: (
+          <DashboardLayout>
+            <AddSuccess />
           </DashboardLayout>
         ),
       },
@@ -738,3 +747,4 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
+
