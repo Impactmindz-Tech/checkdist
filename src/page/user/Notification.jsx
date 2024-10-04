@@ -92,12 +92,12 @@ function Notification() {
       <div className="container">
         <HeaderBack link="/user/profile" text={"Notifications"} />
         <div className="containts">
-          <NotificationCard
+          {/* <NotificationCard
             icon={Images.multiMessages}
             title={"Messages"}
             stateValue={messageState}
             onToggle={(newState) => handleToggleState("Message", newState)}
-          />
+          /> */}
           <NotificationCard
             icon={Images.correct}
             title={"Approved Tour"}
@@ -114,20 +114,20 @@ function Notification() {
               handleToggleState("Cancelled Tours", newState)
             }
           />
-          <NotificationCard
+          {/* <NotificationCard
             icon={Images.locationNew}
             title={"New Tour in Your Area"}
             stateValue={newTourState}
             onToggle={(newState) =>
               handleToggleState("New Tour in Your Area", newState)
             }
-          />
-          <NotificationCard
+          /> */}
+          {/* <NotificationCard
             icon={Images.support}
             title={"Support"}
             stateValue={supportState}
             onToggle={(newState) => handleToggleState("Support", newState)}
-          />
+          /> */}
         </div>
       </div>
     </>

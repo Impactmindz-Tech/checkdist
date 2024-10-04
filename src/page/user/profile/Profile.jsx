@@ -213,7 +213,7 @@ function Profile() {
                   link="/avatar/account-info"
                 />
                 {/* <ProfilePageCard active={false} icon={Images.currency} text="Reports" link={"/avatar/reports"} /> */}
-                <ProfilePageCard active={false} icon={Images.notification} text="Notifications" link={"/avatar/notification"} />
+                {/* <ProfilePageCard active={false} icon={Images.notification} text="Notifications" link={"/avatar/notification"} /> */}
                 {/* <ProfilePageCard active={false} icon={Images.notification} text={<AvtarAvailability />} /> */}
                 <div
                   onClick={() => setAvaability(true)}
