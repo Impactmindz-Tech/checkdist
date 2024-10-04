@@ -10,13 +10,13 @@ import {
 } from "recharts";
 
 const data = [
-  { name: "Sun", earnings: 40 },
-  { name: "Mon", earnings: 70 },
-  { name: "Tue", earnings: 100 },
-  { name: "Wed", earnings: 100 },
-  { name: "Thu", earnings: 30 },
-  { name: "Fri", earnings: 60 },
-  { name: "Sat", earnings: 80 },
+  { name: "Sun", earnings: 0 },
+  { name: "Mon", earnings: 0 },
+  { name: "Tue", earnings: 0 },
+  { name: "Wed", earnings: 0 },
+  { name: "Thu", earnings: 0 },
+  { name: "Fri", earnings: 0 },
+  { name: "Sat", earnings: 0 },
 ];
 
 export function EarningChart() {
