@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { bookingSlotsApi } from "@/utills/service/userSideService/userService/UserHomeService";
 import { useParams } from "react-router-dom";
 import Loader from "../Loader";
@@ -11,10 +11,7 @@ dayjs.extend(isSameOrAfter);
 
 const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
   const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [bookedTimes, setBookedTimes] = useState({
-    '2024-10-05': ['09:30', '10:00'],  // Example of already booked times
-    '2024-10-06': ['09:45', '10:15'],
-  });
+
   const [timeSlots, setTimeSlots] = useState([]); // Store all generated time slots
   const [selectedSlot, setSelectedSlot] = useState(null); // State for selected time slot
   const [loading, setLoading] = useState(false); // State for loading
@@ -28,29 +25,45 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
   // Generate time slots based on 'from' and 'to' in minutes
   const generateTimeSlots = (fromTime, toTime) => {
     const slots = [];
-    let current = dayjs().set('hour', Math.floor(fromTime / 60)).set('minute', fromTime % 60).second(0);
-    const end = dayjs().set('hour', Math.floor(toTime / 60)).set('minute', toTime % 60).second(0);
+    let current = dayjs()
+      .set("hour", Math.floor(fromTime / 60))
+      .set("minute", fromTime % 60)
+      .second(0);
+    const end = dayjs()
+      .set("hour", Math.floor(toTime / 60))
+      .set("minute", toTime % 60)
+      .second(0);
+
+    // Get the current time
+    const now = dayjs();
 
     // Round the current time up to the nearest 5 minutes
     const roundedStart = roundUpToNearestFive(current.minute());
-    current = current.set('minute', roundedStart); // Set the rounded start time
+    current = current.set("minute", roundedStart); // Set the rounded start time
 
     while (current.isBefore(end)) {
       const slotTime = current.format("HH:mm"); // Format to 24-hour
-      slots.push(slotTime); // Push formatted slot to array
+
+      // Check if the selected date is today and the slot is in the past
+      if (
+        !selectedDate.isSame(dayjs(), "day") || // If the selected date is not today, include the time
+        current.isSameOrAfter(now) // If the current time is in the future or equal to now
+      ) {
+        slots.push(slotTime); // Push formatted slot to array
+      }
 
       // Move to the end of the 15-minute slot
-      current = current.add(15, 'minute');
+      current = current.add(15, "minute");
     }
 
     return slots;
   };
 
   // Check if a time slot is already booked
-  const isTimeBooked = (time) => {
-    const dateKey = selectedDate.format("YYYY-MM-DD");
-    return bookedTimes[dateKey]?.includes(time); // Check if the slot is booked
-  };
+  // const isTimeBooked = (time) => {
+  //   const dateKey = selectedDate.format("YYYY-MM-DD");
+  //   return bookedTimes[dateKey]?.includes(time); // Check if the slot is booked
+  // };
 
   // Fetch booking slots
   useEffect(() => {
@@ -71,8 +84,12 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
             const toTime = item.to; // Expect format HH:mm
 
             // Parse from and to times in 24-hour format
-            const fromHour = parseInt(fromTime.split(':')[0], 10) * 60 + parseInt(fromTime.split(':')[1], 10); // Convert to minutes
-            const toHour = parseInt(toTime.split(':')[0], 10) * 60 + parseInt(toTime.split(':')[1], 10); // Convert to minutes
+            const fromHour =
+              parseInt(fromTime.split(":")[0], 10) * 60 +
+              parseInt(fromTime.split(":")[1], 10); // Convert to minutes
+            const toHour =
+              parseInt(toTime.split(":")[0], 10) * 60 +
+              parseInt(toTime.split(":")[1], 10); // Convert to minutes
 
             // Generate time slots for the current range and add to allSlots
             const generatedSlots = generateTimeSlots(fromHour, toHour);
@@ -95,7 +112,13 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
   }, [selectedDate, params?.id]);
 
   const handleDateClick = (newDate) => {
-    if (!newDate.isSame(selectedDate, 'day')) { // Only update if it's a different day
+    if (window.innerWidth < 1024) {
+      document.getElementById("availableTimes").scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+    if (!newDate.isSame(selectedDate, "day")) {
+      // Only update if it's a different day
       setSelectedDate(newDate);
       setSelectedSlot(null); // Reset selected slot when date changes
       setSelectedTime(null); // Reset selected time when date changes
@@ -106,7 +129,10 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
 
   // Handle time slot click
   const handleTimeSlotClick = (time) => {
-    console.log(time);
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
     setSelectedSlot(time); // Set selected time
     setSelectedTime(time); // Set time in 24-hour format
   };
@@ -134,32 +160,37 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
             <DateCalendar
               value={selectedDate}
               onChange={handleDateClick} // Capture the selected date
-              // renderDay={renderDay} // Custom rendering for each day
+              minDate={dayjs()} // Disable past dates by setting minDate to today
               fixedWeekNumber={6}
             />
           </LocalizationProvider>
         </div>
 
         {/* Right side: Meeting time slots */}
-        <div className="w-96 h-full min-h-80 ml-2 p-4 overflow-auto">
+        <div
+          className="w-96 h-full min-h-80 ml-2 p-4 overflow-auto"
+          id="availableTimes"
+        >
           <h2 className="text-lg font-semibold">
             Available Times for {selectedDate.format("MMMM D, YYYY")}
           </h2>
           <div className="flex flex-wrap max-h-72 mt-1 text-black">
             {loading ? ( // Check if loading
-              <div className="text-black text-3xl flex justify-center items-center"><span className="loading loading-spinner"><Loader/></span></div> // Spinner while loading
+              <div className="text-black text-3xl flex justify-center items-center">
+                <span className="loading loading-spinner">
+                  <Loader />
+                </span>
+              </div> // Spinner while loading
             ) : (
               timeSlots.map((time) => (
                 <button
                   key={time}
-                  disabled={isTimeBooked(time)}
-                  title={isTimeBooked(time) ? "Already booked" : "Book this time"}
                   className={`p-2 rounded-md w-full mt-2 border border-black text-black font-semibold ${
                     selectedSlot === time // Check if this time is selected
-                      ? 'bg-black text-white' // Change color if selected
-                      : isTimeBooked(time)
-                      ? 'bg-gray-400 opacity-50 cursor-not-allowed hover:bg-gray-400'
-                      : 'bg-white hover:bg-black hover:text-white'
+                      ? "bg-black text-white" // Change color if selected
+                      : ""
+                      ? "bg-gray-400 opacity-50 cursor-not-allowed hover:bg-gray-400"
+                      : "bg-white hover:bg-black hover:text-white"
                   }`}
                   onClick={() => handleTimeSlotClick(time)} // Handle time click
                 >
@@ -175,5 +206,3 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
 };
 
 export default EditDateCalendar;
-
-
