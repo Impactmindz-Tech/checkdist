@@ -16,7 +16,7 @@ const CompletedCard = ({ item }) => {
             <img
               src={item?.experienceImage}
               alt="cardImageRounded"
-              className="w-full object-cover h-full rounded-lg"
+              className="w-full object-cover h-full rounded-lg aspect-square"
             />
           </div>
           <div className="w-[70%] sm:pl-3">
