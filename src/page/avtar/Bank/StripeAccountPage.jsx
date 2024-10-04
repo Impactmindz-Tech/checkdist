@@ -148,7 +148,7 @@ function StripeAccountPage() {
           </div>
         </div> */}
 
-        {/ new fields starts here /}
+        {/* {/ new fields starts here /} */}
         <div className="bg-[#fefce8] border-l-4 border-[#facc15] text-[#a16207] py-[10px] px-[15px] mt-6">
           Account details must be valid; otherwise, you will not be able to
           withdraw your earnings. Please wait after adding or updating details,
