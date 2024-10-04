@@ -16,7 +16,7 @@ function Booking() {
   const navigate = useNavigate();
   const params = useParams();
   const [date, setDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedTime, setSelectedTime] = useState('null');
   const [duration, setDuration] = useState(null);
   const [type, setType] = useState(null);
   const [color, setColor] = useState(false);
@@ -122,7 +122,7 @@ function Booking() {
         <HeaderBack link="/user/book-experience" text={"Set Date"} />
 
         <div className="my-4">
-          <EditDateCalendar date={date} onDateChange={setDate} />
+          <EditDateCalendar date={date} onDateChange={setDate} setSelectedTime={setSelectedTime}/>
           <div className="w-full mt-4 sm:max-w-full sm:w-full">
             <h2 className="text-xl font-semibold mb-4">
               Please select the experience time as the Avatar time
@@ -222,20 +222,9 @@ function Booking() {
                 <div className="relative flex items-center">
                   <input
                     type="time"
-                    onChange={(e) => {
-                      const timeValue = e.target.value;
-                      if (isTimeSelectable(timeValue)) {
-                        setSelectedTime(timeValue);
-                      } else {
-                        setColor(true);
-                        toast.error("You cannot select a past time.");
-                      }
-                    }}
-                    className={`w-full p-2 border border-gray-300 rounded-md ${
-                      selectedTime && !isTimeSelectable(selectedTime)
-                        ? `past-time-class ${color ? "bg-[red]" : ""} `
-                        : "future-time-class"
-                    }`}
+                    readOnly
+                    value={selectedTime}
+                    className={`w-full p-2 border border-gray-300 rounded-md`}
                   />
                 </div>
               </div>
