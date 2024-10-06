@@ -108,6 +108,7 @@ const Address = () => {
       if(user){
         user.City = data.city;
         user.Country=data.country;
+        user.State = data.State
         setLocalStorage("user", user);
       }
       const response = await addAddressApi(id, data);
@@ -147,7 +148,12 @@ const Address = () => {
 
         try {
           setLoader(true);
-
+          let user = getLocalStorage("user");
+          if(user){
+            user.City = data.city;
+            user.Country=data.country;
+            setLocalStorage("user", user);
+          }
           const response = await addAddressApi(userId, payload);
           if (response?.isSuccess) {
             toast.success(response?.message);
