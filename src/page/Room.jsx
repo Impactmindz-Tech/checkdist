@@ -613,9 +613,9 @@ const Room = () => {
               <span>Streaming Time: {formatViewerTimer(viewerTimer)}</span>
              
             </div>
-           {/* <div className=" text-white">
+           <div className=" text-white">
              <span>Remaining Time: {formatViewerTimer(remain)}</span>
-             </div> */}
+             </div>
        
           </div>
        
