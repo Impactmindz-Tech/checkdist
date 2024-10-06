@@ -36,6 +36,7 @@ const MobileDevice = () => {
         );
         const samsungDevices = devices.filter(
           (device) => device.deviceType === "android"
+          
         );
         const OtherDevices = devices.filter(
           (device) => device.deviceType === "other"
