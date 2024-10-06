@@ -69,7 +69,7 @@ export const addExperinceValidation = yup.object({
   AmountsperMinute: yup.string().required("Amount per minute is required."),
   notesForUser: yup.string().required("Notes For User is required."),
   ExperienceName: yup.string().required("Experience Name is required."),
-  about: yup.string().required("About is required."),
+  about: yup.string().required("About is required.")
 });
 
 export const createOfferValidation = yup.object({

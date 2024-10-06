@@ -7,13 +7,27 @@ import { getCurrencySymbol } from "@/constant/CurrencySign";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addExperinceValidation } from "@/utills/formvalidation/FormValidation";
-import { AddexperienceApi } from "@/utills/service/avtarService/AddExperienceService";
+import { AddexperienceApi, getAvailableApi } from "@/utills/service/avtarService/AddExperienceService";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "@/components/Loader";
 import Dropdown from "@/components/statecitycountry/DropDown";
-
+import TimezoneSelect from "react-timezone-select";
+import { Button } from "@/components/ui/button";
+import { formatTimeToHHMM } from "@/constant/date-time-format/DateTimeFormat";
 const AddExperienceWithImagePage = () => {
+
+  const [formValues, setFormValues] = useState({
+    from: "",
+    to: "",
+    timeZone: "",
+  });
+
+  // const [errors, setErrors] = useState({
+  //   from: "",
+  //   to: "",
+  //   timeZone: "",
+  // });
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -157,8 +171,13 @@ const AddExperienceWithImagePage = () => {
     for (let index = 0; index < otherSelectedFiles.length; index++) {
       formData.append(`images`, otherSelectedFiles[index]);
     }
+    formData.append("from", formValues.from);
+    formData.append("to", formValues.to);
+    formData.append("timeZone", formValues.timeZone.value);
+    formData.append("timeahead", formValues.timeZone.offset.toString());
     try {
       setLoader(true);
+      
       const response = await AddexperienceApi(formData);
       setLoader(false);
       Setdisable(true);
@@ -239,6 +258,51 @@ const AddExperienceWithImagePage = () => {
       setSelectedCity(null);
     }
   }, [selectedState, selectedCountry]);
+ 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getAvailableApi();
+    
+      if (res?.isSuccess) {
+        const data = res.data;
+
+        // Convert 'from' and 'to' to the 'HH:MM' format
+        const fromTime = formatTimeToHHMM(data.from);
+        const toTime = formatTimeToHHMM(data.to);
+
+        setFormValues({
+          from: fromTime || "",
+          to: toTime || "",
+          timeZone: {
+            value: data.timeZone || "",
+            offset: parseFloat(data.timeahead) || 0,
+          },
+        });
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleTimezoneChange = (selectedTimezone) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      timeZone: selectedTimezone,
+    }));
+  };
+
+ 
+
+  
   return (
     <>
       {loading && <Loader />}
@@ -407,7 +471,57 @@ const AddExperienceWithImagePage = () => {
             />
             <p className="text-[red]">{errors?.AmountsperMinute?.message}</p>
           </div>
+          <div className=" ">
+          <h1 className="text-center">Add Your  Availablility</h1>
+          <div className="flex sm:block justify-between gap-4 ">
+          
+              <div className=" flex-1  mt-2">
+                <div className="py-2 rounded-md">
+                  <h3 className="font-normal mb-2">From</h3>
+                  <div className="grid w-full items-center gap-1.5">
+                    <input
+                      type="time"
+                      id="from"
+                      name="from"
+                      value={formValues.from}
+                      onChange={handleChange}
+                      className="outline-none border border-[#ccc] p-2 rounded-md w-full"
+                    />
+                  </div>
+             
+                </div>
+              </div>
 
+              <div className="flex-1 mt-2">
+                <div className="py-2 rounded-md">
+                  <h3 className="font-normal mb-2">To</h3>
+                  <input
+                    type="time"
+                    id="to"
+                    name="to"
+                    value={formValues.to}
+                    onChange={handleChange}
+                    className="outline-none border border-[#ccc] p-2 rounded-md w-full"
+                  />
+
+                </div>
+              </div>
+
+              <div className="flex-1 mt-2">
+                <label htmlFor="timeZone" className="mb-2 block">
+                  Time Zone
+                </label>
+                <TimezoneSelect
+                  value={formValues.timeZone}
+                  onChange={handleTimezoneChange}
+                  className="outline-none border border-[#ccc] p-2 rounded-md w-full"
+                />
+            
+              </div>
+
+              
+          </div>
+        </div>
           <div className="my-4 flex justify-between items-center">
             <div className="left">
               {" "}

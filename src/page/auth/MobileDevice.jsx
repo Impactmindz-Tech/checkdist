@@ -21,7 +21,7 @@ const MobileDevice = () => {
   const [samsungData, setSamsungData] = useState([]);
   const [otherData, setOtherData] = useState([]);
   const [manually, setmanually] = useState("");
-  const tabs = ["iphone", "samsung", "other"];
+  const tabs = ["iphone", "android", "other"];
   const isgooglesignup = getLocalStorage("user")?.isgoogleSignup;
   const isapplesignup = getLocalStorage("user")?.isAppleSignup;
   const fetchDevicesData = async () => {
@@ -35,7 +35,7 @@ const MobileDevice = () => {
           (device) => device.deviceType === "iphone"
         );
         const samsungDevices = devices.filter(
-          (device) => device.deviceType === "samsung"
+          (device) => device.deviceType === "android"
         );
         const OtherDevices = devices.filter(
           (device) => device.deviceType === "other"
@@ -70,7 +70,7 @@ const MobileDevice = () => {
   let data;
   if (activeTab === "iphone") {
     data = iphoneData;
-  } else if (activeTab === "samsung") {
+  } else if (activeTab === "android") {
     data = samsungData;
   } else {
     data = otherData;
@@ -194,7 +194,7 @@ const MobileDevice = () => {
           />
         </div> */}
 
-        {/* <div className="py-2 w-full mt-3 mb-4">
+        <div className="py-2 w-full mt-3 mb-4">
           <label htmlFor="notesForUser" className="font-semibold flex">
             Do you have glimble?
             <input
@@ -216,7 +216,7 @@ const MobileDevice = () => {
               ></span>
             </span>
           </label>
-        </div> */}
+        </div>
         <div
           className="btn min-w-full bg-black py-3 text-white text-center rounded-sm cursor-pointer mt-3"
           onClick={() => addDevice()}

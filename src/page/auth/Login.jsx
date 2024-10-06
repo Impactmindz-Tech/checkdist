@@ -21,6 +21,7 @@ import socket from "@/utills/socket/Socket";
 
 const Login = () => {
   const [loader, setLoader] = useState(false);
+  const[isemail,setemail] = useState(false);
   const [showEmailPopup, setShowEmailPopup] = useState(false);
   const [isEmail] = useAuthState(auth);
   const [email, setEmail] = useState("");
@@ -127,9 +128,9 @@ const Login = () => {
     }
   };
 
-  const handleEmailPopup = (e) => {
-    e.preventDefault();
-    setShowEmailPopup(true);
+  const handleEmailPopup = () => {
+    setemail(!isemail)
+    
   };
 
   const handleEmailSubmit = async (e) => {
@@ -257,7 +258,7 @@ const Login = () => {
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <div>
               <label htmlFor="username" className="label">
-                Username
+               {isemail? 'Email':'Username'}
               </label>
               <br />
               <input className="input" type="text" placeholder="Eg. Rohan Sharma" name="username" id="username" {...register("userName")} />
@@ -300,10 +301,10 @@ const Login = () => {
 
           <div className="flex flex-col gap-3 pt-2">
             <p className="text-center text-gray-400">Or</p>
-            {/* <div className="flex items-center justify-center gap-3 cursor-pointer w-full bg-grey-300 p-4 text-center text-bg-primaryColor-900 rounded-xl" onClick={handleEmailPopup}>
+            <div className="flex items-center justify-center gap-3 cursor-pointer w-full bg-grey-300 p-4 text-center text-bg-primaryColor-900 rounded-xl" onClick={handleEmailPopup}>
               <img className="w-5 h-5" src={Image.mail_img} alt="" />
               <button className="font-semibold text-primaryColor-500">Continue with Email</button>
-            </div> */}
+            </div>
             <div className="flex items-center justify-center gap-3 cursor-pointer w-full bg-grey-300 p-4 text-center text-bg-primaryColor-900 rounded-xl" onClick={handleGoogleSignup}>
               <img className="w-5 h-5" src={Image.google_img} alt="" />
               <button className="font-semibold text-primaryColor-500">Continue with Google</button>

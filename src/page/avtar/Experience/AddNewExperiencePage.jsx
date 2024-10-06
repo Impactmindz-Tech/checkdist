@@ -47,9 +47,9 @@ function AddNewExperiencePage() {
     const fetchData = async () => {
       const res = await getAvailableApi();
       if (res?.isSuccess === false && !toastShownRef.current) {
-        toast("Please add your availability in Profile -> Availability.", {
-          duration: 4000,
-        });
+        // toast("Please add your availability ", {
+        //   duration: 4000,
+        // });
         toastShownRef.current = true; 
         setMessageShown(true); 
       }
