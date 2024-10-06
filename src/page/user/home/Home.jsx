@@ -73,14 +73,14 @@ const Home = () => {
           let filterData = response.data.filter((item) => item.avatarId !== activeUserId);
           let onlyAvailabilityData = filterData.filter((item) => item.availability !== null);
 
-          setLocalData((prevData) => {
-            const mergedData = [...prevData, ...onlyAvailabilityData];
+          // setLocalData((prevData) => {
+          //   const mergedData = [...prevData, ...onlyAvailabilityData];
 
-            const uniqueData = Array.from(new Map(mergedData.map((item) => [item._id, item])).values());
+          //   const uniqueData = Array.from(new Map(mergedData.map((item) => [item._id, item])).values());
 
-            return uniqueData;
-          });
-
+          //   return uniqueData;
+          // });
+      setLocalData(onlyAvailabilityData)
           setTotalPages(Math.ceil(response.total_items / itemsPerPage));
         }
       } catch (error) {
@@ -118,6 +118,7 @@ const Home = () => {
 
   useEffect(() => {
     handleCountryUpdate();
+    fetchUserExperience();
     window.addEventListener("storage", handleCountryUpdate);
     return () => {
       window.removeEventListener("storage", handleCountryUpdate);
