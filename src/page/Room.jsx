@@ -663,7 +663,7 @@ const Room = () => {
         >
           {isBroadcaster ? (
             <>
-              <div className="sm:text-xs sm:mt-[8px] flex items-center space-x-2 text-white w-full">
+{/*               <div className="sm:text-xs sm:mt-[8px] flex items-center space-x-2 text-white w-full">
                 <label className="mr-[10px]">Select Camera:</label>
                 <select value={selectedCameraId} onChange={handleCameraChange} className="bg-[#2d2d2d] text-white rounded px-2 py-1 max-w-[100px] overflow-hidden text-ellipsis">
                   {videoDevices.map((device) => (
@@ -672,7 +672,7 @@ const Room = () => {
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
 
               <video
                 className="videoStyle absolute top-0 left-0 w-screen h-svh z-[-2] object-cover has-video"
