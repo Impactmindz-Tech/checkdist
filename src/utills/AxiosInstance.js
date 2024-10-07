@@ -2,10 +2,10 @@ import axios from "axios";
 import { getLocalStorage } from "./LocalStorageUtills";
 
 const axiosInstance = axios.create({
-  //baseURL: `${import.meta.env.VITE_APP_MAINURL}/`,
+  baseURL: `${import.meta.env.VITE_APP_MAINURL}/`,
   //baseURL: `${import.meta.env.VITE_APP_VITEAPPLOCAL}/`,
   //baseURL: "https://backend-avatar-local.onrender.com/",
-baseURL:"http://localhost:3000/"
+//baseURL:"http://localhost:3000/"
 
 });
 

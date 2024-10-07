@@ -11,8 +11,8 @@ import { getmeetdata } from "@/utills/service/userSideService/userService/UserHo
 import { useNavigate } from "react-router-dom";
 
 // Replace with your ngrok URL or server URL
-//const SOCKET_SERVER_URL = `${import.meta.env.VITE_APP_MAINURL}/`;
-const SOCKET_SERVER_URL = `http://localhost:3000/`;
+const SOCKET_SERVER_URL = `${import.meta.env.VITE_APP_MAINURL}/`;
+//const SOCKET_SERVER_URL = `http://localhost:3000/`;
 const socket = io(SOCKET_SERVER_URL);
 
 const Room = () => {
