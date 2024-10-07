@@ -59,7 +59,7 @@ const MainHomePage = () => {
   const fetchUserExperience = useCallback(
     async (tab, page) => {
       const country =
-        getLocalStorage("selectedCountry") || getLocalStorage("user")?.Country||"United State";
+        getLocalStorage("selectedCountry") || getLocalStorage("user")?.Country||"United States";
       const payload = {
         tab: tab,
         country: country,
@@ -121,7 +121,7 @@ const MainHomePage = () => {
   };
 
   const handleCountryUpdate = useCallback(() => {
-    const storedCountry = getLocalStorage("selectedCountry")||"United State";
+    const storedCountry = getLocalStorage("selectedCountry")||"United States";
     if (storedCountry && storedCountry !== country) {
       setCountry(storedCountry);
     }
