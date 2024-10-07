@@ -142,6 +142,9 @@ const Room = () => {
           if (timeLeft === 0) {
             console.log("Meeting time is up!");
             // You can add any logic here when the time reaches zero
+             if (timeLeft === 0) {
+              window.location.href = "/avatar/dashboard";
+            }
           }
         }
       }, 1000);
