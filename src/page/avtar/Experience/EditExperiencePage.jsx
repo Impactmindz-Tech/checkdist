@@ -1,15 +1,17 @@
 import EditExperienceCard from "@/components/Avatar/Card/EditExperienceCard";
 import TitleHeading from "@/components/Avatar/Heading/TitleHeading";
 import HeaderBack from "@/components/HeaderBack";
+import TimezoneSelect from "react-timezone-select";
 import Images from "@/constant/Images";
 import { getCurrencySymbol } from "@/constant/CurrencySign";
+import { formatTimeToHHMM } from "@/constant/date-time-format/DateTimeFormat";
 import {
   CitySelect,
   CountrySelect,
   StateSelect,
 } from "react-country-state-city";
 import { addExperinceValidation } from "@/utills/formvalidation/FormValidation";
-import { editexperienceApi } from "@/utills/service/avtarService/AddExperienceService";
+import { editexperienceApi, getAvailableApi } from "@/utills/service/avtarService/AddExperienceService";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -29,6 +31,19 @@ function EditExperiencePage() {
     id: undefined,
     name: undefined,
   });
+  const [formValues, setFormValues] = useState({
+    from: "",
+    to: "",
+    timeZone: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
   const [stateid, setstateid] = useState({ id: undefined, name: undefined });
   const [cityId, setCityId] = useState({ id: undefined, name: undefined });
   const [newFiles, setNewFiles] = useState([]);
@@ -189,7 +204,10 @@ function EditExperiencePage() {
       formData.append(`images`, newFiles[index]);
     }
     formData.append("removeImages", JSON.stringify(removedImages));
-
+    formData.append("from", formValues.from);
+    formData.append("to", formValues.to);
+    formData.append("timeZone", formValues.timeZone.value);
+    formData.append("timeahead", formValues.timeZone.offset.toString());
     try {
       const response = await editexperienceApi(params?.id, formData);
       if (response?.isSuccess) {
@@ -218,6 +236,38 @@ function EditExperiencePage() {
   const handleToggle = () => {
     setIsChecked(!isChecked);
   };
+  const handleTimezoneChange = (selectedTimezone) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      timeZone: selectedTimezone,
+    }));
+  };
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getAvailableApi();
+    
+      if (res?.isSuccess) {
+        const data = res.data;
+
+        // Convert 'from' and 'to' to the 'HH:MM' format
+        const fromTime = formatTimeToHHMM(data.from);
+        const toTime = formatTimeToHHMM(data.to);
+
+        setFormValues({
+          from: fromTime || "",
+          to: toTime || "",
+          timeZone: {
+            value: data.timeZone || "",
+            offset: parseFloat(data.timeahead) || 0,
+          },
+        });
+      }
+    };
+
+    fetchData();
+  }, []);
+
 
   return (
     <>
@@ -424,9 +474,62 @@ function EditExperiencePage() {
                 </label>
               </div>
               {/* <div className="border-2 border-[#FF7070] p-4 rounded-lg px-6">
-              <img src={Images.InstantLiveText} alt="InstantLiveText" />
+              <img src={Ima
+              ges.InstantLiveText} alt="InstantLiveText" />
             </div> */}
+         
             </div>
+            <div className=" ">
+          <h1 className="text-center">Update Your  Availablility</h1>
+          <div className="flex sm:block justify-between gap-4 ">
+          
+              <div className=" flex-1  mt-2">
+                <div className="py-2 rounded-md">
+                  <h3 className="font-normal mb-2">From</h3>
+                  <div className="grid w-full items-center gap-1.5">
+                    <input
+                      type="time"
+                      id="from"
+                      name="from"
+                      value={formValues.from}
+                      onChange={handleChange}
+                      className="outline-none border border-[#ccc] p-2 rounded-md w-full"
+                    />
+                  </div>
+             
+                </div>
+              </div>
+
+              <div className="flex-1 mt-2">
+                <div className="py-2 rounded-md">
+                  <h3 className="font-normal mb-2">To</h3>
+                  <input
+                    type="time"
+                    id="to"
+                    name="to"
+                    value={formValues.to}
+                    onChange={handleChange}
+                    className="outline-none border border-[#ccc] p-2 rounded-md w-full"
+                  />
+
+                </div>
+              </div>
+
+              <div className="flex-1 mt-2">
+                <label htmlFor="timeZone" className="mb-2 block">
+                  Time Zone
+                </label>
+                <TimezoneSelect
+                  value={formValues.timeZone}
+                  onChange={handleTimezoneChange}
+                  className="outline-none border border-[#ccc] p-2 rounded-md w-full"
+                />
+            
+              </div>
+
+              
+          </div>
+        </div>
             <div className="my-2">
               <label htmlFor="about" className="font-semibold">
                 About
