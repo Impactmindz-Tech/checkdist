@@ -33,17 +33,16 @@ const HeaderNavigation = () => {
     const newRole = role === "user" ? "avatar" : "user";
     try {
       const response = await switchProfile(newRole);
+     
       if (response?.isSuccess) {
         removeLocalStorage("user");
         setLocalStorage("user", response?.data);
+       setLocalStorage("token",response?.token);
 
-        console.log(response?.data);
-        
-        // Smoothly navigate without reloading
-        setTimeout(() => {
+    
+       
           navigate(newRole === "user" ? "/user/dashboard" : "/avatar/dashboard", { replace: true });
-        }, 100); // Adjust the delay as needed
-        
+         
   
         toast.success(response?.message);
       }
