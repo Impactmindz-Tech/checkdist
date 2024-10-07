@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 
 export const userExperienceApi = async (payload) => {
   // console.log("payload", payload);
-  const { tab, country, search, items_per_page, page } = payload;
+  const { tab, country="United States", search, items_per_page, page } = payload;
   try {
     const res = await axiosInstance.get(`/user/getExperience?filters=${tab}&country=${country}&search=${search}&items_per_page=${items_per_page}&pg=${page}`);
     return res.data;

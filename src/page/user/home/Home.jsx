@@ -95,7 +95,7 @@ const Home = () => {
   useEffect(() => {
     const activeTabQuery = getQueryTab(); // Get tab from URL query parameters
     setActiveTab(tabs.find((t) => t.query === activeTabQuery)?.key || "All"); // Set active tab
-
+    fetchUserExperience()
     setCurrentPage(1);
     setTotalPages(1);
     setLocalData([]);
@@ -126,6 +126,7 @@ const Home = () => {
   }, [handleCountryUpdate]);
 
   useEffect(() => {
+    fetchUserExperience();
     socket.emit("instantLive", userId);
     socket.emit("userOnline", userId);
     socket.on("getmeet", (data) => {
@@ -170,6 +171,7 @@ useEffect(()=>{
   socket.on('connected', () => {
     console.log('Socket connected');
   });
+  fetchUserExperience();
 },[])
   return (
     <>
