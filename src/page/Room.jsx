@@ -114,7 +114,7 @@ const Room = () => {
         setVideoDevices(videoInputDevices);
       })
       .catch((error) => {
-        addSystemMessage("Error accessing devices. Please check your permissions.");
+        // addSystemMessage("Error accessing devices. Please check your permissions.");
       });
 
     return () => {
@@ -177,7 +177,7 @@ const Room = () => {
   useEffect(() => {
     // Handle socket events
     const handleConnectionError = (error) => {
-      addSystemMessage("Socket connection error. Please try again.");
+      //addSystemMessage("Socket connection error. Please try again.");
     };
 
     socket.on("connect", () => {
@@ -186,7 +186,7 @@ const Room = () => {
     });
 
     socket.on("disconnect", () => {
-      addSystemMessage("Disconnected from server. Please check your connection.");
+      //addSystemMessage("Disconnected from server. Please check your connection.");
     });
 
     socket.on("connect_error", handleConnectionError);
@@ -201,7 +201,7 @@ const Room = () => {
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = stream;
         }
-        addSystemMessage("Room created successfully");
+       addSystemMessage(" ");
       } catch (error) {
         // Error handled in getUserMedia
       }
@@ -268,9 +268,9 @@ const Room = () => {
     }
   };
 
-  // const addSystemMessage = (message) => {
-  //   setMessages((prevMessages) => [...prevMessages, { user: "System", message }]);
-  // };
+  const addSystemMessage = (message) => {
+    setMessages((prevMessages) => [...prevMessages, { user: "System", message }]);
+  };
 
   const handleNewMessage = (data) => {
     const { viewerId, message, user } = data;
@@ -343,7 +343,7 @@ const Room = () => {
         socket.emit("offer", peerConnection.localDescription, roomId, viewerId);
       })
       .catch((error) => {
-        addSystemMessage("Error creating offer.");
+        addSystemMessage(" ");
       });
   };
 
@@ -362,7 +362,7 @@ const Room = () => {
 
     peerConnection.oniceconnectionstatechange = () => {
       if (peerConnection.iceConnectionState === "disconnected") {
-        addSystemMessage("Connection lost with the broadcaster.");
+        //addSystemMessage("Connection lost with the broadcaster.");
       }
     };
 
@@ -383,7 +383,7 @@ const Room = () => {
       await peerConnection.setLocalDescription(answer);
       socket.emit("answer", answer, roomId, broadcasterId);
     } catch (error) {
-      addSystemMessage("Error handling offer.");
+      //addSystemMessage("Error handling offer.");
     }
   };
 
@@ -391,7 +391,7 @@ const Room = () => {
     const peerConnection = peerConnections[viewerId];
     if (peerConnection) {
       peerConnection.setRemoteDescription(answer).catch(() => {
-        addSystemMessage("Error setting remote description.");
+       ///addSystemMessage("Error setting remote description.");
       });
     }
   };
@@ -402,7 +402,7 @@ const Room = () => {
       peerConnection
         .addIceCandidate(candidate)
         .catch(() => {
-          addSystemMessage("Error adding received ICE candidate.");
+         // addSystemMessage("Error adding received ICE candidate.");
         });
     }
   };
@@ -417,7 +417,7 @@ const Room = () => {
     if (videosContainerRef.current) {
       videosContainerRef.current.innerHTML = "";
     }
-    addSystemMessage("Streaming has been stopped.");
+    //addSystemMessage("Streaming has been stopped.");
     window.location.href = "/"; // Redirect to main URL
   };
 
@@ -441,7 +441,7 @@ const Room = () => {
   };
 
   const handleMediaError = (error) => {
-    addSystemMessage(`Media Error: ${error.message}`);
+    //addSystemMessage(`Media Error: ${error.message}`);
   };
 
   const handleCameraChange = async (event) => {
@@ -603,15 +603,15 @@ const Room = () => {
     <div className="relative z-[1] before:block before:absolute before:-inset-0 before:bg-black/10 before:z-[-1] overflow-hidden">
       <Toaster position="top-right" reverseOrder={false} />
 
-      <div className="flex flex-col items-center space-y-4 absolute top-[20px] sm:top-[10px] left-auto right-[20px] sm:right-[10px]">
+      <div className="flex flex-col items-center space-y-1 absolute top-[20px] sm:top-[10px] left-auto right-[20px] sm:left-[10px] sm:right-[10px] mt-[40px]">
         {isBroadcaster && (
         <>
          
           <button
-            className="bg-[#2d2d2d] text-white font-semibold py-2 px-4 shadow-lg rounded-full sm:text-xs sm:py-[8px]"
+            className="absolute left-auto top-[-36px] right-0"
             onClick={stopStream}
           >
-            Stop Stream
+            <img src={Images.closeLight} alt="" className="w-8" />
           </button>
          
         
@@ -641,11 +641,11 @@ const Room = () => {
           </>
         )}
         {isBroadcaster && (
-          <div className="flex items-center space-x-2 text-white">
-            {/* {/ <span>Streaming Time: {formatTimer(timer)}</span> /} */}
-            <div className="text-white mt-2">
+          <div className="flex items-center space-x-2 text-white w-full">
+            <span className="text-white rounded-md bg-[#fff]/[.2] px-[6px] py-[4px] text-sm">Streaming Time: {formatTimer(timer)}</span>
+            <span className="text-white rounded-md bg-[#fff]/[.2] px-[6px] py-[4px] text-sm">
         Remaining Time: {formatTime(remainingTime)}
-      </div>
+      </span>
           </div>
         )}
       </div>
@@ -660,9 +660,9 @@ const Room = () => {
       >
         {isBroadcaster ? (
           <>
-            <div className="sm:text-xs sm:mt-[8px] flex items-center space-x-2 text-white">
+            <div className="sm:text-xs sm:mt-[8px] flex items-center space-x-2 text-white w-full">
               <label className="mr-[10px]">Select Camera:</label>
-              <select onChange={handleCameraChange} className="bg-[#2d2d2d] text-white rounded px-2 py-1">
+              <select onChange={handleCameraChange} className="bg-[#2d2d2d] text-white rounded px-2 py-1 max-w-[100px] overflow-hidden text-ellipsis">
                 {videoDevices.map((device) => (
                   <option key={device.deviceId} value={device.deviceId}>
                     {device.label || `Camera ${device.deviceId}`}
@@ -682,9 +682,9 @@ const Room = () => {
               <img src={Images.iconEyeLight} alt="Viewers" />
               {viewers}
             </div>
-            <div className="absolute top-[70px] left-[20px] text-white">
+            {/* <div className="absolute top-[70px] left-[10px] text-white rounded-md bg-[#fff]/[.2] px-[6px] py-[4px] text-sm">
               <span>Streaming Time: {formatTimer(timer)}</span>
-            </div>
+            </div> */}
           </>
         ) : (
           <div
