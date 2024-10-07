@@ -36,9 +36,14 @@ const HeaderNavigation = () => {
       if (response?.isSuccess) {
         removeLocalStorage("user");
         setLocalStorage("user", response?.data);
+
+        console.log(response?.data);
         
         // Smoothly navigate without reloading
-        navigate(newRole === "user" ? "/user/dashboard" : "/avatar/dashboard", { replace: true });
+        setTimeout(() => {
+          navigate(newRole === "user" ? "/user/dashboard" : "/avatar/dashboard", { replace: true });
+        }, 100); // Adjust the delay as needed
+        
   
         toast.success(response?.message);
       }
