@@ -10,7 +10,7 @@ import AddMoreTime from "@/components/Modal/AddMoreTimeModal";
 import { getmeetdata } from "@/utills/service/userSideService/userService/UserHomeService";
 import { useNavigate } from "react-router-dom";
 import { getAvailableApi } from "@/utills/service/avtarService/AddExperienceService";
-
+import moment from 'moment-timezone'
 // Replace with your ngrok URL or server URL
 const SOCKET_SERVER_URL = `${import.meta.env.VITE_APP_MAINURL}/`;
 //const SOCKET_SERVER_URL = `http://localhost:3000/`;
@@ -55,20 +55,10 @@ const Room = () => {
 
   const [remainingTime, setRemainingTime] = useState(0);
 
-  const getTimezone = async () => {
-    try {
-      let res = await getAvailableApi();
-      if (res.isSuccess) {
-        setTimezone(res.data.timeZone);
-      }
-    } catch (err) {
-      console.error("Failed to fetch timezone", err);
-    }
-  };
+ 
+  
 
-  useEffect(() => {
-    getTimezone();
-  }, []);
+
 
   const configuration = {
     iceServers: [
@@ -96,6 +86,7 @@ const Room = () => {
       setduration(res.data.duration);
       setdata(res.data.endTime);
       settype(res.data)
+      setTimezone(res.timeZone)
        
     } catch (err) {
       console.error("Failed to fetch meet data:", err);
@@ -136,31 +127,36 @@ const Room = () => {
     if (isBroadcaster && localStream) {
       timerRef.current = setInterval(() => {
         setTimer((prev) => prev + 1);
-        if (meetdata) {
-          const currentTime = new Date(); // Current local time
-          
+    
+        if (meetdata && avtTimezone) {  // Ensure meetdata and avatar timezone are available
+          const currentTime = moment.tz(avtTimezone); // Current time in avatar's timezone
+    
           // Remove 'Z' if present in meetdata to ensure it is treated as local time
           let meetTimeString = meetdata;
-      
+    
           if (meetTimeString.endsWith('Z')) {
             meetTimeString = meetTimeString.slice(0, -1); // Remove 'Z'
           }
-          const meetTime = new Date(meetTimeString); // Local time of the meeting
-  
-          const timeLeft = Math.max(0, (meetTime.getTime() - currentTime.getTime()) / 1000); // time in seconds
-  
+    
+          const meetTime = moment.tz(meetTimeString, avtTimezone); // Meeting time in avatar's timezone
+    
+          const timeLeft = Math.max(0, (meetTime.diff(currentTime, 'seconds'))); // Time left in seconds
+    
           // Update remaining time state
           setRemainingTime(timeLeft);
-  
-        
+    
+          // Optional: Log or take any action when the time is up
+          if (timeLeft === 0) {
+            console.log("Meeting time is up!");
+            // You can add any logic here when the time reaches zero
+          }
         }
       }, 1000);
     } else {
-      setTimer("sanju");
-            // clearInterval(timerRef.current);
+      setTimer("sanju"); // Some default state or behavior when not broadcaster or localStream is not present
       setTimer(0);
     }
-  
+    
     return () => clearInterval(timerRef.current);
   }, [isBroadcaster, localStream, meetdata,popupDismissed]);
   const handleCloseModal = () => {
@@ -542,46 +538,47 @@ const Room = () => {
     const viewerTimerRef = setInterval(() => {
       setViewerTimer((prev) => {
         const newTime = prev + 1;
-
-        if (meetdata) {
-          const currentTime = new Date(); // Current local time
-
+  
+        if (meetdata && avtTimezone) {  // Ensure meetdata and avatar timezone are available
+          const currentTime = moment.tz(avtTimezone); // Current time in avatar's timezone
+  
           // Remove 'Z' if present in meetdata to ensure it is treated as local time
           let meetTimeString = meetdata;
-
+  
           if (meetTimeString.endsWith('Z')) {
             meetTimeString = meetTimeString.slice(0, -1); // Remove 'Z'
           }
-          const meetTime = new Date(meetTimeString); // Local time of the meeting
-
-          const timeLeft = Math.max(0, (meetTime.getTime() - currentTime.getTime()) / 1000); // time in seconds
-
+  
+          const meetTime = moment.tz(meetTimeString, avtTimezone); // Meeting time in avatar's timezone
+  
+          const timeLeft = Math.max(0, (meetTime.diff(currentTime, 'seconds'))); // Time left in seconds
+  
           // Update remaining time state
           setremain(timeLeft);
-
+  
           // Redirect when timeLeft hits 0
-          // if (timeLeft === 0) {
-          //   window.location.href = "/user/dashboard";
-          // }
-    if(type.tourtype==="Public"){
-
-      if (timeLeft <= 600 && timeLeft > 0 && count <= 1) {
-        setShowAddMoreTimeModal(true);
-        count++;
-      }
-    }else{
-      console.log("nothing")
-    }
-          // Show Add More Time popup if timeLeft is less than or equal to 10 minutes and greater than 0
-       
+          if (timeLeft === 0) {
+            window.location.href = "/user/dashboard";
+          }
+  
+          // Show Add More Time popup if the tour type is 'Public' and time left is less than or equal to 10 minutes
+          if (type.tourtype === "Public") {
+            if (timeLeft <= 600 && timeLeft > 0 && count <= 1) {
+              setShowAddMoreTimeModal(true);
+              count++;
+            }
+          } else {
+            console.log("nothing");
+          }
         }
-
+  
         return newTime;
       });
     }, 1000);
-
+  
     return () => clearInterval(viewerTimerRef);
   }
+  
 }, [roomId, meetdata]);
 
 
