@@ -10,23 +10,25 @@ import AddMoreTime from "@/components/Modal/AddMoreTimeModal";
 import { getmeetdata } from "@/utills/service/userSideService/userService/UserHomeService";
 import { useNavigate } from "react-router-dom";
 import { getAvailableApi } from "@/utills/service/avtarService/AddExperienceService";
-import moment from 'moment-timezone'
+import moment from 'moment-timezone';
+
 // Replace with your ngrok URL or server URL
 const SOCKET_SERVER_URL = `${import.meta.env.VITE_APP_MAINURL}/`;
-//const SOCKET_SERVER_URL = `http://localhost:3000/`;
+// const SOCKET_SERVER_URL = `http://localhost:3000/`;
 const socket = io(SOCKET_SERVER_URL);
 
 const Room = () => {
   const [avtTimezone, setTimezone] = useState(null);
   const [videoDevices, setVideoDevices] = useState([]);
+  const [selectedCameraId, setSelectedCameraId] = useState('');
   const localVideoRef = useRef(null);
   const dispatch = useDispatch();
-  const[remain,setremain] = useState();
+  const [remain, setremain] = useState();
   const videosContainerRef = useRef(null);
   const [joinId, setJoinId] = useState("");
   const [viewers, setViewers] = useState(0);
   const [roomId, setRoomId] = useState("");
-  const [duration,setduration] = useState(0);
+  const [duration, setduration] = useState(0);
   const [localStream, setLocalStream] = useState(null);
   const [peerConnections, setPeerConnections] = useState({});
   const [isBroadcaster, setIsBroadcaster] = useState(false);
@@ -34,43 +36,22 @@ const Room = () => {
   const [messageInput, setMessageInput] = useState("");
   const [showAddMoreTimeModal, setShowAddMoreTimeModal] = useState(false);
   const [popupDismissed, setPopupDismissed] = useState(false);
-  const[meetdata,setdata] = useState(null);
-  const [type,settype] = useState(null);
+  const [meetdata, setdata] = useState(null);
+  const [type, settype] = useState(null);
   const params = useParams();
   const navigate = useNavigate();
-
   const [viewerTimer, setViewerTimer] = useState(0);
-
-
   const [timer, setTimer] = useState(0);
   const timerRef = useRef(null);
-
   const meetId = localStorage.getItem("meet") || getLocalStorage("meetdata")?._id;
-
- 
   const endTime = getLocalStorage("roomData")?.endTime || getLocalStorage("meetdata")?.endTime;
-
-
-  const [remaintime,setremaintimer] = useState(0);
-
+  const [remaintime, setremaintimer] = useState(0);
   const [remainingTime, setRemainingTime] = useState(0);
-
- 
-  
-
-
 
   const configuration = {
     iceServers: [
       {
         urls: ["stun:stun.l.google.com:19302"],
-        urls:["stun:private.serverturn.com:3478"],
-        urls:["stun:private.serverturn.com:3478?transport=udp"],
-        urls:["stun:stun1.l.google.com:19302"],
-        urls:["stun:stun2.l.google.com:19302"],
-        urls:["stun:stun3.l.google.com:19302"],
-        urls:["stun:stun4.l.google.com:19302"]
-        
       }, // Free STUN server
       {
         urls: "turn:97.74.90.111:3478", // TURN server URL with "turn:" prefix
@@ -79,15 +60,15 @@ const Room = () => {
       },
     ],
   };
+
   const getalldata = async (meetId) => {
     try {
       let res = await getmeetdata(meetId);
       console.log(res);
       setduration(res.data.duration);
       setdata(res.data.endTime);
-      settype(res.data)
-      setTimezone(res.timeZone)
-       
+      settype(res.data);
+      setTimezone(res.timeZone);
     } catch (err) {
       console.error("Failed to fetch meet data:", err);
     }
@@ -96,14 +77,12 @@ const Room = () => {
   // UseEffect to call the getalldata function once the component mounts
   useEffect(() => {
     if (meetId) {
-      getalldata(meetId);  // Fetch data only if meetId is available
+      getalldata(meetId); // Fetch data only if meetId is available
     }
-  }, []);  // Add meetId as a dependency to avoid calling the API unnecessarily
-
+  }, []); // Add meetId as a dependency to avoid calling the API unnecessarily
 
   useEffect(() => {
     socket.connect();
-   
 
     // Fetch the available media devices
     navigator.mediaDevices
@@ -113,14 +92,23 @@ const Room = () => {
           (device) => device.kind === "videoinput"
         );
         setVideoDevices(videoInputDevices);
-      
-       
+
+        // Set default camera to back camera if available
+        const backCamera = videoInputDevices.find((device) =>
+          device.label.toLowerCase().includes("back") ||
+          device.label.toLowerCase().includes("rear") ||
+          device.label.toLowerCase().includes("environment")
+        );
+
+        if (backCamera) {
+          setSelectedCameraId(backCamera.deviceId);
+        } else {
+          setSelectedCameraId(videoInputDevices[0]?.deviceId || '');
+        }
       })
-      
       .catch((error) => {
-        // addSystemMessage("Error accessing devices. Please check your permissions.");
+        // Handle error accessing devices
       });
-   
 
     return () => {
       socket.disconnect();
@@ -132,24 +120,24 @@ const Room = () => {
     if (isBroadcaster && localStream) {
       timerRef.current = setInterval(() => {
         setTimer((prev) => prev + 1);
-    
-        if (meetdata && avtTimezone) {  // Ensure meetdata and avatar timezone are available
+
+        if (meetdata && avtTimezone) {
           const currentTime = moment.tz(avtTimezone); // Current time in avatar's timezone
-    
+
           // Remove 'Z' if present in meetdata to ensure it is treated as local time
           let meetTimeString = meetdata;
-    
+
           if (meetTimeString.endsWith('Z')) {
             meetTimeString = meetTimeString.slice(0, -1); // Remove 'Z'
           }
-    
+
           const meetTime = moment.tz(meetTimeString, avtTimezone); // Meeting time in avatar's timezone
-    
-          const timeLeft = Math.max(0, (meetTime.diff(currentTime, 'seconds'))); // Time left in seconds
-    
+
+          const timeLeft = Math.max(0, meetTime.diff(currentTime, 'seconds')); // Time left in seconds
+
           // Update remaining time state
           setRemainingTime(timeLeft);
-    
+
           // Optional: Log or take any action when the time is up
           if (timeLeft === 0) {
             console.log("Meeting time is up!");
@@ -158,16 +146,17 @@ const Room = () => {
         }
       }, 1000);
     } else {
-      setTimer("sanju"); // Some default state or behavior when not broadcaster or localStream is not present
       setTimer(0);
     }
-    
+
     return () => clearInterval(timerRef.current);
-  }, [isBroadcaster, localStream, meetdata,popupDismissed]);
+  }, [isBroadcaster, localStream, meetdata, popupDismissed]);
+
   const handleCloseModal = () => {
     setShowAddMoreTimeModal(false);
     setPopupDismissed(true); // Set flag to true when the popup is closed
   };
+
   // Function to format remaining time into HH:MM:SS
   const formatTime = (time) => {
     const hours = Math.floor(time / 3600); // Calculate hours
@@ -175,23 +164,19 @@ const Room = () => {
     const seconds = Math.floor(time % 60); // Calculate remaining seconds
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
-  
-
-
 
   useEffect(() => {
     // Handle socket events
     const handleConnectionError = (error) => {
-      //addSystemMessage("Socket connection error. Please try again.");
+      // Handle socket connection error
     };
 
     socket.on("connect", () => {
-      // Removed the "Connected to server" system message
-      // addSystemMessage("Connected to server");
+      // Handle successful connection
     });
 
     socket.on("disconnect", () => {
-      //addSystemMessage("Disconnected from server. Please check your connection.");
+      // Handle disconnection
     });
 
     socket.on("connect_error", handleConnectionError);
@@ -201,12 +186,11 @@ const Room = () => {
       setIsBroadcaster(true);
       try {
         const stream = await getUserMedia();
-        setLocalStream(stream)
-;
+        setLocalStream(stream);
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = stream;
         }
-       addSystemMessage(" ");
+        addSystemMessage(" ");
       } catch (error) {
         // Error handled in getUserMedia
       }
@@ -216,8 +200,7 @@ const Room = () => {
       setIsBroadcaster(false);
       try {
         const stream = await getUserMedia(false);
-        setLocalStream(stream)
-;
+        setLocalStream(stream);
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = stream;
         }
@@ -263,10 +246,25 @@ const Room = () => {
 
   const getUserMedia = async (audio = true) => {
     try {
-      return await navigator.mediaDevices.getUserMedia({
-        video: { width: { ideal: 1920 }, height: { ideal: 1080 } },
-        audio: audio,
-      });
+      if (selectedCameraId) {
+        return await navigator.mediaDevices.getUserMedia({
+          video: {
+            deviceId: { exact: selectedCameraId },
+            width: { ideal: 1920 },
+            height: { ideal: 1080 },
+          },
+          audio: audio,
+        });
+      } else {
+        return await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { ideal: "environment" }, // Prefer back camera
+            width: { ideal: 1920 },
+            height: { ideal: 1080 },
+          },
+          audio: audio,
+        });
+      }
     } catch (error) {
       handleMediaError(error);
       throw error; // Rethrow to prevent further execution
@@ -320,7 +318,7 @@ const Room = () => {
         localStream.getTracks().forEach((track) => track.stop());
       }
       navigate('/user/dashboard');
-     
+
       setTimeout(() => {
         window.location.href = "/user/dashboard"; // Redirect to dashboard
       }, 3000); // 3 seconds delay for user to read the message
@@ -367,7 +365,7 @@ const Room = () => {
 
     peerConnection.oniceconnectionstatechange = () => {
       if (peerConnection.iceConnectionState === "disconnected") {
-        //addSystemMessage("Connection lost with the broadcaster.");
+        // Handle disconnection
       }
     };
 
@@ -388,7 +386,7 @@ const Room = () => {
       await peerConnection.setLocalDescription(answer);
       socket.emit("answer", answer, roomId, broadcasterId);
     } catch (error) {
-      //addSystemMessage("Error handling offer.");
+      // Handle error
     }
   };
 
@@ -396,7 +394,7 @@ const Room = () => {
     const peerConnection = peerConnections[viewerId];
     if (peerConnection) {
       peerConnection.setRemoteDescription(answer).catch(() => {
-       ///addSystemMessage("Error setting remote description.");
+        // Handle error setting remote description
       });
     }
   };
@@ -407,7 +405,7 @@ const Room = () => {
       peerConnection
         .addIceCandidate(candidate)
         .catch(() => {
-         // addSystemMessage("Error adding received ICE candidate.");
+          // Handle error adding ICE candidate
         });
     }
   };
@@ -422,7 +420,6 @@ const Room = () => {
     if (videosContainerRef.current) {
       videosContainerRef.current.innerHTML = "";
     }
-    //addSystemMessage("Streaming has been stopped.");
     window.location.href = "/"; // Redirect to main URL
   };
 
@@ -446,11 +443,13 @@ const Room = () => {
   };
 
   const handleMediaError = (error) => {
-    //addSystemMessage(`Media Error: ${error.message}`);
+    // Handle media error
   };
 
   const handleCameraChange = async (event) => {
     const selectedDeviceId = event.target.value;
+    setSelectedCameraId(selectedDeviceId);
+
     if (localStream) {
       localStream.getTracks().forEach((track) => track.stop());
     }
@@ -469,9 +468,9 @@ const Room = () => {
         localVideoRef.current.srcObject = stream;
       }
 
-      setLocalStream(stream)
-;
+      setLocalStream(stream);
 
+      // Update the tracks in each peer connection
       Object.values(peerConnections).forEach((peerConnection) => {
         const videoSender = peerConnection
           .getSenders()
@@ -486,6 +485,30 @@ const Room = () => {
       handleMediaError(error);
     }
   };
+
+  useEffect(() => {
+    if (isBroadcaster && !localStream && selectedCameraId) {
+      (async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              deviceId: { exact: selectedCameraId },
+              width: { ideal: 1920 },
+              height: { ideal: 1080 },
+            },
+            audio: true,
+          });
+          setLocalStream(stream);
+          if (localVideoRef.current) {
+            localVideoRef.current.srcObject = stream;
+          }
+          addSystemMessage(" ");
+        } catch (error) {
+          // Handle error
+        }
+      })();
+    }
+  }, [isBroadcaster, localStream, selectedCameraId]);
 
   useEffect(() => {
     const currentPath = window.location.pathname;
@@ -508,7 +531,6 @@ const Room = () => {
         message: messageInput,
         user,
       });
-      // Removed local message addition to prevent duplication
       setMessageInput("");
     }
   };
@@ -534,60 +556,56 @@ const Room = () => {
     return `${hrs}:${mins}:${secs}`;
   };
 
- // Assuming duration is 40 minutes in seconds (2400 seconds)
- let count=0;
- useEffect(() => {
-  let count = 0; // Initialize count outside the interval
-  
-  if (!isBroadcaster) {
-    const viewerTimerRef = setInterval(() => {
-      setViewerTimer((prev) => {
-        const newTime = prev + 1;
-  
-        if (meetdata && avtTimezone) {  // Ensure meetdata and avatar timezone are available
-          const currentTime = moment.tz(avtTimezone); // Current time in avatar's timezone
-  
-          // Remove 'Z' if present in meetdata to ensure it is treated as local time
-          let meetTimeString = meetdata;
-  
-          if (meetTimeString.endsWith('Z')) {
-            meetTimeString = meetTimeString.slice(0, -1); // Remove 'Z'
-          }
-  
-          const meetTime = moment.tz(meetTimeString, avtTimezone); // Meeting time in avatar's timezone
-  
-          const timeLeft = Math.max(0, (meetTime.diff(currentTime, 'seconds'))); // Time left in seconds
-  
-          // Update remaining time state
-          setremain(timeLeft);
-  
-          // Redirect when timeLeft hits 0
-          if (timeLeft === 0) {
-            window.location.href = "/user/dashboard";
-          }
-  
-          // Show Add More Time popup if the tour type is 'Public' and time left is less than or equal to 10 minutes
-          if (type.tourtype === "Private") {
-            if (timeLeft <= 300 && timeLeft > 0 && count <= 1) {
-              setShowAddMoreTimeModal(true);
-              count++;
+  // Assuming duration is 40 minutes in seconds (2400 seconds)
+  useEffect(() => {
+    let count = 0; // Initialize count outside the interval
+
+    if (!isBroadcaster) {
+      const viewerTimerRef = setInterval(() => {
+        setViewerTimer((prev) => {
+          const newTime = prev + 1;
+
+          if (meetdata && avtTimezone) {
+            const currentTime = moment.tz(avtTimezone); // Current time in avatar's timezone
+
+            // Remove 'Z' if present in meetdata to ensure it is treated as local time
+            let meetTimeString = meetdata;
+
+            if (meetTimeString.endsWith('Z')) {
+              meetTimeString = meetTimeString.slice(0, -1); // Remove 'Z'
             }
-          } else {
-            console.log("nothing");
+
+            const meetTime = moment.tz(meetTimeString, avtTimezone); // Meeting time in avatar's timezone
+
+            const timeLeft = Math.max(0, meetTime.diff(currentTime, 'seconds')); // Time left in seconds
+
+            // Update remaining time state
+            setremain(timeLeft);
+
+            // Redirect when timeLeft hits 0
+            if (timeLeft === 0) {
+              window.location.href = "/user/dashboard";
+            }
+
+            // Show Add More Time popup if the tour type is 'Private' and time left is less than or equal to 5 minutes
+            if (type.tourtype === "Private") {
+              if (timeLeft <= 300 && timeLeft > 0 && count <= 1) {
+                setShowAddMoreTimeModal(true);
+                count++;
+              }
+            } else {
+              console.log("nothing");
+            }
           }
-        }
-  
-        return newTime;
-      });
-    }, 1000);
-  
-    return () => clearInterval(viewerTimerRef);
-  }
-  
-}, [roomId, meetdata]);
 
+          return newTime;
+        });
+      }, 1000);
 
- 
+      return () => clearInterval(viewerTimerRef);
+    }
+  }, [roomId, meetdata]);
+
   // Format the viewer's timer
   const formatViewerTimer = (seconds) => {
     const hrs = Math.floor(seconds / 3600)
@@ -602,148 +620,124 @@ const Room = () => {
     return `${hrs}:${mins}:${secs}`;
   };
 
-
   return (
-  <>
-    <div className="relative z-[1] before:block before:absolute before:-inset-0 before:bg-black/10 before:z-[-1] overflow-hidden">
-      <Toaster position="top-right" reverseOrder={false} />
+    <>
+      <div className="relative z-[1] before:block before:absolute before:-inset-0 before:bg-black/10 before:z-[-1] overflow-hidden">
+        <Toaster position="top-right" reverseOrder={false} />
 
-      <div className="flex flex-col items-center space-y-1 absolute top-[20px] sm:top-[10px] left-auto right-[20px] sm:left-[10px] sm:right-[10px] mt-[40px]">
-        {isBroadcaster && (
-        <>
-         
-          {/* <button
-            className="absolute left-auto top-[-36px] right-0"
-            onClick={stopStream}
-          >
-            <img src={Images.closeLight} alt="" className="w-8" />
-          </button> */}
-         
-        
-        </>
-          
-        
-        )}
-        {!isBroadcaster && (
-          <> 
-          <div className="flex gap-x-5">
-          <div className=" text-white">
-              <span>Streaming Time: {formatViewerTimer(viewerTimer)}</span>
-             
-            </div>
-           <div className=" text-white">
-             <span>Remaining Time: {formatViewerTimer(remain)}</span>
-             </div>
-       
-          </div>
-       
-            {/* <button
-              className="bg-[#2d2d2d] text-white font-semibold py-2 px-4 shadow-lg rounded-full sm:text-xs sm:py-[8px]"
-              onClick={exitRoom}
-            >
-              Exit Room
-            </button> */}
-          </>
-        )}
-        {isBroadcaster && (
-          <div className="flex items-center space-x-2 text-white w-full">
-            <span className="text-white rounded-md bg-[#fff]/[.2] px-[6px] py-[4px] text-sm">Streaming Time: {formatTimer(timer)}</span>
-            <span className="text-white rounded-md bg-[#fff]/[.2] px-[6px] py-[4px] text-sm">
-        Remaining Time: {formatTime(remainingTime)}
-      </span>
-          </div>
-        )}
-      </div>
-
-      <div id="error-message" style={{ display: "none" }}>
-        {/* {/ {/ Error messages are handled via system messages /} /} */}
-      </div>
-
-      <div
-        id="videos"
-        className="has-video flex flex-wrap flex-col justify-between h-svh px-[20px] pt-[20px] sm:px-[10px] sm:pt-[10px]"
-      >
-        {isBroadcaster ? (
-          <>
-            <div className="sm:text-xs sm:mt-[8px] flex items-center space-x-2 text-white w-full">
-              <label className="mr-[10px]">Select Camera:</label>
-              <select  Value={videoDevices[1]?.deviceId} onChange={handleCameraChange} className="bg-[#2d2d2d] text-white rounded px-2 py-1 max-w-[100px] overflow-hidden text-ellipsis">
-                {videoDevices.map((device) => (
-                  <option key={device.deviceId} value={device.deviceId}>
-                    {device.label || `Camera ${device.deviceId}`}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <video
-              className="videoStyle absolute top-0 left-0 w-screen h-svh z-[-2] object-cover has-video"
-              ref={localVideoRef}
-              autoPlay
-              playsInline
-              muted
-            ></video>
-            <div className="watching-live-count text-white inline-flex items-center gap-[5px] text-lg sm:text-base absolute top-auto left-auto bottom-[80px] right-[20px] leading-none">
-              <img src={Images.iconEyeLight} alt="Viewers" />
-              {viewers}
-            </div>
-            {/* <div className="absolute top-[70px] left-[10px] text-white rounded-md bg-[#fff]/[.2] px-[6px] py-[4px] text-sm">
-              <span>Streaming Time: {formatTimer(timer)}</span>
-            </div> */}
-          </>
-        ) : (
-          <div
-            className="videoStyle absolute top-0 left-0 w-screen h-svh z-[-2] object-cover bg-black"
-            ref={videosContainerRef}
-          ></div>
-        )}
-
-        <div className="mt-auto">
-          <div
-            id="scrolling-messages"
-            className="scrollbar-hidden h-48 overflow-y-auto mb-[20px] pr-[40%] md:pr-[20%] sm:pr-[100px] text-white"
-          >
-            {messages.map((msg, index) => (
-              <div key={index} className="mb-[20px]">
-                <strong className="font-semibold text-lg sm:text-base line-clamp-1 drop-shadow-md leading-none mb-[6px] sm:mb-[4px] capitalize">
-                  {msg.user}:
-                </strong>{" "}
-                <p className="text-sm sm:text-xs line-clamp-3 drop-shadow-md">
-                  {msg.message}
-                </p>
-              </div>
-            ))}
-            
-          </div>
+        <div className="flex flex-col items-center space-y-1 absolute top-[20px] sm:top-[10px] left-auto right-[20px] sm:left-[10px] sm:right-[10px] mt-[40px]">
+          {isBroadcaster && (
+            <>
+              {/* You can add broadcaster-specific controls here */}
+            </>
+          )}
           {!isBroadcaster && (
-            <form
-              className="flex flex-wrap justify-between pb-[20px] sm:pb-[10px]"
-              onSubmit={handleSendMessage}
-            >
-              <input
-                type="text"
-                value={messageInput}
-                onChange={(e) => setMessageInput(e.target.value)}
-                placeholder="Type a message..."
-                className="bg-[#E5E5E5]/30 border-2 px-4 placeholder-white font-medium border-white rounded-full text-base sm:text-sm text-white w-[calc(100%-80px)] h-[46px]"
-              />
-              <button
-                type="submit"
-                className="bg-[#2d2d2d] hover:bg-[#1f1f1f] text-white font-bold h-[46px] px-4 rounded-full"
-              >
-                Send
-              </button>
-            </form>
+            <>
+              <div className="flex gap-x-5">
+                <div className=" text-white">
+                  <span>Streaming Time: {formatViewerTimer(viewerTimer)}</span>
+                </div>
+                <div className=" text-white">
+                  <span>Remaining Time: {formatViewerTimer(remain)}</span>
+                </div>
+              </div>
+            </>
+          )}
+          {isBroadcaster && (
+            <div className="flex items-center space-x-2 text-white w-full">
+              <span className="text-white rounded-md bg-[#fff]/[.2] px-[6px] py-[4px] text-sm">Streaming Time: {formatTimer(timer)}</span>
+              <span className="text-white rounded-md bg-[#fff]/[.2] px-[6px] py-[4px] text-sm">
+                Remaining Time: {formatTime(remainingTime)}
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div id="error-message" style={{ display: "none" }}>
+          {/* Error messages are handled via system messages */}
+        </div>
+
+        <div
+          id="videos"
+          className="has-video flex flex-wrap flex-col justify-between h-svh px-[20px] pt-[20px] sm:px-[10px] sm:pt-[10px]"
+        >
+          {isBroadcaster ? (
+            <>
+              <div className="sm:text-xs sm:mt-[8px] flex items-center space-x-2 text-white w-full">
+                <label className="mr-[10px]">Select Camera:</label>
+                <select value={selectedCameraId} onChange={handleCameraChange} className="bg-[#2d2d2d] text-white rounded px-2 py-1 max-w-[100px] overflow-hidden text-ellipsis">
+                  {videoDevices.map((device) => (
+                    <option key={device.deviceId} value={device.deviceId}>
+                      {device.label || `Camera ${device.deviceId}`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <video
+                className="videoStyle absolute top-0 left-0 w-screen h-svh z-[-2] object-cover has-video"
+                ref={localVideoRef}
+                autoPlay
+                playsInline
+                muted
+              ></video>
+              <div className="watching-live-count text-white inline-flex items-center gap-[5px] text-lg sm:text-base absolute top-auto left-auto bottom-[80px] right-[20px] leading-none">
+                <img src={Images.iconEyeLight} alt="Viewers" />
+                {viewers}
+              </div>
+            </>
+          ) : (
+            <div
+              className="videoStyle absolute top-0 left-0 w-screen h-svh z-[-2] object-cover bg-black"
+              ref={videosContainerRef}
+            ></div>
           )}
 
+          <div className="mt-auto">
+            <div
+              id="scrolling-messages"
+              className="scrollbar-hidden h-48 overflow-y-auto mb-[20px] pr-[40%] md:pr-[20%] sm:pr-[100px] text-white"
+            >
+              {messages.map((msg, index) => (
+                <div key={index} className="mb-[20px]">
+                  <strong className="font-semibold text-lg sm:text-base line-clamp-1 drop-shadow-md leading-none mb-[6px] sm:mb-[4px] capitalize">
+                    {msg.user}:
+                  </strong>{" "}
+                  <p className="text-sm sm:text-xs line-clamp-3 drop-shadow-md">
+                    {msg.message}
+                  </p>
+                </div>
+              ))}
+            </div>
+            {!isBroadcaster && (
+              <form
+                className="flex flex-wrap justify-between pb-[20px] sm:pb-[10px]"
+                onSubmit={handleSendMessage}
+              >
+                <input
+                  type="text"
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  placeholder="Type a message..."
+                  className="bg-[#E5E5E5]/30 border-2 px-4 placeholder-white font-medium border-white rounded-full text-base sm:text-sm text-white w-[calc(100%-80px)] h-[46px]"
+                />
+                <button
+                  type="submit"
+                  className="bg-[#2d2d2d] hover:bg-[#1f1f1f] text-white font-bold h-[46px] px-4 rounded-full"
+                >
+                  Send
+                </button>
+              </form>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-    <AddMoreTime meetId={meetId}
-    show={showAddMoreTimeModal}
-    onClose={handleCloseModal}
-  />
-  </>
+      <AddMoreTime
+        meetId={meetId}
+        show={showAddMoreTimeModal}
+        onClose={handleCloseModal}
+      />
+    </>
   );
 };
 
