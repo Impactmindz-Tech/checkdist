@@ -145,15 +145,15 @@ const BookedCard = ({ item, role }) => {
             <div className="flex justify-between px-4 py-2 sm:p-2 text-grey-800">
               {countdown === "00:00:00" ? (
                 <>
-                  {moment().isAfter(moment(item?.endTime.slice(0, -1))) ? (
-                    <button disabled className="bg-[#ff000041] text-[#000] font-semibold py-2 rounded w-[100%] sm:text-xs">
-                      Expired
-                    </button>
-                  ) : (
-                    <button className="bg-[#eaf6f2] text-[#37a77d] font-semibold py-2 rounded w-[100%] sm:text-xs" onClick={handleGoLive}>
-                      Start
-                    </button>
-                  )}
+                  {moment.tz(avtTimezone).isAfter(moment.tz(item?.endTime.slice(0, -1), "YYYY-MM-DDTHH:mm:ss", avtTimezone)) ? (
+  <button disabled className="bg-[#ff000041] text-[#000] font-semibold py-2 rounded w-[100%] sm:text-xs">
+    Expired
+  </button>
+) : (
+  <button className="bg-[#eaf6f2] text-[#37a77d] font-semibold py-2 rounded w-[100%] sm:text-xs" onClick={handleGoLive}>
+    Start
+  </button>
+)}
                 </>
               ) : (
                 <button className="bg-backgroundFill-900 w-[calc(100%-0rem)] sm:w-[calc(100%-1rem)] m-auto text-white flex justify-center items-center py-2 gap-2 rounded sm:text-xs">

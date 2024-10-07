@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import AddMoreTime from "@/components/Modal/AddMoreTimeModal";
 import { getmeetdata } from "@/utills/service/userSideService/userService/UserHomeService";
 import { useNavigate } from "react-router-dom";
+import { getAvailableApi } from "@/utills/service/avtarService/AddExperienceService";
 
 // Replace with your ngrok URL or server URL
 const SOCKET_SERVER_URL = `${import.meta.env.VITE_APP_MAINURL}/`;
@@ -16,6 +17,7 @@ const SOCKET_SERVER_URL = `${import.meta.env.VITE_APP_MAINURL}/`;
 const socket = io(SOCKET_SERVER_URL);
 
 const Room = () => {
+  const [avtTimezone, setTimezone] = useState(null);
   const [videoDevices, setVideoDevices] = useState([]);
   const localVideoRef = useRef(null);
   const dispatch = useDispatch();
@@ -53,6 +55,20 @@ const Room = () => {
 
   const [remainingTime, setRemainingTime] = useState(0);
 
+  const getTimezone = async () => {
+    try {
+      let res = await getAvailableApi();
+      if (res.isSuccess) {
+        setTimezone(res.data.timeZone);
+      }
+    } catch (err) {
+      console.error("Failed to fetch timezone", err);
+    }
+  };
+
+  useEffect(() => {
+    getTimezone();
+  }, []);
 
   const configuration = {
     iceServers: [
@@ -544,9 +560,9 @@ const Room = () => {
           setremain(timeLeft);
 
           // Redirect when timeLeft hits 0
-          if (timeLeft === 0) {
-            window.location.href = "/user/dashboard";
-          }
+          // if (timeLeft === 0) {
+          //   window.location.href = "/user/dashboard";
+          // }
     if(type.tourtype==="Public"){
 
       if (timeLeft <= 600 && timeLeft > 0 && count <= 1) {
