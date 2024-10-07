@@ -36,7 +36,9 @@ const HeaderNavigation = () => {
      
       if (response?.isSuccess) {
         removeLocalStorage("user");
+        removeLocalStorage("token");
         setLocalStorage("user", response?.data);
+ 
        setLocalStorage("token",response?.token);
 
     
