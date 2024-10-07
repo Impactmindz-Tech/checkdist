@@ -103,6 +103,7 @@ const Room = () => {
 
   useEffect(() => {
     socket.connect();
+   
 
     // Fetch the available media devices
     navigator.mediaDevices
@@ -112,10 +113,14 @@ const Room = () => {
           (device) => device.kind === "videoinput"
         );
         setVideoDevices(videoInputDevices);
+      
+       
       })
+      
       .catch((error) => {
         // addSystemMessage("Error accessing devices. Please check your permissions.");
       });
+   
 
     return () => {
       socket.disconnect();
@@ -607,12 +612,12 @@ const Room = () => {
         {isBroadcaster && (
         <>
          
-          <button
+          {/* <button
             className="absolute left-auto top-[-36px] right-0"
             onClick={stopStream}
           >
             <img src={Images.closeLight} alt="" className="w-8" />
-          </button>
+          </button> */}
          
         
         </>
@@ -662,7 +667,7 @@ const Room = () => {
           <>
             <div className="sm:text-xs sm:mt-[8px] flex items-center space-x-2 text-white w-full">
               <label className="mr-[10px]">Select Camera:</label>
-              <select onChange={handleCameraChange} className="bg-[#2d2d2d] text-white rounded px-2 py-1 max-w-[100px] overflow-hidden text-ellipsis">
+              <select  defaultValue={videoDevices[1]?.deviceId} onChange={handleCameraChange} className="bg-[#2d2d2d] text-white rounded px-2 py-1 max-w-[100px] overflow-hidden text-ellipsis">
                 {videoDevices.map((device) => (
                   <option key={device.deviceId} value={device.deviceId}>
                     {device.label || `Camera ${device.deviceId}`}
