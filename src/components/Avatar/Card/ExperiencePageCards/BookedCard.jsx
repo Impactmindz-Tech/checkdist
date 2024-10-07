@@ -1,11 +1,13 @@
 import Images from "@/constant/Images";
 import moment from "moment";
+import "moment-timezone"; // Import moment-timezone
 import { formatTime, formatTimestamp } from "@/constant/date-time-format/DateTimeFormat";
 import { createmeeting } from "@/utills/service/avtarService/AddExperienceService";
 import socket from "@/utills/socket/Socket";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLocalStorage, setLocalStorage } from "@/utills/LocalStorageUtills";
+import { getAvailableApi } from "@/utills/service/avtarService/AddExperienceService";
 
 const BookedCard = ({ item, role }) => {
   const [duration, setDuration] = useState(30);
@@ -14,6 +16,7 @@ const BookedCard = ({ item, role }) => {
   const [disableCancel, setDisableCancel] = useState(false);
   const [roomId, setRoomId] = useState(getLocalStorage("roomId"));
   const [currentTime, setCurrentTime] = useState(moment().format("YYYY-MM-DDTHH:mm:ss"));
+  const [avtTimezone, setTimezone] = useState(null);
   const navigate = useNavigate();
 
   const handleGoLive = async () => {
@@ -27,7 +30,7 @@ const BookedCard = ({ item, role }) => {
     };
     const response = await createmeeting(reqdata);
     socket.emit("details", { reqdata, item });
-    localStorage.setItem("meetdata",JSON.stringify(response.data));
+    localStorage.setItem("meetdata", JSON.stringify(response.data));
     if (response?.isSuccess) {
       const generatedRoomId = roomId || Math.random().toString(36).substr(2, 2);
       setRoomId(generatedRoomId);
@@ -36,15 +39,32 @@ const BookedCard = ({ item, role }) => {
     }
   };
 
-  useEffect(() => {
-    socket.connect();
-    if (!item?.bookingTime.slice(0, -1) || !item?.endTime.slice(0, -1)) return;
+  const getTimezone = async () => {
+    try {
+      let res = await getAvailableApi();
+      if (res.isSuccess) {
+        setTimezone(res.data.timeZone);
+      }
+    } catch (err) {
+      console.error("Failed to fetch timezone", err);
+    }
+  };
 
-    const targetTime = moment(item?.bookingTime.slice(0, -1), "YYYY-MM-DDTHH:mm:ss");
-    const endTime = moment(item?.endTime.slice(0, -1), "YYYY-MM-DDTHH:mm:ss");
+  useEffect(() => {
+    getTimezone();
+  }, []);
+
+  useEffect(() => {
+    if (!item?.bookingTime || !item?.endTime || !avtTimezone) return;
+
+    socket.connect();
+
+    // Adjust targetTime and endTime based on the avatar's timezone
+    const targetTime = moment.tz(item?.bookingTime.slice(0, -1), "YYYY-MM-DDTHH:mm:ss", avtTimezone);
+    const endTime = moment.tz(item?.endTime.slice(0, -1), "YYYY-MM-DDTHH:mm:ss", avtTimezone);
 
     const updateTimer = () => {
-      const now = moment();
+      const now = moment.tz(avtTimezone); // Get the current time in avatar's timezone
       const diff = targetTime.diff(now);
       const diffToEnd = endTime.diff(now);
 
@@ -81,7 +101,7 @@ const BookedCard = ({ item, role }) => {
 
     // Clean up interval on component unmount
     return () => clearInterval(timerInterval);
-  }, [item?.bookingTime.slice(0, -1), item?.endTime.slice(0, -1)]);
+  }, [item?.bookingTime, item?.endTime, avtTimezone]);
 
   return (
     <div className="p-4 sm:p-0 sm:mt-2">
