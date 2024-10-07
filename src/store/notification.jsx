@@ -58,6 +58,12 @@ export const SocketProvider = (props) => {
         dispatch(setRoomData(data?.item))
         setMeetLink(data?.roomId);
         setMeetingData(data);
+        console.log(data);
+       
+      })
+
+      socket.on('created',(data)=>{
+        console.log(data,'created')
       })
       return () => {
         socket.off("getMessage", handleIncomingMessage);

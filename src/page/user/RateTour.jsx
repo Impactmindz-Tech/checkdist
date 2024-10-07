@@ -15,6 +15,7 @@ function RateTour() {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const[onlyone,setOne] = useState(false);
 
   const tipCalculate = (price) => {
     setTipMoney(price);
@@ -26,6 +27,7 @@ function RateTour() {
 
   const submitReview = async () => {
     try {
+      setOne(true);
       setLoading(true);
       const id = parms.id;
       const body = {
@@ -36,6 +38,7 @@ function RateTour() {
       const res = await rateTourApi(id, body);
       if (res?.isSuccess) {
         if (tipMoney == 0) {
+         
           navigate(-1);
           toast.success("Rate Given Successfully");
         } else {
@@ -126,9 +129,13 @@ function RateTour() {
           />
         </div>
 
-        <Button className="w-full bg-[#2d2d2d]" onClick={submitReview}>
-          Add Review
-        </Button>
+        <Button 
+  disabled={onlyone} // The button is disabled if `onlyone` is true
+  className="w-full bg-[#2d2d2d]" 
+  onClick={submitReview}
+>
+  Add Review
+</Button>
       </div>
       {loading && <Loader />}
     </div>

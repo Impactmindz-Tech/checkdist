@@ -20,6 +20,7 @@ function EarningPage() {
   const [loader, setLoader] = useState(false);
   const [email, setEmail] = useState("");
 
+ 
   const fetchstripe = async () => {
     try {
       const res = await fetchstripeApi();
@@ -30,7 +31,6 @@ function EarningPage() {
       console.log(error);
     }
   };
-
   const avatarEarning = async () => {
     try {
       const response = await avatarEarningApi();
@@ -40,15 +40,16 @@ function EarningPage() {
     }
   };
 
-  const withdrawAmount = () => {
+  const withdrawAmount = async() => {
     const body = {
       StripeEmail: email,
       amount: amountDetail?.totalEarnings,
     };
+ 
     try {
-      const response = withdrawAmountApi(body);
+      const response = await withdrawAmountApi(body);
     } catch (error) {
-      toast.error(response.message);
+      toast.error(error.response.message);
     }
   };
 
@@ -91,11 +92,11 @@ function EarningPage() {
             </h1>
           </div>
           <div className="right" onClick={withdrawAmount}>
-            {/* <Link to="/avatar/instant-cash"> */}
+         
             <button className="bg-grey-900 rounded-md px-8 py-4 text-white font-bold sm:py-2 sm:px-6 lg:py-3 lg:px-7">
               Withdraw
             </button>
-            {/* </Link> */}
+         
           </div>
         </div>
 

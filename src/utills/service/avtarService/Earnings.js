@@ -22,7 +22,7 @@ export const AddstripeApi = async (payload) => {
 export const fetchstripeApi = async () => {
   try {
     const res = await axiosInstance.get("/avatar/allstripedetails");
-    console.log(res);
+    return res.data;
 
   } catch (error) {
     console.log(error)
@@ -33,7 +33,7 @@ export const fetchstripeApi = async () => {
 export const withdrawAmountApi = async (payload) => {
   try {
     const res = await axiosInstance.post("/avatar/withdraw", payload);
-    console.log(res)
+ 
     return res.data;
   } catch (error) {
     toast.error(error?.response?.data?.error);
