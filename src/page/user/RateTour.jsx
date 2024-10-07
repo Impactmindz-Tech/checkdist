@@ -15,19 +15,22 @@ function RateTour() {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
-  const[onlyone,setOne] = useState(false);
+  const [onlyone, setOne] = useState(false);
+  const [hasReviewed, setHasReviewed] = useState(false); // New state to track review submission
 
   const tipCalculate = (price) => {
     setTipMoney(price);
   };
 
   const handleRatingChange = (newRating) => {
-    setRating(newRating);
+    if (!hasReviewed) { // Only allow rating changes if not reviewed
+      setRating(newRating);
+    }
   };
 
   const submitReview = async () => {
+    setOne(true);
     try {
-      setOne(true);
       setLoading(true);
       const id = parms.id;
       const body = {
@@ -37,8 +40,9 @@ function RateTour() {
       };
       const res = await rateTourApi(id, body);
       if (res?.isSuccess) {
-        if (tipMoney == 0) {
-         
+        setHasReviewed(true); // Mark as reviewed
+
+        if (tipMoney === 0) {
           navigate(-1);
           toast.success("Rate Given Successfully");
         } else {
@@ -63,8 +67,8 @@ function RateTour() {
         <h1 className="text-primaryColor-900">Review the Experience</h1>
 
         <div className="starRate">
-          <RateTourRating onRatingChange={handleRatingChange} />{" "}
-          {/* Pass the callback */}
+          <RateTourRating onRatingChange={handleRatingChange} disabled={hasReviewed} />{" "}
+          {/* Disable if reviewed */}
         </div>
 
         <div className="my-3">
@@ -75,6 +79,7 @@ function RateTour() {
             className="bg-boxFill-900 w-full outline-0 p-3 resize-none rounded-md"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
+            disabled={hasReviewed} // Disable if reviewed
           />
         </div>
 
@@ -82,40 +87,36 @@ function RateTour() {
         <div className="btn mb-10">
           <button
             type="button"
-            className={`rateTourBtn ${
-              tipMoney === "10" && "rateTourBtnActive"
-            }`}
+            className={`rateTourBtn ${tipMoney === 10 && "rateTourBtnActive"}`}
             onClick={() => tipCalculate(10)}
+            disabled={hasReviewed} // Disable if reviewed
           >
             {getCurrencySymbol()}10
           </button>
 
           <button
             type="button"
-            className={`rateTourBtn ${
-              tipMoney === "15" && "rateTourBtnActive"
-            }`}
+            className={`rateTourBtn ${tipMoney === 15 && "rateTourBtnActive"}`}
             onClick={() => tipCalculate(15)}
+            disabled={hasReviewed} // Disable if reviewed
           >
             {getCurrencySymbol()}15
           </button>
 
           <button
             type="button"
-            className={`rateTourBtn ${
-              tipMoney === "20" && "rateTourBtnActive"
-            }`}
+            className={`rateTourBtn ${tipMoney === 20 && "rateTourBtnActive"}`}
             onClick={() => tipCalculate(20)}
+            disabled={hasReviewed} // Disable if reviewed
           >
             {getCurrencySymbol()}20
           </button>
 
           <button
             type="button"
-            className={`rateTourBtn ${
-              tipMoney === "25" && "rateTourBtnActive"
-            }`}
+            className={`rateTourBtn ${tipMoney === 25 && "rateTourBtnActive"}`}
             onClick={() => tipCalculate(25)}
+            disabled={hasReviewed} // Disable if reviewed
           >
             {getCurrencySymbol()}25
           </button>
@@ -126,16 +127,17 @@ function RateTour() {
             placeholder="Enter amount"
             value={tipMoney}
             onChange={(e) => setTipMoney(e.target.value)}
+            disabled={hasReviewed} // Disable if reviewed
           />
         </div>
 
         <Button 
-  disabled={onlyone} // The button is disabled if `onlyone` is true
-  className="w-full bg-[#2d2d2d]" 
-  onClick={submitReview}
->
-  Add Review
-</Button>
+          disabled={onlyone || hasReviewed} // Disable if reviewed
+          className="w-full bg-[#2d2d2d]" 
+          onClick={submitReview}
+        >
+          Add Review
+        </Button>
       </div>
       {loading && <Loader />}
     </div>

@@ -10,6 +10,18 @@ export const experienceGetrequestsApi = async (status) => {
     console.log(error);
   }
 };
+export const getrating = async(id)=>{
+
+  try{
+    let res = await axiosInstance.get("/user/rating/"+id);
+    return res.data;
+
+  }catch(err){
+    console.log(err);
+  
+  }
+}
+
 export const experienceGetUserApi = async (status) => {
   // const status = payload?.status;
   try {

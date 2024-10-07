@@ -5,9 +5,30 @@ import {
 import Images from "@/constant/Images";
 import { Link, useLocation } from "react-router-dom";
 import { getCurrencySymbol } from "@/constant/CurrencySign";
-
+import { getrating } from "@/utills/service/experienceService/ExperienceService";
+import { useEffect, useState } from "react";
 const CompletedCard = ({ item }) => {
   const location = useLocation();
+  const[ratings,Ratingdone] = useState(false);
+const getratings = async()=>{
+   try{
+   let response = await getrating(item?.expId);
+   console.log(response);
+   if(response.data){
+    Ratingdone(true);
+   }
+   else{
+    Ratingdone(false);
+   }
+   }catch(err){}
+}
+useEffect(()=>{
+  getratings();
+},[])
+
+
+
+
   return (
     <div className="p-4 sm:p-0 sm:mt-2">
       <div className="BoxShadowLessRounded pb-2">
@@ -55,9 +76,15 @@ const CompletedCard = ({ item }) => {
           {/* clock timer btn */}
           {location.pathname === "/user/experience" && (
             <Link to={`/user/rate-tour/${item?.expId}`}>
-              <button className="bg-backgroundFill-900 text-white flex justify-center items-center py-3 gap-2 rounded w-full mt-3 lg:w-[100%]">
-                Rate Tour
-              </button>
+<button
+  disabled={ratings}
+  className={`${
+    ratings ? 'bg-[#eaf6f2] text-[#2AA174]' : 'bg-backgroundFill-900'
+  } flex justify-center items-center py-3 gap-2 rounded w-full mt-3 lg:w-[100%]`}
+>
+  {ratings ? 'Your feedback is appreciated!' : 'Rate Tour'}
+</button>
+
             </Link>
           )}
         </div>
