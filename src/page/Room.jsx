@@ -268,9 +268,9 @@ const Room = () => {
     }
   };
 
-  const addSystemMessage = (message) => {
-    setMessages((prevMessages) => [...prevMessages, { user: "System", message }]);
-  };
+  // const addSystemMessage = (message) => {
+  //   setMessages((prevMessages) => [...prevMessages, { user: "System", message }]);
+  // };
 
   const handleNewMessage = (data) => {
     const { viewerId, message, user } = data;
@@ -562,8 +562,8 @@ const Room = () => {
           }
   
           // Show Add More Time popup if the tour type is 'Public' and time left is less than or equal to 10 minutes
-          if (type.tourtype === "Public") {
-            if (timeLeft <= 600 && timeLeft > 0 && count <= 1) {
+          if (type.tourtype === "Private") {
+            if (timeLeft <= 300 && timeLeft > 0 && count <= 1) {
               setShowAddMoreTimeModal(true);
               count++;
             }
@@ -643,7 +643,7 @@ const Room = () => {
         {isBroadcaster && (
           <div className="flex items-center space-x-2 text-white">
             {/* {/ <span>Streaming Time: {formatTimer(timer)}</span> /} */}
-            <div className="text-white">
+            <div className="text-white mt-2">
         Remaining Time: {formatTime(remainingTime)}
       </div>
           </div>
