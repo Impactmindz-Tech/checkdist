@@ -190,7 +190,7 @@ const Room = () => {
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = stream;
         }
-        addSystemMessage(" ");
+      //  addSystemMessage(" ");
       } catch (error) {
         // Error handled in getUserMedia
       }
@@ -307,7 +307,7 @@ const Room = () => {
       // Notify viewers and redirect after a delay
       setTimeout(() => {
         window.location.href = "/"; // Redirect to main URL
-      }, 300000); // 5 minutes in milliseconds
+      }, 2000); // 5 minutes in milliseconds
     }
   };
 
@@ -346,7 +346,7 @@ const Room = () => {
         socket.emit("offer", peerConnection.localDescription, roomId, viewerId);
       })
       .catch((error) => {
-        addSystemMessage(" ");
+        //addSystemMessage(" ");
       });
   };
 
@@ -502,7 +502,7 @@ const Room = () => {
           if (localVideoRef.current) {
             localVideoRef.current.srcObject = stream;
           }
-          addSystemMessage(" ");
+         // addSystemMessage(" ");
         } catch (error) {
           // Handle error
         }
