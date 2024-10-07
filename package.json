@@ -15,7 +15,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.1",
-    "@mui/x-date-pickers": "^7.18.0",
+    "@mui/x-date-pickers": "^7.19.0",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-label": "^2.1.0",

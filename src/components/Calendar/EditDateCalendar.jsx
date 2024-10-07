@@ -1,21 +1,38 @@
+
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { bookingSlotsApi } from "@/utills/service/userSideService/userService/UserHomeService";
+import { getLocalStorage } from "@/utills/LocalStorageUtills";
 import { useParams } from "react-router-dom";
 import Loader from "../Loader";
+
+// Extend Day.js with necessary plugins
 dayjs.extend(isSameOrAfter);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
-const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
+const EditDateCalendar = ({ date, onDateChange, setSelectedTime, currentTime }) => {
   const [selectedDate, setSelectedDate] = useState(dayjs());
-
   const [timeSlots, setTimeSlots] = useState([]); // Store all generated time slots
   const [selectedSlot, setSelectedSlot] = useState(null); // State for selected time slot
   const [loading, setLoading] = useState(false); // State for loading
   const params = useParams();
+
+  console.log(currentTime, "currentTime");
+
+  // Retrieve avatar timezone from local storage
+  const avatarTimeZone = getLocalStorage("avatarTime");
+  console.log(avatarTimeZone, "Avatar Time Zone");
+
+  // Get the current time in the avatar's timezone
+  const getCurrentTimeOfAvatar = dayjs().tz(avatarTimeZone);
+  console.log(getCurrentTimeOfAvatar.format("YYYY-MM-DD HH:mm:ss"), "Current Time of Avatar");
 
   // Helper function to round up time to the nearest 5 minutes
   const roundUpToNearestFive = (minutes) => {
@@ -25,31 +42,41 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
   // Generate time slots based on 'from' and 'to' in minutes
   const generateTimeSlots = (fromTime, toTime) => {
     const slots = [];
+    
+    // Create a Day.js object in the avatar's timezone
     let current = dayjs()
+      .tz(avatarTimeZone)
       .set("hour", Math.floor(fromTime / 60))
       .set("minute", fromTime % 60)
-      .second(0);
+      .set("second", 0)
+      .set("millisecond", 0);
+    
     const end = dayjs()
+      .tz(avatarTimeZone)
       .set("hour", Math.floor(toTime / 60))
       .set("minute", toTime % 60)
-      .second(0);
+      .set("second", 0)
+      .set("millisecond", 0);
 
-    // Get the current time
-    const now = dayjs();
+    // Get the current time in avatar's timezone
+    const now = dayjs().tz(avatarTimeZone);
 
     // Round the current time up to the nearest 5 minutes
     const roundedStart = roundUpToNearestFive(current.minute());
     current = current.set("minute", roundedStart); // Set the rounded start time
 
     while (current.isBefore(end)) {
-      const slotTime = current.format("HH:mm"); // Format to 24-hour
+      const slotTimeAvatarFormatted = current.format("hh:mm A"); // Time in avatar's timezone (AM/PM)
 
       // Check if the selected date is today and the slot is in the past
       if (
         !selectedDate.isSame(dayjs(), "day") || // If the selected date is not today, include the time
         current.isSameOrAfter(now) // If the current time is in the future or equal to now
       ) {
-        slots.push(slotTime); // Push formatted slot to array
+        slots.push({
+          avatarTime: current.format("HH:mm"),            // Time in avatar's timezone (24-hour format)
+          avatarTimeFormatted: slotTimeAvatarFormatted,   // Time in avatar's timezone (AM/PM)
+        });
       }
 
       // Move to the end of the 15-minute slot
@@ -58,12 +85,6 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
 
     return slots;
   };
-
-  // Check if a time slot is already booked
-  // const isTimeBooked = (time) => {
-  //   const dateKey = selectedDate.format("YYYY-MM-DD");
-  //   return bookedTimes[dateKey]?.includes(time); // Check if the slot is booked
-  // };
 
   // Fetch booking slots
   useEffect(() => {
@@ -81,7 +102,7 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
           // Iterate over all remaining slots to generate time slots
           response.remainingSlots.forEach((item) => {
             const fromTime = item.from; // Expect format HH:mm
-            const toTime = item.to; // Expect format HH:mm
+            const toTime = item.to;     // Expect format HH:mm
 
             // Parse from and to times in 24-hour format
             const fromHour =
@@ -109,7 +130,7 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
     if (selectedDate) {
       fetchBookingSlots();
     }
-  }, [selectedDate, params?.id]);
+  }, [selectedDate, params?.id, avatarTimeZone]); // Added avatarTimeZone as dependency
 
   const handleDateClick = (newDate) => {
     if (window.innerWidth < 1024) {
@@ -128,33 +149,19 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
   };
 
   // Handle time slot click
-  const handleTimeSlotClick = (time) => {
+  const handleTimeSlotClick = (slot) => {
     window.scrollTo({
       top: document.body.scrollHeight,
       behavior: "smooth",
     });
-    setSelectedSlot(time); // Set selected time
-    setSelectedTime(time); // Set time in 24-hour format
+    setSelectedSlot(slot.avatarTime); // Set selected time in avatar's timezone (24-hour format)
+    setSelectedTime(slot.avatarTime); // Set time in 24-hour format for backend
   };
-
-  // // Custom render function for the calendar days
-  // const renderDay = (date, selected, isInCurrentMonth) => {
-  //   const isSelected = selectedDate.isSame(date, 'day');
-  //   return (
-  //     <div
-  //       className={`${
-  //         isSelected ? 'bg-blue-500 text-white' : 'text-black'
-  //       } p-2 rounded-md`}
-  //     >
-  //       {date.date()}
-  //     </div>
-  //   );
-  // };
 
   return (
     <>
       <div className="flex justify-evenly flex-wrap items-center">
-        {/* Left side: Calendar */}
+       
         <div className="p-4">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateCalendar
@@ -166,7 +173,7 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
           </LocalizationProvider>
         </div>
 
-        {/* Right side: Meeting time slots */}
+        {/* {/ Right side: Meeting time slots /} */}
         <div
           className="w-96 h-full min-h-80 ml-2 p-4 overflow-auto"
           id="availableTimes"
@@ -174,6 +181,9 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
           <h2 className="text-lg font-semibold">
             Available Times for {selectedDate.format("MMMM D, YYYY")}
           </h2>
+          <p className="text-sm text-gray-500 mb-2">
+            Times are displayed in the avatar's timezone ({avatarTimeZone}).
+          </p>
           <div className="flex flex-wrap max-h-72 mt-1 text-black">
             {loading ? ( // Check if loading
               <div className="text-black text-3xl flex justify-center items-center">
@@ -182,19 +192,17 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime }) => {
                 </span>
               </div> // Spinner while loading
             ) : (
-              timeSlots.map((time) => (
+              timeSlots.map((slot) => (
                 <button
-                  key={time}
+                  key={slot.avatarTime}
                   className={`p-2 rounded-md w-full mt-2 border border-black text-black font-semibold ${
-                    selectedSlot === time // Check if this time is selected
+                    selectedSlot === slot.avatarTime // Check if this time is selected
                       ? "bg-black text-white" // Change color if selected
-                      : ""
-                      ? "bg-gray-400 opacity-50 cursor-not-allowed hover:bg-gray-400"
-                      : "bg-white hover:bg-black hover:text-white"
+                      : "bg-white hover:bg-black hover:text-white" // Unselected slot styling
                   }`}
-                  onClick={() => handleTimeSlotClick(time)} // Handle time click
+                  onClick={() => handleTimeSlotClick(slot)} // Handle time click
                 >
-                  {time}
+                  {slot.avatarTimeFormatted} 
                 </button>
               ))
             )}

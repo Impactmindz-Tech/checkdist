@@ -22,7 +22,7 @@ function Booking() {
   const [type, setType] = useState(null);
   const [color, setColor] = useState(false);
   const [showAddMoreTimeModal, setShowAddMoreTimeModal] = useState(false);
-
+const avatartimezone = getLocalStorage('')
   const formatDate = (date) => {
     if (date instanceof Date) {
       return date.toISOString().split("T")[0];
