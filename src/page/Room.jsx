@@ -667,7 +667,7 @@ const Room = () => {
           <>
             <div className="sm:text-xs sm:mt-[8px] flex items-center space-x-2 text-white w-full">
               <label className="mr-[10px]">Select Camera:</label>
-              <select  defaultValue={videoDevices[1]?.deviceId} onChange={handleCameraChange} className="bg-[#2d2d2d] text-white rounded px-2 py-1 max-w-[100px] overflow-hidden text-ellipsis">
+              <select  Value={videoDevices[1]?.deviceId} onChange={handleCameraChange} className="bg-[#2d2d2d] text-white rounded px-2 py-1 max-w-[100px] overflow-hidden text-ellipsis">
                 {videoDevices.map((device) => (
                   <option key={device.deviceId} value={device.deviceId}>
                     {device.label || `Camera ${device.deviceId}`}
