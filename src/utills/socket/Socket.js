@@ -14,7 +14,7 @@ const socket = io(`${import.meta.env.VITE_APP_MAINURL}/`, {
   query: {user:userId},
   reconnectionAttempts: 5, 
   transports: ['websocket'],
-  secure: false, 
+  secure: true, 
 });
 socket.on("connect", () => {
   console.log(`Connected to server `);
