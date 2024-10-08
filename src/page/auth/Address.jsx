@@ -1,3 +1,4 @@
+
 import { addAddressApi } from "@/utills/service/authService";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -153,17 +154,18 @@ const Address = () => {
     const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`;
     try {
       const response = await fetch(apiUrl);
-    
       const data = await response.json();
+      console.log(data)
+      console.log(data.address)
       if (data && data.address) {
-        const { country, state, state_district, county, city, city_district, postcode } = data.address;
-
+        const { country, state, city, city_district, postcode } = data.address;
+        console.log( country, state, city, city_district, postcode)
         // Determine state
-        const userState = state || state_district || county || "";
+        const userState = state  || city_district || "";
 
         // Determine city
-        const userCity = city || city_district || county || "";
-
+        const userCity = city || "";
+       
         if (!country || !userState || !userCity) {
           toast.error("Incomplete location details fetched.");
           setLoader(false);
