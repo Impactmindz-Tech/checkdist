@@ -55,7 +55,7 @@ function Profile() {
     <>
       {loader && <Loader />}
       <div className="container">
-        {/* topSection */}
+        {/* {/ topSection /} */}
 
         <div className="m-auto ">
           <div className="bg-black w-100 rounded-b-3xl">
@@ -64,6 +64,7 @@ function Profile() {
           </div> */}
             <div className="flex justify-between items-center gap-2 p-8 sm:p-3">
               <div className="imageProfile sm:max-w-[70px] sm:max-h-[70px] max-w-[80px] max-h-[80px]">
+              {role != "user" ?(<Link to={`/avatar/avatar-profile/${user._id}`} title="Your Profile">
                 <img
                   src={
                     user?.profileimage
@@ -72,8 +73,19 @@ function Profile() {
                   }
                   alt="profile"
                   className="rounded-full object-cover border-[2px] border-dashed border-white min-w-[70px] w-[70px] h-[70px]"
+                /></Link>):(
+
+                  <img
+                  src={
+                    user?.profileimage
+                      ? user?.profileimage
+                      : profilePlaceholderImage
+                  }
+                  alt="profile"
+                  className="rounded-full object-cover border-[2px] border-dashed border-white min-w-[70px] w-[70px] h-[70px]"
                 />
-                {/* <img src={Images.profile} alt="profile" className="rounded-full   object-cover border-[2px] border-dashed border-white" /> */}
+                )}
+               
               </div>
               <div className="flex-1 sm:flex-auto px-2 sm:px-2">
                 <h3 className="text-white sm:text-sm">{user?.firstName}</h3>
@@ -139,8 +151,8 @@ function Profile() {
                   text="Payment"
                   link={"/user/payment"}
                 />*/}
-                {/* <ProfilePageCard active={false} icon={Images.currency} text="Currency" /> */}
-                {/* <ProfilePageCard active={false} icon={Images.currency} text="Reports" /> */}
+                {/* {/ <ProfilePageCard active={false} icon={Images.currency} text="Currency" /> /}
+                {/ <ProfilePageCard active={false} icon={Images.currency} text="Reports" /> /} */}
                 <ProfilePageCard active={false} icon={Images.notification} text="Notifications" link={"/user/notification"} />
                 <div onClick={() => setShareProfileModalState(true)}>
                   <ProfilePageCard
@@ -190,6 +202,12 @@ function Profile() {
                 )}
                 <ProfilePageCard
                   active={false}
+                  icon={Images.user4}
+                  text="My Profile"
+                  link={`/avatar/avatar-profile/${user._id}`}
+                />
+                <ProfilePageCard
+                  active={false}
                   icon={Images.payment}
                   text="Earnings"
                   link="/avatar/earnings"
@@ -212,9 +230,9 @@ function Profile() {
                   text="Account Info"
                   link="/avatar/account-info"
                 />
-                {/* <ProfilePageCard active={false} icon={Images.currency} text="Reports" link={"/avatar/reports"} /> */}
-                {/* <ProfilePageCard active={false} icon={Images.notification} text="Notifications" link={"/avatar/notification"} /> */}
-                {/* <ProfilePageCard active={false} icon={Images.notification} text={<AvtarAvailability />} /> */}
+                {/* {/ <ProfilePageCard active={false} icon={Images.currency} text="Reports" link={"/avatar/reports"} /> /}
+                {/ <ProfilePageCard active={false} icon={Images.notification} text="Notifications" link={"/avatar/notification"} /> /}
+                {/ <ProfilePageCard active={false} icon={Images.notification} text={<AvtarAvailability />} /> /} */}
                 <div
                   onClick={() => setAvaability(true)}
                   className={`profileShadow flex mb-2 gap-4 rounded-md  justify-between items-center border  p-4 cursor-pointer  "text-backgroundFill-900 `}

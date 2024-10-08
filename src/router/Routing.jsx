@@ -742,6 +742,14 @@ const router = createBrowserRouter([
           </AvatarLayout>
         ),
       },
+      {
+        path: "avatar-profile/:id",
+        element: (
+          <AvatarLayout>
+            <AvatarProfile />
+          </AvatarLayout>
+        ),
+      },
     ],
   },
 ]);

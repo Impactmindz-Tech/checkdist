@@ -15,6 +15,7 @@ import cardImage from "../assets/images/cardImage.svg";
 import InstantLiveBtn from "../assets/images/InstantLiveBtn.svg";
 import user from "../assets/images/user.svg";
 import user2 from "../assets/images/User2.svg";
+import user4 from "../assets/images/profileIcon/user2.png"
 import arrowLeft from "../assets/images/arrowLeft.svg";
 import add from "../assets/images/add.svg";
 import star from "../assets/images/Star.svg";
@@ -140,6 +141,7 @@ import popularIconWhite from "../assets/icons/popular-icon-white.svg";
 import creditCardLight from "../assets/icons/credit-card-light.svg";
 import instantLiveLight from "../assets/icons/instant-live-light.svg";
 import patternDots from "../assets/images/pattern-dots.svg";
+
 
 export default {
   patternDots,
@@ -281,5 +283,6 @@ export default {
   iconRadar,
   iconGlobeClock,
   iconCheckGray,
-  haveGimbal
+  haveGimbal,
+  user4
 };
