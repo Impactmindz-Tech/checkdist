@@ -7,7 +7,7 @@ import UserTopSearch from "@/components/UserTopSearch/UserTopSearch";
 import { getLiveTourApi } from "@/utills/service/userSideService/TourService";
 import MobileNavigation from "@/components/mobile_navigation/MobileNavigation";
 import HeaderBack from "@/components/HeaderBack";
-
+import { getmeetdata } from "@/utills/service/userSideService/userService/UserHomeService";
 const ExploreMap = () => {
   const location = useLocation();
   const navigate = useNavigate();

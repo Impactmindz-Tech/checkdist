@@ -15,11 +15,14 @@ const socket = io(`${import.meta.env.VITE_APP_MAINURL}/`, {
   reconnectionAttempts: 5, 
   transports: ['websocket'],
   secure: true, 
+  reconnectionDelay: 1000,   // Start with 1 second delay
+  reconnectionDelayMax: 5000, 
+  autoConnect: true
 });
 socket.on("connect", () => {
   console.log(`Connected to server `);
 });
-
+socket.connect();
 
 export default socket;
 

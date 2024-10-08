@@ -72,7 +72,7 @@ const MapComponent = ({ selectPosition, setHeight, payment }) => {
   const [countdown, setCountdown] = useState(null);
 
   const safeSelectPosition = Array.isArray(selectPosition) ? selectPosition : [];
-  console.log(safeSelectPosition,'ram');
+
   const initialPosition = safeSelectPosition.length > 0 ? [safeSelectPosition[0].lat, safeSelectPosition[0].lon] : defaultPosition;
 
   const handleMarkerClick = (position) => {
@@ -83,7 +83,7 @@ const MapComponent = ({ selectPosition, setHeight, payment }) => {
       const now = moment();
       const diff = targetTime.diff(now, "minutes");
 
-      if (diff <= 15) {
+      if (diff <= 10) {
         setDisablePayment(true);
         toast.error("Payment is disabled because less than 15 minutes remaining.");
       } else {
@@ -118,7 +118,7 @@ const MapComponent = ({ selectPosition, setHeight, payment }) => {
   localStorage.setItem('r',test?.roomId);
   return (
     <>
-      <MapContainer center={initialPosition} zoom={5} style={{ height: "100%", width: "100%" }}>
+      <MapContainer center={initialPosition} zoom={1} style={{ height: "100%", width: "100%" }}>
         <LayersControl position="topright">
           <LayersControl.BaseLayer  checked name="Basic Map">
             <TileLayer url="https://api.maptiler.com/maps/basic/256/{z}/{x}/{y}.png?key=eA3MBleCC9aTtUBJHL6C" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
