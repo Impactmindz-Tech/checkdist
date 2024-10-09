@@ -20,6 +20,7 @@ const BookedCard = ({ item, role }) => {
   const navigate = useNavigate();
 
   const handleGoLive = async () => {
+    
     const reqdata = {
       userId: item?.userId,
       startTime: item?.bookingTime,
@@ -27,6 +28,7 @@ const BookedCard = ({ item, role }) => {
       endTime: item?.endTime,
       duration: duration,
       bookingId: item?.bookingId,
+      price:item?.totalPrice,
     };
     const response = await createmeeting(reqdata);
     socket.emit("details", { reqdata, item });

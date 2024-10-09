@@ -21,7 +21,13 @@ const Address = () => {
   
   const navigate = useNavigate();
   const params = useParams();
-
+  const handleZipCodeChange = (e) => {
+    const value = e.target.value;
+    // Regular expression to allow only digits (0-9)
+    if (/^\d*$/.test(value)) {
+      setZipCode(value);  // Set the value if it matches the regex
+    }
+  };
   const {
     coords,
     getPosition,
@@ -376,7 +382,7 @@ const Address = () => {
                 type="text"
                 name="zipcode"
                 value={zipCode}
-                onChange={(e) => setZipCode(e.target.value)}
+                onChange={handleZipCodeChange}
                 id="zipcode"
                 className="border py-2 px-4 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder="93940"

@@ -4,13 +4,16 @@ import HeaderWithSkipBtn from "@/components/UserHeader/HeaderWithSkipBtn";
 import { rateTourApi } from "@/utills/service/userSideService/userService/UserHomeService";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Loader from "@/components/Loader";
 import { getCurrencySymbol } from "@/constant/CurrencySign";
+import { payoutApi } from "@/utills/service/userSideService/PayConfiermService";
 
 function RateTour() {
   const navigate = useNavigate();
   let parms = useParams();
+  const location = useLocation();
+  const [data, setData] = useState(location?.state);
   const [tipMoney, setTipMoney] = useState(0);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -39,12 +42,27 @@ function RateTour() {
         AmmountTip: tipMoney,
       };
       const res = await rateTourApi(id, body);
+    
+ 
+      let bodydata = {
+        to:data.res.AvatarID,
+        price:data.res.price,
+        reqid:data.res.ReqId
+
+        
+
+      }
+      
+      const response = await payoutApi( bodydata);
+
+   
       if (res?.isSuccess) {
         setHasReviewed(true); // Mark as reviewed
 
         if (tipMoney === 0) {
-          navigate(-1);
+     
           toast.success("Rate Given Successfully");
+          navigate('/user/experience?tab=completed')
         } else {
           navigate("/user/tip", { state: { item: body, res: res } });
         }

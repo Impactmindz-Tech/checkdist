@@ -61,13 +61,14 @@ function Experience() {
     setActiveTab(tab);
     navigate(`/user/experience?tab=${tab.toLowerCase()}`);
   };
-
+;
   const renderCard = (item) => {
     if (item?.Type === "Offers") {
       console.log(item, "sanju");
 
       return <UseroffersCard key={item._id} item={item} />;
     }
+  
     switch (item.status) {
       case "Requested":
         return <RequestedCard key={item.reqId} item={item} />;

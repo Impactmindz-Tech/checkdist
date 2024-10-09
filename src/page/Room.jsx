@@ -47,6 +47,7 @@ const Room = () => {
   const endTime = getLocalStorage("roomData")?.endTime || getLocalStorage("meetdata")?.endTime;
   const [remaintime, setremaintimer] = useState(0);
   const [remainingTime, setRemainingTime] = useState(0);
+  const[expid,setexpid] = useState(null);
 
   const configuration = {
     iceServers: [
@@ -64,8 +65,9 @@ const Room = () => {
   const getalldata = async (meetId) => {
     try {
       let res = await getmeetdata(meetId);
-      console.log(res);
+    
       setduration(res.data.duration);
+      setexpid(res.data.ExpId);
       setdata(res.data.endTime);
       settype(res.data);
       setTimezone(res.timeZone);
@@ -143,8 +145,9 @@ const Room = () => {
             console.log("Meeting time is up!");
             // You can add any logic here when the time reaches zero
              if (timeLeft === 0) {
-              window.location.href = "/avatar/dashboard";
+              window.location.href = "/avatar/experience?tab=completed";
             }
+
           }
         }
       }, 1000);
@@ -587,7 +590,9 @@ const Room = () => {
 
             // Redirect when timeLeft hits 0
             if (timeLeft === 0) {
-              window.location.href = "/user/dashboard";
+             
+              navigate(`/user/rate-tour/${expid}`,{ state: {res: type }});
+        
             }
 
             // Show Add More Time popup if the tour type is 'Private' and time left is less than or equal to 5 minutes
@@ -596,9 +601,7 @@ const Room = () => {
                 setShowAddMoreTimeModal(true);
                 count++;
               }
-            } else {
-              console.log("nothing");
-            }
+            } else {}
           }
 
           return newTime;

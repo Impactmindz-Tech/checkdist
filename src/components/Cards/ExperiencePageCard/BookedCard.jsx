@@ -11,8 +11,10 @@ import socket from "@/utills/socket/Socket";
 import moment from "moment-timezone";
 import { claimRefundApi } from "@/utills/service/userSideService/userService/UserHomeService";
 import { SocketContext } from "@/store/notification";
+import { handleBookingRequestApi } from "@/utills/service/avtarService/AddExperienceService";
 
 const BookedCard = ({ item }) => {
+  
   const { meetLink, meetingData } = useContext(SocketContext);
   const users = getLocalStorage("user");
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ const BookedCard = ({ item }) => {
   const [disablePay, setDisablePay] = useState(false);
   const [disableStart, setDisableStart] = useState(true);
   const [roomId, setRoomId] = useState(getLocalStorage("meetRoomId"));
-  const [disableCancel, setDisableCancel] = useState(true);
+  const [disableCancel, setDisableCancel] = useState(false);
   const [countdown, setCountdown] = useState("");
   const [isTimeOver, setIsTimeOver] = useState(false);
   const [fetchAvtarTimeIntrue, setFetchAvtarTimeIntrue] = useState(false);
@@ -30,19 +32,31 @@ const BookedCard = ({ item }) => {
   const [fetchAvtarendTimeInTimezone, setFetchAvtarendTimeInTimezone] = useState(false);
   const [userTimezone, setUserTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
 
+
   const acceptBooking = () => {
+
     navigate("/room_join/" + roomId);
   };
 
-  const cancelBooking = async (item) => {
+  const cancelBooking = async (status,item) => {
     setLocalStorage("cancelOrder", item);
     let payload = { bookingId: item.bookingId };
     try {
       setLoader(true);
-      let res = await claimRefundApi(payload);
-      if (res?.isSuccess) {
-        toast.success(res?.message);
+     // let res = await claimRefundApi(payload);
+      // if (res?.isSuccess) {
+      //   toast.success(res?.message);
+      // }
+      const body = { action: status };
+      const response = await handleBookingRequestApi(item?.reqId, body);
+      if (response?.isSuccess) {
+        const targetTab = status === "accept" ? "Booked" : "cancelled";
+        navigate(`/user/experience?tab=${targetTab}`);
+   
+        // getRequests("Cancelled");
+
       }
+
     } catch (error) {
       console.log(error);
     } finally {
@@ -126,6 +140,7 @@ const BookedCard = ({ item }) => {
       const timerInterval = setInterval(updateTimer, 1000);
       return () => clearInterval(timerInterval);
     }
+
   }, [fetchAvtarTimeIntrue, fetchAvtarTimeInTimezone, fetchAvtarendTimeInTimezone, userTimezone]);
 
   useEffect(()=>{
@@ -248,7 +263,7 @@ const BookedCard = ({ item }) => {
                 </button>
               ) : (
                 <>
-                  <button className={`bg-backgroundFill-900 text-white flex justify-center ${!roomId ? "w-[100%]" : "w-[50%]"} items-center py-3 gap-2 rounded ${disableCancel ? "bg-gray-400 text-gray-600" : ""}`} onClick={() => cancelBooking(item)} disabled={disableCancel}>
+                  <button className={`bg-backgroundFill-900 text-white flex justify-center ${!roomId ? "w-[100%]" : "w-[50%]"} items-center py-3 gap-2 rounded ${disableCancel ? "bg-gray-400 text-gray-600" : ""}`} onClick={() => cancelBooking("reject",item)} disabled={disableCancel}>
                     Cancel
                   </button>
                   {roomId && (
@@ -259,11 +274,11 @@ const BookedCard = ({ item }) => {
                 </>
               )}
 
-              {isTimeOver && (
+              {/* {isTimeOver && (
                 <button disabled={disablePay} className={`flex justify-center sm:text-xs ${roomId ? "w-[100%]" : "w-[50%]"} items-center py-3 gap-2 rounded w-full ${disablePay ? "bg-gray-400 text-gray-600" : "bg-backgroundFill-900 text-white"}`} onClick={handlePayConfirm}>
                   Complete
                 </button>
-              )}
+              )} */}
             </div>
           </div>
         </div>

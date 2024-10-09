@@ -12,8 +12,13 @@ const CancelledCard = ({ item }) => {
 
   const claimRefund = async (item) => {
     try {
+      let body = {
+        bookingId:item?.bookingId,
+        cancelledBy:item?.cancelledBy
+
+      }
       setDisablePay(true)
-      let res=await claimRefundApi({bookingId:item?.bookingId})
+      let res=await claimRefundApi(body)
       if(res?.isSuccess){
     toast.success(res?.message)
       }

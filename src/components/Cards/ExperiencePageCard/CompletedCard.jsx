@@ -7,7 +7,9 @@ import { Link, useLocation } from "react-router-dom";
 import { getCurrencySymbol } from "@/constant/CurrencySign";
 import { getrating } from "@/utills/service/experienceService/ExperienceService";
 import { useEffect, useState } from "react";
+
 const CompletedCard = ({ item }) => {
+
   const location = useLocation();
   const[ratings,Ratingdone] = useState(false);
 const getratings = async()=>{
@@ -82,7 +84,7 @@ useEffect(()=>{
     ratings ? 'bg-[#eaf6f2] text-[#2AA174]' : 'bg-backgroundFill-900'
   } flex justify-center items-center py-3 gap-2 rounded w-full mt-3 lg:w-[100%]`}
 >
-  {ratings ? 'Your feedback is appreciated!' : 'Rate Tour'}
+  {ratings && 'Your feedback is appreciated!'}
 </button>
 
             </Link>

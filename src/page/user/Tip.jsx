@@ -6,6 +6,7 @@ import { sendTipPaypalApi, sendTipStripeApi } from "@/utills/service/userSideSer
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
+import { payoutApi } from "@/utills/service/userSideService/PayConfiermService";
 function Tip() {
   const [selectedMethod, setSelectedMethod] = useState("stripe");
   const [loader, setLoader] = useState(false);
@@ -47,6 +48,7 @@ function Tip() {
       try {
         setLoader(true);
         let res = await sendTipPaypalApi(body);
+      
         if (res?.isSuccess) {
           window.location.href = res.url;
         }
