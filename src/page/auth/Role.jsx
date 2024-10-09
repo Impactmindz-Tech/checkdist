@@ -48,7 +48,7 @@ const Role = () => {
         setLocalStorage("token",response?.token);
         setLocalStorage("user", response);
       
-        toast.success(response?.message);
+        // toast.success(response?.message);
         if (response?.Activeprofile == "avatar") {
           
     
