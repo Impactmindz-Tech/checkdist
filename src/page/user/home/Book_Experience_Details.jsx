@@ -168,7 +168,7 @@ function Book_Experience_Details() {
                     </div>
                     <div className="flex flex-col">
                       <h3 className="font-medium">{item?.avatarName}</h3>
-                      <p className="text-grey-800">{item?.about}</p>
+                      <p className="text-grey-800">Avatar</p>
                     </div>
                   </Link>
                   <div className="max-w-[600px] mt-4 sm:max-w-full sm:w-full">
