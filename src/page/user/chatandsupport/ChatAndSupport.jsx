@@ -3,7 +3,7 @@ import HeaderBack from "@/components/HeaderBack";
 
 function ChatAndSupport() {
   const chatSupport = () => {
-    // Opens the default email client with the recipient's address
+    // Opens the default email client 
     
     window.location.href = "mailto:info@avatarwalk.com";
   };
