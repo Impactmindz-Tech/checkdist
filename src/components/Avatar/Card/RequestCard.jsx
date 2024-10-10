@@ -1,4 +1,4 @@
-import { handleBookingRequestApi } from "@/utills/service/avtarService/AddExperienceService";
+import { createmeeting, handleBookingRequestApi } from "@/utills/service/avtarService/AddExperienceService";
 import { Button } from "@mui/material";
 import moment from "moment";
 import Images from "@/constant/Images.js";
@@ -67,12 +67,15 @@ const RequestedCard = ({ item, getRequests, role }) => {
         ReqId: item?.reqId,
         endTime: item?.endTime,
       };
- 
+    
     
       try {
         setLoader(true);
 
         const body = { action: status };
+
+
+
 
         const response = await handleBookingRequestApi(item?.reqId, body);
         if (response?.isSuccess) {
@@ -99,12 +102,23 @@ const RequestedCard = ({ item, getRequests, role }) => {
         ReqId: item?.reqId,
         endTime: item?.endTime,
       };
+      const reqdatas= {
+        userId: item?.userId,
+        startTime: item?.bookingTime,
+        ReqId: item?.reqId,
+        endTime: item?.endTime,
+        duration: item?.duration,
+        bookingId: item?.bookingId,
+        price:item?.totalPrice,
+      };
 
       setUserID(item?.userId);
       setAvId(item?.avatarId);
 
       try {
         setLoader(true);
+        const resp= await createmeeting(reqdatas);
+        localStorage.setItem("meetdata", JSON.stringify(resp.data));
         const response = await handleBookingRequestApi(item?.reqId, body);
         if (response?.isSuccess) {
           const targetTab = status === "accept" ? "booked" : "cancelled";

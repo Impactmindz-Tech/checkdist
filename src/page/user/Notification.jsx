@@ -11,8 +11,8 @@ import Loader from "@/components/Loader";
 
 function Notification() {
   const [messageState, setMessageState] = useState(false);
-  const [approvedTourState, setApprovedTourState] = useState(false);
-  const [cancelledTourState, setCancelledTourState] = useState(false);
+  const [approvedTourState, setApprovedTourState] = useState(true);
+  const [cancelledTourState, setCancelledTourState] = useState(true);
   const [newTourState, setNewTourState] = useState(false);
   const [supportState, setSupportState] = useState(false);
   const [loader, setLoader] = useState(false);
@@ -92,12 +92,12 @@ function Notification() {
       <div className="container">
         <HeaderBack link="/user/profile" text={"Notifications"} />
         <div className="containts">
-          {/* <NotificationCard
+          <NotificationCard
             icon={Images.multiMessages}
             title={"Messages"}
             stateValue={messageState}
             onToggle={(newState) => handleToggleState("Message", newState)}
-          /> */}
+          />
           <NotificationCard
             icon={Images.correct}
             title={"Approved Tour"}
