@@ -4,7 +4,7 @@ import HeaderBack from "@/components/HeaderBack";
 function ChatAndSupport() {
   const chatSupport = () => {
 
-    const email = import.meta.env.VITE_APP_EMAIL;
+   const email = import.meta.env.VITE_APP_EMAIL ;
     window.location.href = `mailto:${email}`;
   };
   const handleCancel = () => {
