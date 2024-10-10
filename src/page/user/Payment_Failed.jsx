@@ -36,9 +36,9 @@ function Payment_Failed() {
                 Back to Home
               </button>
             </Link>
-            <button className="bg-black text-white py-3 rounded w-full mt-3 lg:w-[90%]">
+            {/* <button className="bg-black text-white py-3 rounded w-full mt-3 lg:w-[90%]">
               Try Again
-            </button>
+            </button> */}
           </div>{" "}
         </div>
       </div>
