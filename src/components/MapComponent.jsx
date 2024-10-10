@@ -16,7 +16,10 @@ class DefaultIcon extends L.Icon.Default {
     this.options.shadowUrl = "https://res.cloudinary.com/dzmy6os8w/image/upload/v1728554690/marker-icon_q27bnu.png";
   }
 }
-
+L.Icon.Default.mergeOptions({
+  iconUrl: 'https://res.cloudinary.com/dzmy6os8w/image/upload/v1728554690/marker-icon_q27bnu.png'
+  
+});
 // Apply the extended default icon options
 L.Icon.Default.prototype = new DefaultIcon();
 

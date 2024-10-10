@@ -19,6 +19,10 @@ class DefaultIcon extends L.Icon.Default {
 
 // Apply the extended default icon options
 L.Icon.Default.prototype = new DefaultIcon();
+L.Icon.Default.mergeOptions({
+  iconUrl: 'https://res.cloudinary.com/dzmy6os8w/image/upload/v1728554690/marker-icon_q27bnu.png'
+  
+});
 
 const defaultPosition = [30.7333, 76.7794]; // Default position in Chandigarh
 
