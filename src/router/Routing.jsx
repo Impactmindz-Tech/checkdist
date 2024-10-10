@@ -78,6 +78,7 @@ import Username from "@/page/auth/Username";
 import CustomAlert from "@/page/custom_alert/CustomAlert";
 import HaveGimbal from "@/page/have_gimbal/HaveGimbal";
 import AddSuccess from "@/page/user/AddSuccess";
+import Tip_success from "@/page/user/TipSuccess";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -402,6 +403,14 @@ const router = createBrowserRouter([
         element: (
           <DashboardLayout>
             <Payment_Success />
+          </DashboardLayout>
+        ),
+      },
+      {
+        path: "tipsuccess",
+        element: (
+          <DashboardLayout>
+            <Tip_success/>
           </DashboardLayout>
         ),
       },

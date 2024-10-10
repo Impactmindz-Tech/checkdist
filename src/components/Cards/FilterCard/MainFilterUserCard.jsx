@@ -21,7 +21,7 @@ const MainFilterUserCard = ({ product }) => {
             <img
               src={product.thumbnail}
               alt="cardImageCurve"
-              className="object-cover h-full rounded-s-md w-full"
+              className="object-cover h-full rounded-s-md w-full aspect-square"
             />
           </div>
         </div>
