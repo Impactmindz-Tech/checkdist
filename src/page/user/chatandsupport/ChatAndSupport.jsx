@@ -3,9 +3,9 @@ import HeaderBack from "@/components/HeaderBack";
 
 function ChatAndSupport() {
   const chatSupport = () => {
-    // Opens the default email client 
-    
-    window.location.href = "mailto:info@avatarwalk.com";
+
+   const email = import.meta.env.VITE_APP_EMAIL ||"info@avatarwalk.com"
+    window.location.href = `mailto:${email}`;
   };
   const handleCancel = () => {
     // Go back to the previous page in the history
