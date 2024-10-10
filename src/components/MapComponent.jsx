@@ -12,7 +12,7 @@ class DefaultIcon extends L.Icon.Default {
   constructor() {
     super();
     this.options.iconRetinaUrl = "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png";
-    this.options.iconUrl = "/marker-icon.png";
+    this.options.iconUrl = "https://res.cloudinary.com/dzmy6os8w/image/upload/v1728554690/marker-icon_q27bnu.png";
     this.options.shadowUrl = "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png";
   }
 }
