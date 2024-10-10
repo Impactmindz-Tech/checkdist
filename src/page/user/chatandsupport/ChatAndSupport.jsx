@@ -3,8 +3,8 @@ import HeaderBack from "@/components/HeaderBack";
 
 function ChatAndSupport() {
   const chatSupport = () => {
-    // Opens the default email client with the recipient's address
-    const email = import.meta.env.VITE_APP_EMAIL
+
+    const email = import.meta.env.VITE_APP_EMAIL ||"info@avatarwalk.com"
     window.location.href = `mailto:${email}`;
   };
   const handleCancel = () => {
