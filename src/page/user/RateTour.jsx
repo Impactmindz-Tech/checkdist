@@ -1,8 +1,8 @@
 import RateTourRating from "@/components/Rating/RateTourRating";
 import { Button } from "@/components/ui/button";
 import HeaderWithSkipBtn from "@/components/UserHeader/HeaderWithSkipBtn";
-import { rateTourApi } from "@/utills/service/userSideService/userService/UserHomeService";
-import { useState } from "react";
+import { getmeetdata, rateTourApi } from "@/utills/service/userSideService/userService/UserHomeService";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Loader from "@/components/Loader";
@@ -10,6 +10,9 @@ import { getCurrencySymbol } from "@/constant/CurrencySign";
 import { payoutApi } from "@/utills/service/userSideService/PayConfiermService";
 
 function RateTour() {
+let meetId = localStorage.getItem('meet');
+
+
   const navigate = useNavigate();
   let parms = useParams();
   const location = useLocation();
@@ -30,6 +33,8 @@ function RateTour() {
       setRating(newRating);
     }
   };
+
+
 
   const submitReview = async () => {
     setOne(true);

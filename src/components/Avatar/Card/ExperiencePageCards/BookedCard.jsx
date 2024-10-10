@@ -20,7 +20,7 @@ const BookedCard = ({ item, role }) => {
   const navigate = useNavigate();
 
   const handleGoLive = async () => {
-    
+
     const reqdata = {
       userId: item?.userId,
       startTime: item?.bookingTime,
@@ -31,6 +31,7 @@ const BookedCard = ({ item, role }) => {
       price:item?.totalPrice,
     };
     const response = await createmeeting(reqdata);
+  
     socket.emit("details", { reqdata, item });
     localStorage.setItem("meetdata", JSON.stringify(response.data));
     if (response?.isSuccess) {
