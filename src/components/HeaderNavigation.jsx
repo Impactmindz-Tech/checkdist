@@ -23,6 +23,7 @@ const HeaderNavigation = () => {
   const [role, setRole] = useState(
     getLocalStorage("user") ? getLocalStorage("user")?.Activeprofile : null
   );
+ const totalprofile =getLocalStorage("user").totalRoles || getLocalStorage("user").totalprofile;
 
   const handleLogout = () => {
     localStorage.clear();
@@ -182,25 +183,26 @@ const HeaderNavigation = () => {
                 </div>
                 <div className="my-2 hidden sm:block">
                   <Link to="/avatar/dashboard" className="block ">
-                    <button className="py-3 px-10 pl-[54px] w-full text-[#ababab] text-left relative font-semibold before:content-[''] before:absolute before:w-[4px] before:h-[100%] before:bg-[#2d2d2d]/[0] before:top-[0px] before:left-[0px]">
-                      <button
-                        className="flex-1 text-[#ababab]"
-                        onClick={roleSwitch}
-                      >
-                        <img
-                          src={Images.navIconProfileSwitch}
-                          alt=""
-                          className={`absolute w-[20px] left-[24px] top-[14px] ${
-                            isActive("/avatar/dashboard")
-                              ? "opacity-[1]"
-                              : "opacity-[0.4]"
-                          }`}
-                        />
-                        {role === "user"
-                          ? "Switch To Avatar"
-                          : "Switch To User"}
-                      </button>
-                    </button>
+                  {totalprofile === 2 && (
+  <button
+    className={`py-3 px-10 pl-[54px] w-full text-left relative font-semibold before:content-[''] before:absolute before:w-[4px] before:h-[100%] before:bg-[#2d2d2d]/[0] before:top-[0px] before:left-[0px] ${
+      isActive("/user/offers")
+        ? "bg-gradient-to-r from-[#000000]/[0.13] to-[transparent] text-[#2d2d2d] before:bg-[#2d2d2d]/[1]"
+        : "bg-[#ffffff] text-[#ababab]"
+    }`}
+    onClick={roleSwitch}
+  >
+    <img
+      src={Images.navIconProfileSwitch}
+      alt=""
+      className={`absolute w-[20px] left-[24px] top-[14px] ${
+        isActive("/user/offers") ? "opacity-[1]" : "opacity-[0.4]"
+      }`}
+    />
+    {role === "user" ? "Switch Avatar" : "Switch User"}
+  </button>
+)}
+
                   </Link>
                 </div>
                 <div className="my-2 hidden sm:block">
@@ -380,25 +382,26 @@ const HeaderNavigation = () => {
                 </div>
                 <div className="my-2 hidden sm:block">
                   <Link to="/user/offers" className="block ">
-                    <button
-                      className={`py-3 px-10 pl-[54px] w-full text-left relative font-semibold before:content-[''] before:absolute before:w-[4px] before:h-[100%] before:bg-[#2d2d2d]/[0] before:top-[0px] before:left-[0px] ${
-                        isActive("/user/offers")
-                          ? "bg-gradient-to-r from-[#000000]/[0.13] to-[transparent] text-[#2d2d2d] before:bg-[#2d2d2d]/[1]"
-                          : "bg-[#ffffff] text-[#ababab]"
-                      }`}
-                      onClick={roleSwitch}
-                    >
-                      <img
-                        src={Images.navIconProfileSwitch}
-                        alt=""
-                        className={`absolute w-[20px] left-[24px] top-[14px] ${
-                          isActive("/user/offers")
-                            ? "opacity-[1]"
-                            : "opacity-[0.4]"
-                        }`}
-                      />
-                      {role === "user" ? "Switch Avatar" : "Switch User"}
-                    </button>
+                  {totalprofile === 2 && (
+  <button
+    className={`py-3 px-10 pl-[54px] w-full text-left relative font-semibold before:content-[''] before:absolute before:w-[4px] before:h-[100%] before:bg-[#2d2d2d]/[0] before:top-[0px] before:left-[0px] ${
+      isActive("/user/offers")
+        ? "bg-gradient-to-r from-[#000000]/[0.13] to-[transparent] text-[#2d2d2d] before:bg-[#2d2d2d]/[1]"
+        : "bg-[#ffffff] text-[#ababab]"
+    }`}
+    onClick={roleSwitch}
+  >
+    <img
+      src={Images.navIconProfileSwitch}
+      alt=""
+      className={`absolute w-[20px] left-[24px] top-[14px] ${
+        isActive("/user/offers") ? "opacity-[1]" : "opacity-[0.4]"
+      }`}
+    />
+    {role === "user" ? "Switch Avatar" : "Switch User"}
+  </button>
+)}
+
                   </Link>
                 </div>
                 <div className="my-2 hidden sm:block">
