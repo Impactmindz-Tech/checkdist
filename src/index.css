@@ -1,4 +1,4 @@
-/* @import url("https://fonts.cdnfonts.com/css/dylan"); */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -72,10 +72,10 @@
 } */
 
 :root {
-  /* h1 style  */
+
   --h1-font-size: 20px;
   --h1-font-weight: 700;
-  /* h3 style  */
+
   --h3-font-size: 16px;
   --h3-font-weight: 700;
 }
@@ -163,7 +163,7 @@ h3 {
   font-weight: var(--h3-font-weight);
 }
 
-/* user menu active color manage */
+
 .css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
   font-weight: 700;
   color: #2d2d2d !important;
@@ -177,7 +177,12 @@ button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.css-1h9z7r5-MuiBut
   color: #ababab;
 }
 
-/* swiper active bg color */
+.mySwiper .swiper-pagination {
+  text-align: left;
+  padding-left: 10px;
+}
+
+/ swiper active bg color /
 .swiper-pagination-bullet-active {
   background: #ffffff !important;
 }
@@ -203,7 +208,7 @@ button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.css-1h9z7r5-MuiBut
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 24px;
-  /* Adjust the size of the icon as needed */
+
   color: white;
 }
 
@@ -228,7 +233,7 @@ button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.css-1h9z7r5-MuiBut
 .cardBorder {
   border: 1px solid #F1F1F1;
   border-radius: 20px;
-  /* box-shadow:  0px 1px 4px rgba(112, 112, 112, 0.16); */
+
 }
 
 .BoxShadow {
@@ -252,7 +257,6 @@ button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.css-1h9z7r5-MuiBut
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-/* swiper */
 
 .reviewCardSwiper {
   padding: 0 2px;
@@ -266,10 +270,7 @@ button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.css-1h9z7r5-MuiBut
   border-radius: 10px 10px 10px 0px;
 }
 
-/* radio checkbox */
 
-/* PaymentMethod.css */
-/* Custom Radio Button */
 .payment-option {
   position: relative;
   cursor: pointer;
@@ -289,7 +290,7 @@ button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.css-1h9z7r5-MuiBut
   position: absolute;
   top: 50%;
   right: 10px;
-  /* Adjust to place it properly */
+
   height: 25px;
   width: 25px;
   background-color: #fff;
@@ -323,7 +324,7 @@ button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.css-1h9z7r5-MuiBut
   transform: rotate(45deg);
 }
 
-/* time edit modal */
+
 .time-picker {
   display: flex;
   justify-content: center;
@@ -341,7 +342,7 @@ button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.css-1h9z7r5-MuiBut
   text-align: center;
 }
 
-/* rate tour */
+
 .rateTourBtn {
   color: black;
   padding: 10px 0;
@@ -360,12 +361,12 @@ button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.css-1h9z7r5-MuiBut
   border: 1px solid #2d2d2d;
 }
 
-/* profileShadow */
+
 .profileShadow {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
-/* profile */
+
 .cameraBoxShadow {
   box-shadow: 0px 0px 0px 5px white;
 }
@@ -398,7 +399,7 @@ button#terms {
   background-color: #131313 !important;
 }
 
-/* styles.css */
+
 .form-radio {
   appearance: none;
   -webkit-appearance: none;
@@ -406,7 +407,7 @@ button#terms {
   width: 20px;
   height: 20px;
   border: 2px solid #353535;
-  /* gray-400 */
+
   border-radius: 50%;
   outline: none;
   cursor: pointer;
@@ -418,7 +419,7 @@ button#terms {
   width: 10px;
   height: 10px;
   background-color: #353535;
-  /* blue-500 */
+
   border-radius: 50%;
   position: absolute;
   top: 50%;
@@ -445,27 +446,27 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-/* Firefox */
+
 input[type="number"] {
   -moz-appearance: textfield;
 }
 
 .input-otp-slot {
   width: 100px;
-  /* Adjust width as needed */
+
   height: 50px;
-  /* Adjust height as needed */
+
   font-size: 20px;
-  /* Optional: adjust font size */
+
   text-align: center;
-  /* Optional: center align text */
+
   border: 1px solid #ccc;
-  /* Optional: add border */
+
   margin: 5px;
-  /* Optional: add margin */
+ 
 }
 
-/* custom css */
+
 .select-location svg {
   width: 20px;
   position: relative;
@@ -596,30 +597,29 @@ input[type="number"] {
   overflow: hidden;
 }
 
-/* custom css */
 
-/* 4xl */
+
 @media (max-width: 2047px) {
-  /* Your CSS rules here */
+
 }
 
-/* 3xl */
+
 @media (max-width: 1791px) {}
 
-/* 2xl */
+
 @media (max-width: 1535px) {}
 
-/* xl */
+
 @media (max-width: 1279px) {
-  /* Your CSS rules here */
+
 }
 
-/* lg */
+
 @media (max-width: 1023px) {
-  /* Your CSS rules here */
+
 }
 
-/* md */
+
 @media (max-width: 767px) {}
 
 @media (max-width: 639px) {
@@ -724,21 +724,20 @@ input[type="number"] {
   }
 }
 
-/* Assuming you are using Tailwind CSS */
+
 .border-red-500 {
   border-color: #f56565;
-  /* Tailwind red-500 color */
+
 }
 
-/* Or if using regular CSS */
+
 .input-otp-slot {
   border: 1px solid #e2e8f0;
-  /* Default border color */
 }
 
 .input-otp-slot.border-red-500 {
   border-color: #f56565;
-  /* Red border color */
+
 }
 
 .input_border {
@@ -750,17 +749,17 @@ input[type="number"] {
   width: 8px;
 }
 
-/* Track */
+
 .t-n-p-nav::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-/* Handle */
+
 .t-n-p-nav::-webkit-scrollbar-thumb {
   background: #888;
 }
 
-/* Handle on hover */
+
 .t-n-p-nav::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
@@ -802,19 +801,19 @@ html {
   width: 10px;
 }
 
-/* Track */
+
 .scroll::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px grey;
   border-radius: 10px;
 }
 
-/* Handle */
+
 .scroll::-webkit-scrollbar-thumb {
   background: rgb(17, 17, 17);
   border-radius: 10px;
 }
 
-/* Handle on hover */
+
 .scroll::-webkit-scrollbar-thumb:hover {
   background: #b30000;
 }
@@ -865,7 +864,7 @@ html {
   background-color: red;
   cursor: not-allowed;
   color: white;
-  /* Text color for past time */
+
 }
 
 video {

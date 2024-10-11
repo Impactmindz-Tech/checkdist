@@ -1,3 +1,4 @@
+
 import HeaderBack from "@/components/HeaderBack";
 import Loader from "@/components/Loader";
 import MapComponent from "@/components/MapComponent";
@@ -32,6 +33,7 @@ function Book_Experience_Details() {
     setLoading(true);
     try {
       const responce = await userExperienceListApi(params?.id);
+      
       if (responce?.isSuccess) {
         // setSelectPosition(responce?.data?.location);
         dispatch(setProductList(responce));
@@ -56,14 +58,9 @@ function Book_Experience_Details() {
   // Function to calculate the average rating
   const calculateAverageRating = (reviews) => {
     if (!reviews.length) return 0;
-    
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-    const averageRating = totalRating / reviews.length;
-  
-    // Return 0 if the result is NaN
-    return isNaN(averageRating) ? 0 : averageRating;
+    return totalRating / reviews.length;
   };
-  
 
   const fetchCoordinates = async (country, city, state) => {
     try {
@@ -128,6 +125,7 @@ function Book_Experience_Details() {
                   <SwiperSlider
                     item={item?.images}
                     thumnail={item?.thumbnail}
+                    hideExtraDetails={true}
                   />
                 </div>
                 <div className="mt-5 relative pr-[120px]">
@@ -168,12 +166,12 @@ function Book_Experience_Details() {
                       <img
                         src={item?.avatarImage || Images.avatarProfile}
                         alt="user"
-                        className="w-[50px] rounded-full"
+                        className="w-[50px] rounded-full aspect-square"
                       />
                     </div>
                     <div className="flex flex-col">
                       <h3 className="font-medium">{item?.avatarName}</h3>
-                      <p className="text-grey-800">Avatar</p>
+                      <p className="text-grey-800">{item?.about}</p>
                     </div>
                   </Link>
                   <div className="max-w-[600px] mt-4 sm:max-w-full sm:w-full">
@@ -276,7 +274,7 @@ function Book_Experience_Details() {
                   <div className="my-3 relative z-[1]">
                     <div className="centerImageIcon relative  w-full flex flex-col gap-2 justify-center">
                       <div className="w-[50%] m-auto lg:w-[98%]">
-                        {/* <div className="shape text-sm text-center">Exact location provided after booking.</div> */}
+           
                         <div className="flex w-full justify-center">
                           <div className="triangleDown"></div>
                         </div>

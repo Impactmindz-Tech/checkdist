@@ -143,6 +143,7 @@ function MainBookExperienceDetails() {
                 <div className=" rounded overflow-hidden shadow-lg m-auto">
                   <SwiperSlider
                     item={item?.images}
+                    hideExtraDetails={true}
                     thumnail={item?.thumbnail}
                   />
                 </div>

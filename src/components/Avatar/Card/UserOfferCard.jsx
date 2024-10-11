@@ -1,3 +1,4 @@
+
 import Images from "@/constant/Images";
 import IconText from "../Heading/IconText";
 import { Link, useNavigate } from "react-router-dom";
@@ -5,7 +6,10 @@ import { getCurrencySymbol } from "@/constant/CurrencySign";
 import socket from "@/utills/socket/Socket";
 import Loader from "@/components/Loader";
 import { useEffect, useState } from "react";
-import { convertTo12HourFormats, formatDate } from "@/constant/date-time-format/DateTimeFormat";
+import {
+  convertTo12HourFormats,
+  formatDate,
+} from "@/constant/date-time-format/DateTimeFormat";
 import { completeoffer } from "@/utills/service/userSideService/userService/UserHomeService";
 
 export default function OffersCard({ state, item }) {
@@ -27,19 +31,19 @@ export default function OffersCard({ state, item }) {
 
   const handlecomplete = async (item) => {
     const id = item?._id;
-    setLoader(true);  // Show the loader
+    setLoader(true); // Show the loader
 
     try {
       let response = await completeoffer(id);
-      
+
       // After the action is completed, navigate to the offers tab
       navigate("/user/experience?tab=offers");
 
-      setLoader(false);  // Hide the loader
-      forceUpdate((n) => n + 1);  // Force a re-render if necessary
+      setLoader(false); // Hide the loader
+      forceUpdate((n) => n + 1); // Force a re-render if necessary
     } catch (err) {
       console.log(err);
-      setLoader(false);  // Hide the loader in case of an error
+      setLoader(false); // Hide the loader in case of an error
     }
   };
 
@@ -58,7 +62,9 @@ export default function OffersCard({ state, item }) {
   const calculateRemainingTime = () => {
     const now = new Date();
     const bookingDateTime = new Date(item?.Time); // Assuming bookingTime is stored as UTC
-    const localBookingTime = new Date(bookingDateTime.getTime() + (bookingDateTime.getTimezoneOffset() * 60000));
+    const localBookingTime = new Date(
+      bookingDateTime.getTime() + bookingDateTime.getTimezoneOffset() * 60000
+    );
 
     const timeDiff = localBookingTime - now; // Difference in milliseconds
 
@@ -69,7 +75,7 @@ export default function OffersCard({ state, item }) {
     }
 
     const hours = Math.floor(timeDiff / (1000 * 60 * 60));
-    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+    const minutes = Math.floor((timeDiff % (1000 * 60  *60)) / (1000 * 60));
     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
     setRemainingTime(`${hours}::${minutes}::${seconds}`);
@@ -85,8 +91,7 @@ export default function OffersCard({ state, item }) {
 
   return (
     <>
-      {loader && <Loader />}  {/* Show loader when loader state is true */}
-      
+      {loader && <Loader />} {/ Show loader when loader state is true /}
       <div className="squareShadow p-5 text-grey-900 mt-5">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl">
@@ -102,12 +107,22 @@ export default function OffersCard({ state, item }) {
           <div>
             <IconText icon={Images.multiUser} text={item?.UserName} />
             <IconText icon={Images.clock} text={`${item?.Minutes} Minutes`} />
-            <IconText icon={Images.location} text={`${item?.City}, ${item?.Country}, ${item?.ZipCode}`} />
+            <IconText
+              icon={Images.location}
+              text={`${item?.City}, ${item?.Country}, ${item?.ZipCode}`}
+            />
           </div>
           <div>
-            <h5 className="font-medium my-1">{formatDate(item?.Date) || "N/A"}</h5>
-            <h5 className="text-end">{convertTo12HourFormats(item?.Time)} - {convertTo12HourFormats(item?.endTime)}</h5>
-            <h4 className="ms-12"><IconText icon={Images.clock} text={remainingTime} /></h4>
+            <h5 className="font-medium my-1">
+              {formatDate(item?.Date) || "N/A"}
+            </h5>
+            <h5 className="text-end">
+              {convertTo12HourFormats(item?.Time)} -{" "}
+              {convertTo12HourFormats(item?.endTime)}
+            </h5>
+            <h4 className="ms-12">
+              <IconText icon={Images.clock} text={remainingTime} />
+            </h4>
           </div>
         </div>
 
@@ -120,16 +135,14 @@ export default function OffersCard({ state, item }) {
           </button>
         ) : (
           <>
-            <button className="bg-backgroundFill-800 text-white flex justify-center w-[50%] items-center py-3 gap-2 rounded">
-              Cancel
-            </button>
-
-            <div className="flex justify-between">
+            <div className="flex justify-between gap-3 mt-[15px]">
               {item?.paystatus === "Succeeded" ? (
                 <>
                   <button
                     onClick={handlejoin}
-                    className={`bg-backgroundFill-900 text-white flex justify-center items-center py-3 gap-2 rounded w-[45%] ${!rid ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`bg-backgroundFill-900 text-white flex justify-center items-center py-3 gap-2 rounded w-[45%] ${
+                      !rid ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                     disabled={!rid}
                   >
                     Let's Start
@@ -143,12 +156,17 @@ export default function OffersCard({ state, item }) {
                 </>
               ) : (
                 item?.status === "Accepted" && (
-                  <button
-                    onClick={() => handleclick(item)}
-                    className="bg-backgroundFill-900 sm:text-xs text-white flex justify-center items-center py-3 gap-2 rounded w-[50%]"
-                  >
-                    Pay now
-                  </button>
+                  <>
+                    {/* <button className="bg-backgroundFill-800 flex justify-center w-[50%] items-center py-3 gap-2 rounded border-black border text-black flex-1">
+                Cancel
+              </button> */}
+                    <button
+                      onClick={() => handleclick(item)}
+                      className="bg-backgroundFill-900 sm:text-xs text-white flex justify-center items-center py-3 gap-2 rounded w-[50%] flex-1"
+                    >
+                      Pay now
+                    </button>
+                  </>
                 )
               )}
             </div>
