@@ -29,7 +29,7 @@ const RequestedCard = ({ item, getRequests, role }) => {
   const updateSignInStatus = (isSignedIn) => {
     setIsSignedIn(isSignedIn);
   };
-
+console.log(item,'sanju');
   useEffect(() => {
     initClient(updateSignInStatus);
   }, []);
@@ -102,6 +102,7 @@ const RequestedCard = ({ item, getRequests, role }) => {
         ReqId: item?.reqId,
         endTime: item?.endTime,
       };
+  
       const reqdatas= {
         userId: item?.userId,
         startTime: item?.bookingTime,
