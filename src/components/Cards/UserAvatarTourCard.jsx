@@ -36,7 +36,7 @@ export default function UserAvatarTourCard({ tour,avatardetail }) {
     <>
     { userdetails?(  <Link to={`/user/book-experience/${tour?._id}`}>
       <div className="">
-        
+
         <div className="images w-full">
           <img
             src={tour.thumbnail || Images.cardImageRounded}
@@ -93,6 +93,12 @@ export default function UserAvatarTourCard({ tour,avatardetail }) {
           </div>
           
         </div>
+        <div className="flex  items-center justify-between">
+            <p className="text-gray-700 text-base w-[100%] lg:w-[100%] sm:text-[14px] font-medium">
+              {`Mon-Fri ${fromto} to ${too} • ${utcOffset}`}
+            </p>
+        
+          </div>
       </div>
     </Link>)}
     
