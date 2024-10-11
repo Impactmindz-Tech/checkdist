@@ -55,8 +55,12 @@ const ReportProfile = ({
         toast.success(response?.message);
         setMultipleAddressModalState();
       }
+      else{
+        toast.error(response?.message);
+      }
     } catch (error) {
       console.error("API error: ", error);
+    
     }
   };
 

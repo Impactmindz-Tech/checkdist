@@ -5,7 +5,7 @@ import AvatarReviewCardSwiper from "@/components/Swiper/AvatarProfileTour/Avatar
 import UserAvatarTourCardSwiper from "@/components/Swiper/AvatarProfileTour/UserAvatarTourCardSwiper";
 import Images from "@/constant/Images";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useLocation } from "react-router-dom";
 import { getAvatardetail } from "@/utills/service/userSideService/userService/UserHomeService";
 import Loader from "@/components/Loader";
 import TitleHeading from "@/components/Avatar/Heading/TitleHeading";
@@ -15,6 +15,7 @@ function AvatarProfile() {
     useState(false);
   const [avatardetail, setavatardetail] = useState([]);
   const [loader, setLoader] = useState(false);
+  const location = useLocation();
 
   const params = useParams();
 
@@ -80,11 +81,12 @@ function AvatarProfile() {
             </div>
           </div>
         </div>
+      
+  <ReportProfile
+    multipleAddressModalState={multipleAddressModalState}
+    setMultipleAddressModalState={setMultipleAddressModalState}
+  />
 
-        <ReportProfile
-          multipleAddressModalState={multipleAddressModalState}
-          setMultipleAddressModalState={setMultipleAddressModalState}
-        />
       </div>
     </>
   );

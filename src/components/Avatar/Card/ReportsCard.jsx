@@ -1,3 +1,4 @@
+
 const ReportsCard = ({ image, title }) => {
   return (
     <div className="reports-card flex gap-[10px] border p-2">

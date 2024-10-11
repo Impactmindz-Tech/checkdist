@@ -4,9 +4,14 @@ import { getCurrencySymbol } from "@/constant/CurrencySign";
 const FilterUserCard = ({ product }) => {
   const calculateAverageRating = (reviews) => {
     if (!reviews.length) return 0;
+    
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-    return totalRating / reviews.length;
+    const averageRating = totalRating / reviews.length;
+  
+    // Return 0 if the result is NaN
+    return isNaN(averageRating) ? 0 : averageRating;
   };
+  
   const averageRating = calculateAverageRating(product.Reviews);
   return (
     <Link

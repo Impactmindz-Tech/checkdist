@@ -56,9 +56,14 @@ function Book_Experience_Details() {
   // Function to calculate the average rating
   const calculateAverageRating = (reviews) => {
     if (!reviews.length) return 0;
+    
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-    return totalRating / reviews.length;
+    const averageRating = totalRating / reviews.length;
+  
+    // Return 0 if the result is NaN
+    return isNaN(averageRating) ? 0 : averageRating;
   };
+  
 
   const fetchCoordinates = async (country, city, state) => {
     try {
