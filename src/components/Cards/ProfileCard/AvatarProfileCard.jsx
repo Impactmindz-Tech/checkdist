@@ -18,7 +18,7 @@ export default function AvatarProfileCard({ avatardetail }) {
   return (
     <div className="my-8 ">
       <div className="flex items-center">
-        <div className="w-[150px] sm:w-[60px]">
+        <div className="w-[150px] sm:w-[100px]">
           <img
             src={avatardetail?.avatarImage || Images.user}
             alt="avatarProfile"
@@ -26,7 +26,7 @@ export default function AvatarProfileCard({ avatardetail }) {
           />
         </div>
         <div className="flex w-[calc(100%-150px)] sm:w-[calc(100%-60px)]">
-          <div className="text-center ml-[50px] sm:ml-[20px]">
+          <div className=" flex-1 text-center ml-[50px] sm:ml-[20px]">
             <h1 className="text-grey-900 text-2xl sm:text-sm">
               {avatardetail?.Reviews?.length}
             </h1>
@@ -34,14 +34,14 @@ export default function AvatarProfileCard({ avatardetail }) {
           </div>
 
           <div className="text-center ml-[50px] sm:ml-[20px]">
-            <h1 className="text-grey-900 text-2xl flex justify-center gap-2 sm:text-sm">
+            <h1 className="flex-1 text-grey-900 text-2xl flex justify-center gap-2 sm:text-sm">
               {averageRating}
               <img src={Images.star2} alt="star" className="sm:w-[12px]" />
             </h1>
             <p className="text-xl sm:text-sm text-slate-500">Ratings</p>
           </div>
 
-          <div className="text-center ml-[50px] sm:ml-[20px]">
+          <div className=" flex-1 text-center ml-[50px] sm:ml-[20px]">
             <h1 className="text-grey-900 text-2xl flex justify-center gap-2 sm:text-sm">
               {userAtThisPlatformFrom && userAtThisPlatformFrom[0] > 0
                 ? userAtThisPlatformFrom[0]
@@ -53,7 +53,7 @@ export default function AvatarProfileCard({ avatardetail }) {
           </div>
         </div>
       </div>
-      <h1 className="text-grey-900 mt-3 sm:text-lg">
+      <h1 className="text-grey-900 mt-3 sm:text-lg ">
         {avatardetail?.userName}
       </h1>
       <p className="text-grey-800">Avatar</p>
