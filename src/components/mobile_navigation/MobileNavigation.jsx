@@ -55,7 +55,7 @@ const MobileNavigation = ({ role }) => {
           </li>
           <li className="grow">
             <NavLink
-              to="/user/explore-map"
+              to="/user/alltours"
               className="group flex flex-col items-center pt-[18px] pb-[12px] px-[5px] text-[#757575] font-bold text-xs border-t-2 border-transparent h-full [&.active]:border-white [&.active]:bg-gradient-to-b 
             from-[#ffffff]/[0.18] to-[#ffffff]/[0]"
             >

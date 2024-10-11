@@ -63,6 +63,7 @@ import Reports from "@/page/avtar/Reports";
 import MainHomePage from "@/page/homepage/MainHomePage";
 import InstantLive from "@/page/user/InstantLive";
 import ExploreMap from "@/page/user/ExploreMap/ExploreMap";
+import Allmap from "@/page/user/ExploreMap/Allmap";
 import MobileDevice from "@/page/auth/MobileDevice";
 import AddExperienceWithImagePage from "@/page/avtar/Experience/AddExperienceWithImage";
 import MainLayout from "@/Layout/MainLayout";
@@ -552,6 +553,10 @@ const router = createBrowserRouter([
       {
         path: "explore-map",
         element: <ExploreMap />,
+      },
+      {
+        path: "alltours",
+        element: <Allmap />,
       },
       {
         path: "new-page",

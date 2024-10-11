@@ -13,4 +13,17 @@ export const getLiveTourApi = async (setValue) => {
   }
 };
 
+export const getalltourlocation = async () => {
+ 
+  
+
+ 
+  try {
+    const res = await axiosInstance.get(`/user/alltoursmap`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 

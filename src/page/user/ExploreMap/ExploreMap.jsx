@@ -46,6 +46,7 @@ const ExploreMap = () => {
     try {
       const response = await getLiveTourApi(selectedTab);
     
+    
       if (response?.isSuccess) {
         setTour(response);
       } else {
@@ -73,6 +74,7 @@ const ExploreMap = () => {
       search: `?tab=${selectedTab}`,
     });
   };
+  
 
   return (
     <>
