@@ -7,6 +7,7 @@ import { getLocalStorage } from "@/utills/LocalStorageUtills";
 import { bookingSlotsApi } from "@/utills/service/userSideService/userService/UserHomeService";
 import toast from "react-hot-toast";
 import Loader from "@/components/Loader";
+import { convertTo12HourFormats } from "@/constant/date-time-format/DateTimeFormat";
 
 const MainExperienceList = ({ product }) => {
   const [meetlink, setmeetlink] = useState("");
@@ -16,8 +17,8 @@ const MainExperienceList = ({ product }) => {
 
   const golive = async (data) => {
     const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split("T")[0]; // Get the date in YYYY-MM-DD format
-    const currentTime = currentDate.toTimeString().slice(0, 5); // Extract the current time in HH:MM format
+    const formattedDate = currentDate.toISOString().split("T")[0]; 
+    const currentTime = currentDate.toTimeString().slice(0, 5); 
 
     const id = data._id;
     const requestBody = { bookingDate: formattedDate };
@@ -64,6 +65,31 @@ const MainExperienceList = ({ product }) => {
       socket.off("instantLive");
     };
   }, [userId]);
+
+const from = product?.availability?.from;
+const to= product?.availability?.to;
+const timezone = product?.availability?.timeZone
+ const fromto =  convertTo12HourFormats(from);
+const too = convertTo12HourFormats(to);
+
+const getUTCOffsetFromTimezone = (timezone) => {
+  
+  const now = new Date();
+
+  const options = { timeZone: timezone, timeZoneName: 'short' };
+  const formatter = new Intl.DateTimeFormat([], options);
+
+  const parts = formatter.formatToParts(now);
+  const offset = parts.find(part => part.type === 'timeZoneName').value;
+
+  return offset; 
+};
+
+
+
+const utcOffset = getUTCOffsetFromTimezone(timezone);
+
+
 
   return (
     <>
@@ -115,10 +141,10 @@ const MainExperienceList = ({ product }) => {
               {product?.city && product?.city + " ,"} {product.country}
             </Link>
           </p>
-          <div className="flex gap-2 items-center justify-between">
-            {/* <p className="text-gray-700 text-base w-[60%] lg:w-[58%] sm:text-xs font-medium">
-              Starts at: ${product.AmountsperMinute} (Per Minute)
-            </p> */}
+          <div className="flex  items-center justify-between">
+            <p className="text-gray-700 text-base w-[100%] lg:w-[100%] sm:text-[13px] font-medium">
+              {`Mon-Fri ${fromto} to ${too} • ${utcOffset}`}
+            </p>
         
           </div>
         </div>

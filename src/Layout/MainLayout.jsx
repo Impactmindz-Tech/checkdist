@@ -168,6 +168,20 @@ const MainLayout = ({ children }) => {
           >
             <button>Become an Avatar</button>
           </Link>
+          
+        </div>
+        <div>
+        <Link
+            to="/auth/login"
+            className="bg-grey-900 py-[7px] text-white rounded-lg px-4 sm:px-5"
+          >
+            <button className="items-center">
+              <span className="">
+                {/* <img src={Images.hotsport} alt="hosport" /> */}
+              </span>
+              Login
+            </button>
+          </Link>
         </div>
       </header>
 
@@ -175,15 +189,15 @@ const MainLayout = ({ children }) => {
         <div className="flex justify-between px-4 items-center my-6 lg:px-1 ">
           <div className="w-full p-4 z-50 sm:p-1">
             <div className="flex items-center space-x-4">
-              <div className="relative sm:w-[68vw] w-[25vw] " ref={dropdownRef}>
+              <div className="relative sm:w-[150px] w-[45vw] " ref={dropdownRef}>
                 <button
                   onClick={handleLocationClick}
-                  className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none sm:w-full"
+                  className="flex items-center space-x-2 px-2 py-2  bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none sm:w-full"
                 >
                   <span className="text-grey-900">
                     <LocationOnIcon />
                   </span>
-                  <span className="text-grey-900">{currentLocation}</span>
+                  <span className="text-grey-900 text-xs">{currentLocation}</span>
                   <svg
                     className={`sm:absolute sm:top-4 sm:right-4 w-4 h-4 transition-transform float-right ${
                       isDropdownOpen ? "transform rotate-180" : ""
@@ -204,7 +218,7 @@ const MainLayout = ({ children }) => {
 
                 {/* Dropdown for Location + Search */}
                 {isDropdownOpen && (
-                  <div className="absolute mt-0 w-full bg-white shadow-lg border border-gray-200 rounded-lg sm:mt-0 sm:w-[90vw]">
+                  <div className="absolute mt-0 w-full bg-white shadow-lg border border-gray-200 rounded-lg sm:mt-0 sm:w-[60vw]">
                     {/* Detect current location option */}
                     {!showSuggestions && (
                       <button
@@ -260,17 +274,7 @@ const MainLayout = ({ children }) => {
           </div>
 
           {/* Live Button */}
-          <Link
-            to="/auth/login"
-            className="bg-grey-900 py-[7px] text-white rounded-lg px-4 sm:px-5"
-          >
-            <button className="flex gap-1 items-center">
-              <span className="">
-                {/* <img src={Images.hotsport} alt="hosport" /> */}
-              </span>
-              Login
-            </button>
-          </Link>
+         
         </div>
       )}
       {children}

@@ -33,7 +33,7 @@ const UserAvatarTourCardSwiper = ({ avatardetail }) => {
       {avatardetail.Tours &&
         avatardetail.Tours.map((tour, index) => (
           <SwiperSlide key={index}>
-            <UserAvatarTourCard tour={tour} />
+            <UserAvatarTourCard tour={tour} avatardetail={avatardetail} />
           </SwiperSlide>
         ))}
     </Swiper>

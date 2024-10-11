@@ -2,6 +2,7 @@ import Images from "@/constant/Images";
 import { Link } from "react-router-dom";
 import { getCurrencySymbol } from "@/constant/CurrencySign";
 const FilterUserCard = ({ product }) => {
+
   const calculateAverageRating = (reviews) => {
     if (!reviews.length) return 0;
     
@@ -12,7 +13,7 @@ const FilterUserCard = ({ product }) => {
     return isNaN(averageRating) ? 0 : averageRating;
   };
   
-  const averageRating = calculateAverageRating(product.Reviews);
+  const averageRating =product.avgRating;
   return (
     <Link
       to={{
@@ -46,7 +47,7 @@ const FilterUserCard = ({ product }) => {
               <div className="border-r-2 px-1">
                 <img src={Images.star} alt="star" />
               </div>
-              <div className="font-extrabold sm:font-medium">{averageRating.toFixed(1)}</div>
+              <div className="font-extrabold sm:font-medium">{averageRating.toFixed(1) }</div>
             </div>
             <div className="border bg-grey-300 border-borderFill-300 rounded-lg p-1 cursor-pointer">
               <img src={Images.add} alt="add" className="sm:max-w-3.5 " />

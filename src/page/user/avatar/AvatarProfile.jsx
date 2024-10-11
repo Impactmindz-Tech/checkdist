@@ -34,7 +34,8 @@ function AvatarProfile() {
   useEffect(() => {
     fetchprofile();
   }, []);
-  console.log(avatardetail.userName);
+
+
   return (
     <>
       {loader && <Loader />}
@@ -49,6 +50,11 @@ function AvatarProfile() {
             </h1>
             {/* <h1 className="text-grey-800 underline underline-offset-4 cursor-pointer sm:text-sm">Show All</h1> */}
           </div>
+           <TitleHeading
+            title={`${
+              avatardetail.userName ? avatardetail.userName : "Avatar"
+            } Tours`}
+          />
           <div className="my-6">
             <UserAvatarTourCardSwiper avatardetail={avatardetail} />
           </div>

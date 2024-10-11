@@ -1,8 +1,11 @@
 
 import Images from "@/constant/Images";
-
+import iso3311a2 from 'iso-3166-1-alpha-2';
+import Flag from 'react-world-flags';
 export default function AvatarProfileCard({ avatardetail }) {
+
   const calculateAverageRating = (reviews) => {
+
     if (reviews?.length > 0) {
       const totalRating = reviews.reduce(
         (acc, review) => acc + review.rating,
@@ -12,11 +15,12 @@ export default function AvatarProfileCard({ avatardetail }) {
     }
     return 0;
   };
-
+  const countryCode =iso3311a2.getCode(avatardetail?.Country);
+   
   const averageRating = calculateAverageRating(avatardetail?.Reviews);
   const userAtThisPlatformFrom = avatardetail?.year?.split(" ");
   return (
-    <div className="my-8 ">
+    <div className="my-0 mt-6 ">
       <div className="flex items-center">
         <div className="w-[150px] sm:w-[100px]">
           <img
@@ -56,7 +60,10 @@ export default function AvatarProfileCard({ avatardetail }) {
       <h1 className="text-grey-900 mt-3 sm:text-lg ">
         {avatardetail?.userName}
       </h1>
-      <p className="text-grey-800">Avatar</p>
+     <div className="flex items-center gap-3 mt-1">
+     <p>  <Flag code={countryCode} style={{ width: '20px', height: 'auto' }} /></p>
+     <p className="text-grey-800">{avatardetail?.State},{avatardetail?.Country}</p>
+     </div>
       <p className="text-grey-900">
         <span className="text-grey-800">{avatardetail?.about}</span>
       </p>
