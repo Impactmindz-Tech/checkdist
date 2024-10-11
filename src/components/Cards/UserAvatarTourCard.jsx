@@ -17,7 +17,7 @@ export default function UserAvatarTourCard({ tour }) {
             className="w-full rounded-md aspect-[1.4] object-cover"
           />
         </div>
-        <div className="flex items-start justify-between my-2">
+        <div className="flex items-start justify-between my-2 ">
           <div className="left">
             <h1 className="sm:text-sm">{tour?.ExperienceName}</h1>
             <p className="text-[#ababab]">{tour?.country}</p>

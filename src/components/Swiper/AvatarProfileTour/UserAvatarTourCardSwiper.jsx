@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 const UserAvatarTourCardSwiper = ({ avatardetail }) => {
   return (
     <Swiper
-      slidesPerView={1.5}
+      slidesPerView={1}
       spaceBetween={30}
       pagination={{
         clickable: true,
@@ -13,7 +13,7 @@ const UserAvatarTourCardSwiper = ({ avatardetail }) => {
       className="mySwiper"
       breakpoints={{
         640: {
-          slidesPerView: 1.5,
+          slidesPerView: 1,
           spaceBetween: 10,
         },
         768: {
