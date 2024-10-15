@@ -96,9 +96,15 @@ function EarningPage() {
           </div>
           <div className="right" onClick={withdrawAmount}>
          
-            <button className="bg-grey-900 rounded-md px-8 py-4 text-white font-bold sm:py-2 sm:px-6 lg:py-3 lg:px-7">
-              Withdraw
-            </button>
+          <button
+  disabled={amountDetail?.totalEarnings <= 50}
+  className={`rounded-md px-8 py-4 font-bold sm:py-2 sm:px-6 lg:py-3 lg:px-7 ${
+    amountDetail?.totalEarnings <= 50 ? 'bg-gray-400 cursor-not-allowed' : 'bg-grey-900 cursor-pointer'
+  } text-white`}
+>
+  Withdraw
+</button>
+
          
           </div>
         </div>
