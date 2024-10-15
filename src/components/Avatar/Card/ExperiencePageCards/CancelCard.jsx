@@ -19,7 +19,7 @@ const CancelCard = ({ item, role }) => {
             {role === "avatar" && (
               <div className="absolute bottom-2 right-1 px-2 rounded-full font-bold bg-white text-sm">
                 {getCurrencySymbol()}
-                {item?.totalPrice}
+                {item?.totalPrice.toFixed(2)}
               </div>
             )}
           </div>

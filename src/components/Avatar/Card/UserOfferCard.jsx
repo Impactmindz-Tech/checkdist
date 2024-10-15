@@ -91,12 +91,12 @@ export default function OffersCard({ state, item }) {
 
   return (
     <>
-      {loader && <Loader />} {/ Show loader when loader state is true /}
+      {loader && <Loader />} 
       <div className="squareShadow p-5 text-grey-900 mt-5">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl">
             {getCurrencySymbol()}
-            {item?.Price}
+            {item?.Price.toFixed(2)}
           </h1>
           <div className="text-[#2AA174] bg-[#fff9e6] pt-[4px] pb-[5px] px-[10px] rounded-full text-xs font-medium mb-[5px] inline-block bg-[#2AA1741A]/10">
             {item?.status}

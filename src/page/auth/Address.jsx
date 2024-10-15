@@ -18,14 +18,15 @@ const Address = () => {
   const [selectedCity, setSelectedCity] = useState(null);
   const [loader, setLoader] = useState(false);
   const [zipCode, setZipCode] = useState("");
-  
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   const params = useParams();
   const handleZipCodeChange = (e) => {
     const value = e.target.value;
     // Regular expression to allow only digits (0-9)
     if (/^\d*$/.test(value)) {
-      setZipCode(value);  // Set the value if it matches the regex
+      setZipCode(value); 
+      setError(''); // Set the value if it matches the regex
     }
   };
   const {
@@ -102,7 +103,16 @@ const Address = () => {
       toast.error("Please Select City");
       return;
     }
-
+    if (zipCode.length === 0) {
+      setError('Zip code is required');
+      return;
+    } else if (zipCode.length < 5) {
+      setError('Zip code must be at least 5 digits');
+      return;
+    } else if (zipCode.length > 9) {
+      setError('Zip code must not exceed 9 digits');
+      return;
+    } else {}
     const coordinates = await fetchCoordinates(
       selectedCountry.name,
       selectedState.name,
@@ -123,7 +133,7 @@ const Address = () => {
       lng: coordinates.lon,
     };
 
-    console.log("Data being sent:", data); // Debugging line
+
 
     try {
       setLoader(true);
@@ -138,10 +148,10 @@ const Address = () => {
 
       const response = await addAddressApi(id, data);
 
-      console.log("API Response:", response); // Debugging line
+      
 
       if (response?.isSuccess) {
-        // console.log(response)
+  
         toast.success(response?.message);
         navigate("/user/dashboard");
       } else {
@@ -161,8 +171,7 @@ const Address = () => {
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
-      console.log(data)
-      console.log(data.address)
+
       if (data && data.address) {
         const { country, state, city, city_district, postcode } = data.address;
         console.log( country, state, city, city_district, postcode)
@@ -201,7 +210,6 @@ const Address = () => {
           lng: coordinates.lon,
         };
 
-        console.log("Payload for current location:", payload); // Debugging line
 
         try {
           let user = getLocalStorage("user");
@@ -213,7 +221,7 @@ const Address = () => {
           }
 
           const response = await addAddressApi(params?.id, payload);
-          console.log("API Response (current location):", response); // Debugging line
+    
 
           if (response?.isSuccess) {
             toast.success(response?.message);
@@ -387,6 +395,7 @@ const Address = () => {
                 className="border py-2 px-4 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder="93940"
               />
+                   {error && <p className="text-red-500">{error}</p>}
             </div>
 
             <div

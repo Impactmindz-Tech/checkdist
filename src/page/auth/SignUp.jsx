@@ -132,64 +132,7 @@ const SignUp = () => {
     }
   };
 
-  // const handleGoogleSignup = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     // Sign in with Google
-  //     const result = await signInWithPopup(auth, provider);
-  //     const user = result.user;
 
-  //       // Prepare request body for login
-  //       const loginBody = {
-  //         uid: user.uid,
-  //         googleLogin: true,
-  //       };
-
-  //       // Attempt to log in
-  //       const loginResponse = await loginApi(loginBody);
-
-  //     if (loginResponse?.isSuccess) {
-  //       if (loginResponse?.isSuccess && loginResponse?.data?.length > 1) {
-  //         // Handle response when user data exists
-  //         setLocalStorage("userDetails", loginResponse);
-  //         navigate(`/auth/role/${loginResponse?.data[0].userId}`, {
-  //           state: { body: loginResponse },
-  //         });
-  //       } else {
-  //         // Handle response for successful login but without multiple user data
-  //         setLocalStorage("user", loginResponse?.data);
-  //         setLocalStorage("token", loginResponse?.token);
-  //         navigate("/user/dashboard");
-  //       }
-  //     } else {
-  //       // User not found, proceed to signup
-  //       const signupBody = {
-  //         userName: user.displayName,
-  //         email: user.email,
-  //         profileImage: user.photoURL,
-  //         uid: user.uid,
-  //         isgoogleSignup: true,
-  //       };
-
-  //       // Call signup API
-  //       const signupResponse = await registrationApi(signupBody);
-
-  //       console.log(signupResponse);
-  //       if (signupResponse?.isSucces) {
-
-  //           setLocalStorage("userDetails", signupResponse?.data);
-  //           setLocalStorage("token", signupResponse?.token);
-  //           navigate(`/auth/role/${signupResponse?.data?._id}`);
-
-  //       } else {
-  //         throw new Error("Signup failed");
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Google Signup/Login Error:", error);
-  //     toast.error("Google Signup/Login failed. Please try again.");
-  //   }
-  // };
 
   return (
     <>

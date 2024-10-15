@@ -33,11 +33,11 @@ const ChatUser = () => {
       socket.emit("addUser", user?._id);
 
       const handleIncomingMessage = (data) => {
-        if (data.receiverId === user?._id) {
-          toast(`New message from ${data.user.fullname}: ${data.message}`, {
-            duration: 6000,
-          });
-        }
+        // // if (data.receiverId === user?._id) {
+        // //   toast(`New message from ${data.user.fullname}: ${data.message}`, {
+        // //     duration: 6000,
+        // //   });
+        // }
         setMessages((prevMessages) => [
           ...prevMessages,
           { user: data.user, message: data.message, time: data.time },

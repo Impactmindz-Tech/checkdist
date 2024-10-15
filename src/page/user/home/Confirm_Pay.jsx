@@ -73,10 +73,10 @@ function Confirm_Pay() {
       let body = {
         bookingId: bookingDetails?.data?.booking?._id,
         avatarId: bookingDetails?.data?.booking?.avatarId,
-        price: total + adminfee,
+        price: totalprice.toFixed(2),
         product: bookingDetails?.data?.packageInfo?.ExperienceName,
         productId: bookingDetails?.data?.booking?.packageIds,
-        Adminfee: adminfee,
+        Adminfee: adminfee.toFixed(2),
         paymentType: selectedMethod,
         recording:isChecked
       };
@@ -95,10 +95,10 @@ function Confirm_Pay() {
       let body = {
         bookingId: bookingDetails?.data?.booking?._id,
         avatarId: bookingDetails?.data?.booking?.avatarId,
-        price: total + adminfee,
+        price: totalprice.toFixed(2),
         product: bookingDetails?.data?.packageInfo?.ExperienceName,
         productId: bookingDetails?.data?.booking?.packageIds,
-        Adminfee: adminfee,
+        Adminfee: adminfee.toFixed(2),
         paymentType: selectedMethod,
         recording:isChecked
       };
@@ -119,7 +119,7 @@ function Confirm_Pay() {
   };
 const packageprice = total;
 const adminfee = bookingDetails?.data?.booking?.Adminfee/100*packageprice;
-
+let totalprice = adminfee+total;
 
   return (
     <>
@@ -187,14 +187,14 @@ const adminfee = bookingDetails?.data?.booking?.Adminfee/100*packageprice;
                   </div>
                   <div className="font-medium">
                     {getCurrencySymbol()}
-                    {total}
+                    {total.toFixed(2)}
                   </div>
                 </div>
                 <div className="text flex justify-between py-1 sm:text-sm">
                   <div className="title">Avatar Walk Fee</div>
                   <div className="font-medium">
                     {getCurrencySymbol()}
-                    {adminfee}
+                    {adminfee.toFixed(2)}
                   </div>
                 </div>
 
@@ -204,7 +204,7 @@ const adminfee = bookingDetails?.data?.booking?.Adminfee/100*packageprice;
                     <div className="title font-bold">Total</div>
                     <div className="font-bold">
                       {getCurrencySymbol()}
-                      {total + adminfee}
+                      {totalprice.toFixed(2)}
                     </div>
                   </div>
                 </div>

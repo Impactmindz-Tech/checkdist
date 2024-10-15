@@ -147,7 +147,7 @@ console.log(item,'sanju');
                 {role === "avatar" && (
                   <div className="absolute bottom-2 right-1 px-2 rounded-full font-bold bg-white text-sm">
                     {getCurrencySymbol()}
-                    {item?.totalPrice}
+                    {item?.totalPrice.toFixed(2)}
                   </div>
                 )}
               </div>
@@ -202,7 +202,7 @@ console.log(item,'sanju');
                   </p>
                   <p className="text-[#aaaaab] font-semibold">
                     {getCurrencySymbol()}
-                    {item?.totalPrice}
+                    {item?.totalPrice.toFixed(2)}
                   </p>
                 </div>
               )}

@@ -858,6 +858,25 @@ html {
   }
 }
 
+@media (min-width:322px) and (max-width:380px){
+  .responsive{
+    padding-left:7px !important;
+    padding-right:7px !important;
+  }
+}
+@media (min-width:316px) and (max-width:320px){
+  .responsive{
+    padding-left: 9px !important;
+    padding-right: 9px !important;
+    font-size: 11px !important;
+}
+.Loginresponsive{
+  padding-left: 9px !important;
+  padding-right: 9px !important;
+  font-size: 11px !important;
+}
+  }
+
 
 .past-time-class {
   opacity: 0.5;

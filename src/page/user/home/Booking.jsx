@@ -17,7 +17,7 @@ function Booking() {
   const navigate = useNavigate();
   const params = useParams();
   const [date, setDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState("null");
+  const [selectedTime, setSelectedTime] = useState();
   const [duration, setDuration] = useState(null);
   const [type, setType] = useState(null);
   const [color, setColor] = useState(false);
@@ -78,27 +78,7 @@ const avatartimezone = getLocalStorage('')
     return () => clearInterval(intervalId);
   }, []);
 
-  //   import moment from 'moment-timezone';
 
-  // // Function to get the current local time
-  // function getCurrentLocalTime() {
-  //   // Get the user's time zone from the browser
-  //   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-  //   // Get the current time in the user's time zone
-  //   const localTime = moment().tz(timeZone).format('YYYY-MM-DD HH:mm:ss');
-
-  //   return localTime;
-  // }
-
-  // // Usage
-  // const currentLocalTime = getCurrentLocalTime();
-  // console.log(`Please select the experience time as the avatar time. The current avatar time is ${currentLocalTime}.`);
-  // console.log(
-  //   getDateTimeForTimezone(getLocalStorage("avatarTime")).split(" ")[1]
-  // );
-
-  // CONVERT TIME TO 12 HOUR FORMAT
   const convertTo12Hour = (timeString) => {
     const [hour, minute, second] = timeString.split(":");
     let hours = parseInt(hour);
@@ -193,22 +173,7 @@ const avatartimezone = getLocalStorage('')
             setSelectedTime={setSelectedTime}
           />
 
-          {/* <div className="bg-gray-200 p-4 rounded-lg mt-4">
-            <h2 className="text-xl font-semibold mb-2">
-              Please select the experience time as the avatar time:
-            </h2>
-            <p>
-              The current avatar time is:
-              <span className="ml-2 font-semibold">
-                {getDateTimeForTimezone(getLocalStorage("avatarTime"))}
-              </span>
-            </p>
-            <p>
-              Your current time is:
-              <span className="ml-2 font-semibold">{currentTime}</span>
-            </p>
-          </div> */}
-
+     
           <div className="bg-white rounded-lg my-5">
             <h2 className="text-xl font-semibold mb-4">
               Eastern Standard Time
@@ -323,19 +288,7 @@ const avatartimezone = getLocalStorage('')
               Anyone can pay to join this live with you
             </div>
           )}
-          {/* <div className="my-2">
-            <h3 className="text-lg font-semibold mb-2">
-              You Can Live Your Tour for Others
-            </h3>
-            <button
-              type="button"
-              className="text-white inline-flex gap-2 py-3 px-4 sm:px-2 sm:py-1 sm:text-sm bg-gradient-to-r from-[#FF7070] to-[#FF4545] rounded-md first-letter-capital leading-none"
-            >
-              <img src={Images.instantLiveLight} alt="" />
-              Live
-            </button>
-          </div> */}
-
+       
           <div
             onClick={isFormComplete ? onSubmit : null}
             className={`w-full my-6 rounded-md bottom-1 m-auto left-0 right-0 p-2 cursor-pointer bg-backgroundFill-900 text-white text-center ${
@@ -351,10 +304,7 @@ const avatartimezone = getLocalStorage('')
           </div>
         </div>
       </div>
-      <AddMoreTime
-        show={showAddMoreTimeModal}
-        onClose={() => setShowAddMoreTimeModal(false)}
-      />
+
     </>
   );
 }

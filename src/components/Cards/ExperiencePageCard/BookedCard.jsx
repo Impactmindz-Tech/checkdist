@@ -239,7 +239,7 @@ const BookedCard = ({ item }) => {
             </div>{" "}
             <div className="font-bold">
               {" "}
-              {getCurrencySymbol()} {item?.totalPrice}{" "}
+              {getCurrencySymbol()} {item?.totalPrice.toFixed(2)}{" "}
             </div>{" "}
           </div>
           <div className="my-3 w-[94%] m-auto">

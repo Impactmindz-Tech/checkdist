@@ -66,7 +66,7 @@ const CancelledCard = ({ item }) => {
           </div>
           <div className="font-bold">
             {getCurrencySymbol()}
-            {item?.totalPrice}
+            {item?.totalPrice.toFixed(2)}
           </div>
         </div>
 

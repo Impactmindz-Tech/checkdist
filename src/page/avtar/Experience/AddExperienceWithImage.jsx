@@ -23,11 +23,7 @@ const AddExperienceWithImagePage = () => {
     timeZone: "",
   });
 
-  // const [errors, setErrors] = useState({
-  //   from: "",
-  //   to: "",
-  //   timeZone: "",
-  // });
+
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -467,7 +463,7 @@ const AddExperienceWithImagePage = () => {
               id="AmountsperMinute"
               className="input my-2"
               placeholder="$5"
-              {...register("AmountsperMinute")}
+              {...register("AmountsperMinute", { value: 0 })}
             />
             <p className="text-[red]">{errors?.AmountsperMinute?.message}</p>
           </div>

@@ -3,12 +3,13 @@ import {
   formatTime,
 } from "@/constant/date-time-format/DateTimeFormat";
 import Images from "@/constant/Images";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getCurrencySymbol } from "@/constant/CurrencySign";
 import { getrating } from "@/utills/service/experienceService/ExperienceService";
 import { useEffect, useState } from "react";
 
 const CompletedCard = ({ item }) => {
+  let navigate = useNavigate();
 
   const location = useLocation();
   const[ratings,Ratingdone] = useState(false);
@@ -23,6 +24,10 @@ const getratings = async()=>{
     Ratingdone(false);
    }
    }catch(err){}
+}
+
+const handleone = ()=>{
+  navigate(`/user/rate-tour/${item?.expId}`,{ state: {res: item }});
 }
 useEffect(()=>{
   getratings();
@@ -69,7 +74,7 @@ useEffect(()=>{
           </div>
           <div className="font-bold">
             {getCurrencySymbol()}
-            {item?.totalPrice}
+            {item?.totalPrice.toFixed(2)}
           </div>
         </div>
 
@@ -77,17 +82,18 @@ useEffect(()=>{
         <div className="my-3 w-[94%]  m-auto sm:w-full sm:px-2 sm:mb-0 sm:mt-2">
           {/* clock timer btn */}
           {location.pathname === "/user/experience" && (
-            <Link to={`/user/rate-tour/${item?.expId}`}>
-<button
+            
+<button onClick={handleone}
   disabled={ratings}
   className={`${
-    ratings ? 'bg-[#eaf6f2] text-[#2AA174]' : 'bg-backgroundFill-900'
+    ratings ? 'bg-[#eaf6f2] text-[#2AA174]' : 'bg-backgroundFill-900 text-white'
   } flex justify-center items-center py-3 gap-2 rounded w-full mt-3 lg:w-[100%]`}
 >
-  {ratings && 'Your feedback is appreciated!'}
+  {ratings ? 'Your feedback is appreciated!' : 'Rate Tour'}
 </button>
 
-            </Link>
+
+       
           )}
         </div>
       </div>

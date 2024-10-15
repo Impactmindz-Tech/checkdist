@@ -112,7 +112,7 @@ const BookedCard = ({ item, role }) => {
         <div className="flex p-4 flex-wrap sm:p-2">
           <div className="w-[30%] relative">
             <img src={item?.experienceImage || Images.cardImageRounded} alt="cardImageRounded" className="w-full object-cover h-full rounded-lg aspect-square" />
-            {role === "avatar" && <div className="absolute bottom-2 right-1 px-2 rounded-full font-bold bg-white text-sm">${item?.totalPrice}</div>}
+            {role === "avatar" && <div className="absolute bottom-2 right-1 px-2 rounded-full font-bold bg-white text-sm">${item?.totalPrice.toFixed(2)}</div>}
           </div>
           <div className="w-[70%] pl-3">
             <h2 className="text-lg font-bold sm:text-sm leading-5 line-clamp-2">

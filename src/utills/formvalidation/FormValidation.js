@@ -19,8 +19,12 @@ const emailValidation = yup
 const checkboxValidation = yup.boolean().oneOf([true], "You must agree to the Privacy Policy and Terms of Services.");
 
 export const registrationValidation = yup.object({
-  email: yup.string().required("Please Provide a Valid email address."),
-  userName: yup.string().required("Please Provide a username in valid format."),
+  email: yup.string().required("Please Provide a Valid email address.").matches(
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 
+    "Please provide a valid email address."
+  ),
+  userName: yup.string().required("Please Provide a valid username.").matches(/^[a-zA-Z0-9]*$/, "Username cannot contain spaces or special characters.").min(4, "Username must be at least 4 characters long.")
+  .max(35, "Username cannot exceed 35 characters."), // Set min length to 4 and max length to 35,
   password: yup.string().required("Password is required.").matches(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
     'The Password requires capital and lowercase letters, numbers, symbols (@$!%*?&) and be at least 8 characters long.'
@@ -66,7 +70,7 @@ export const editProfileValidation = yup.object({
 });
 
 export const addExperinceValidation = yup.object({
-  AmountsperMinute: yup.string().required("Amount per minute is required."),
+  AmountsperMinute: yup.number().required("Amount per minute is required.").min(0.5,"Amount per minute must at least 0.5"),
   notesForUser: yup.string().required("Notes For User is required."),
   ExperienceName: yup.string().required("Experience Name is required."),
   about: yup.string().required("About is required.")
@@ -74,9 +78,12 @@ export const addExperinceValidation = yup.object({
 
 export const createOfferValidation = yup.object({
   Title: yup.string().required("Title is required."),
-  price: yup.string().required("price is required."),
+  price: yup.number().required("Price is required.").min(0.5, "Price must be at least $0.5."),
   Minutes: yup.string().required("Minutes is required."),
-  ZipCode: yup.string().required("ZipCode is required."),
+  ZipCode: yup
+  .string()
+  .required("ZipCode is required.")
+  .matches(/^\d{5,9}$/, "ZipCode must be a number between 5 and 9 digits long."),
   Notes: yup.string().required("Notes is required."),
 });
 

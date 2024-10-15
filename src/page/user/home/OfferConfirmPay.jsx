@@ -64,7 +64,7 @@ function OfferConfirmPay() {
     getBookingDetails();
   }, [params?.id]);
 const adminfee = offerDetails?.data?.adminFee/100 * offerDetails?.data?.Price;
-console.log(offerDetails);
+let totalprice = offerDetails?.data?.Price +adminfee;
 
 
   const handlecheckout = async () => {
@@ -73,10 +73,10 @@ console.log(offerDetails);
       let body = {
      
         avatarId: offerDetails?.data?.avatarId,
-        price: offerDetails?.data?.Price +adminfee ,
+        price: totalprice.toFixed(2) ,
         product: offerDetails?.data?.ExperienceName,
         OfferId: offerDetails?.data?._id,
-        Adminfee: adminfee,
+        Adminfee: adminfee.toFixed(2),
         paymentType: selectedMethod,
       
       };
@@ -95,10 +95,10 @@ console.log(offerDetails);
         let body = {
      
             avatarId: offerDetails?.data?.avatarId,
-            price: offerDetails?.data?.Price +adminfee ,
+            price: totalprice.toFixed(2),
             product: offerDetails?.data?.ExperienceName,
             OfferId: offerDetails?.data?._id,
-            Adminfee: adminfee,
+            Adminfee: adminfee.toFixed(2),
             paymentType: selectedMethod,
           
           };
@@ -182,14 +182,14 @@ console.log(offerDetails);
                   </div>
                   <div className="font-medium">
                     {getCurrencySymbol()}
-                    {offerDetails?.data?.Price} 
+                    {offerDetails?.data?.Price.toFixed(2)} 
                   </div>
                 </div>
                 <div className="text flex justify-between py-1 sm:text-sm">
                   <div className="title">Avatar Walk Fee</div>
                   <div className="font-medium">
                     {getCurrencySymbol()}
-                    {adminfee}
+                    {adminfee.toFixed(2)}
                   </div>
                 </div>
 
@@ -199,7 +199,7 @@ console.log(offerDetails);
                     <div className="title font-bold">Total</div>
                     <div className="font-bold">
                       {getCurrencySymbol()}
-                      {( offerDetails?.data?.Price+ adminfee)}
+                      {( offerDetails?.data?.Price+ adminfee).toFixed(2)}
                     </div>
                   </div>
                 </div>

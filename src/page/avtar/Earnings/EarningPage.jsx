@@ -79,7 +79,10 @@ function EarningPage() {
       {loader && <Loader />}
       <div className="px-4">
         <HeaderBack link="/avatar/profile" text={"Your Earnings"} />
-
+        <p className="flex items-center mt-2">
+  <img src={Images.info} alt="Info icon" className="w-5 h-5 mr-2" />
+  <span className="text-gray-500 text-sm sm:text-xs">A minimum of $50 is required to make a withdrawal.</span>
+</p>
         <div
           className="flex justify-between items-center mt-4 p-3 rounded-lg border border-slate-200 mb-6"
           style={{ boxShadow: "0 0 8px rgba(0,0,0,.08)" }}

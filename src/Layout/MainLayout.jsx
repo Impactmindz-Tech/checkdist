@@ -155,35 +155,34 @@ const MainLayout = ({ children }) => {
 
   return (
     <div className="container px-4 sm:px-0 lg:max-w-full">
-      <header className="flex justify-between px-4 items-center my-6">
-        <div className="brand">
-          <Link to="/">
-            <img src={Images.AvatarWalk} alt="AvatarWalk" />
-          </Link>
-        </div>
-        <div>
-          <Link
-            to="/auth/login"
-            className="block bg-grey-900 py-3 px-4 text-white font-medium rounded-lg lg:py-2 lg:text-sm"
-          >
-            <button>Become an Avatar</button>
-          </Link>
-          
-        </div>
-        <div>
-        <Link
-            to="/auth/login"
-            className="bg-grey-900 py-[7px] text-white rounded-lg px-4 sm:px-5"
-          >
-            <button className="items-center">
-              <span className="">
-                {/* <img src={Images.hotsport} alt="hosport" /> */}
-              </span>
-              Login
-            </button>
-          </Link>
-        </div>
-      </header>
+ <header className="flex justify-between px-4 items-center my-6">
+  <div className="brand">
+    <Link to="/">
+      <img src={Images.AvatarWalk} alt="AvatarWalk" />
+    </Link>
+  </div>
+  
+  <div className="flex space-x-4 sm:space-x-2 "> {/* Container for both buttons */}
+    <Link
+      to="/auth/login"
+      className="block bg-grey-900 py-[7px] sm:px-3 px-4 text-white font-medium rounded-lg lg:py-2 lg:text-sm responsive"
+    >
+      <button>Become an Avatar</button>
+    </Link>
+    <Link
+      to="/auth/login"
+      className="bg-grey-900 py-[7px] text-white rounded-lg px-4 sm:px-3 Loginresponsive"
+    >
+      <button className="items-center">
+        <span className="">
+          {/* <img src={Images.hotsport} alt="hosport" /> */}
+        </span>
+        Login
+      </button>
+    </Link>
+  </div>
+</header>
+
 
       {pathname === "/" && (
         <div className="flex justify-between px-4 items-center my-6 lg:px-1 ">

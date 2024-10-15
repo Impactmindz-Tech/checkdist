@@ -47,8 +47,7 @@ let meetId = localStorage.getItem('meet');
         AmmountTip: tipMoney,
       };
       const res = await rateTourApi(id, body);
-    
- 
+    if(data.res.AvatarID){
       let bodydata = {
         to:data.res.AvatarID,
         price:data.res.price,
@@ -57,8 +56,23 @@ let meetId = localStorage.getItem('meet');
         
 
       }
-      
       const response = await payoutApi( bodydata);
+    }else{
+      let bodydata = {
+        to:data.res.avatarId,
+        price:data.res.totalPrice,
+        reqid:data.res.reqId
+
+        
+
+      }
+      const response = await payoutApi( bodydata);
+
+    }
+ 
+ 
+      
+      
 
    
       if (res?.isSuccess) {

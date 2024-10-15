@@ -185,28 +185,33 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime, currentTime }) 
             Times are displayed in the avatar's timezone ({avatarTimeZone}).
           </p>
           <div className="flex flex-wrap max-h-72 mt-1 text-black">
-            {loading ? ( // Check if loading
-              <div className="text-black text-3xl flex justify-center items-center">
-                <span className="loading loading-spinner">
-                  <Loader />
-                </span>
-              </div> // Spinner while loading
-            ) : (
-              timeSlots.map((slot) => (
-                <button
-                  key={slot.avatarTime}
-                  className={`p-2 rounded-md w-full mt-2 border border-black text-black font-semibold ${
-                    selectedSlot === slot.avatarTime // Check if this time is selected
-                      ? "bg-black text-white" // Change color if selected
-                      : "bg-white hover:bg-black hover:text-white" // Unselected slot styling
-                  }`}
-                  onClick={() => handleTimeSlotClick(slot)} // Handle time click
-                >
-                  {slot.avatarTimeFormatted} 
-                </button>
-              ))
-            )}
-          </div>
+  {loading ? ( // Check if loading
+    <div className="text-black text-3xl flex justify-center items-center">
+      <span className="loading loading-spinner">
+        <Loader />
+      </span>
+    </div> // Spinner while loading
+  ) : timeSlots.length > 0 ? ( // Check if there are time slots
+    timeSlots.map((slot) => (
+      <button
+        key={slot.avatarTime}
+        className={`p-2 rounded-md w-full mt-2 border border-black text-black font-semibold ${
+          selectedSlot === slot.avatarTime // Check if this time is selected
+            ? "bg-black text-white" // Change color if selected
+            : "bg-white hover:bg-black hover:text-white" // Unselected slot styling
+        }`}
+        onClick={() => handleTimeSlotClick(slot)} // Handle time click
+      >
+        {slot.avatarTimeFormatted} 
+      </button>
+    ))
+  ) : (
+    <div className="text-center text-green-500 font-semibold w-full  mt-5">
+      No time slots available for the selected date
+    </div> // Show message if no slots available
+  )}
+</div>
+
         </div>
       </div>
     </>

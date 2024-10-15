@@ -170,7 +170,7 @@ function Offers() {
                 <label htmlFor="price" className="font-semibold">
                   Price
                 </label>
-                <input type="number" name="price" id="price" placeholder={`Eg. ${getCurrencySymbol()}10`} className="input my-1" {...register("price")} />
+                <input type="number" name="price" id="price" placeholder={`Eg. ${getCurrencySymbol()}10`} className="input my-1" {...register("price", { value: 0 })} />
                 <p className="text-[red] sm:text-sm">{errors?.price?.message}</p>
               </div>
             </div>

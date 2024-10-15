@@ -89,7 +89,7 @@ const Login = () => {
       const credential = OAuthProvider.credentialFromResult(result);
       const accessToken = credential.accessToken;
       const idToken = credential.idToken;
-      console.log(result);
+
       // Handle user information and tokens
       const body = {
         uid: user.uid,
@@ -145,10 +145,10 @@ const Login = () => {
     sendSignInLinkToEmail(auth, email, actionCodeSettings)
       .then(() => {
         setLocalStorage("email", email);
-        console.log("Email sign-in link sent to:", email);
+       
       })
       .catch((error) => {
-        console.error("Error sending email:", error.code, error.message);
+  
       });
   };
 
@@ -303,7 +303,7 @@ const Login = () => {
             <p className="text-center text-gray-400">Or</p>
             <div className="flex items-center justify-center gap-3 cursor-pointer w-full bg-grey-300 p-4 text-center text-bg-primaryColor-900 rounded-xl" onClick={handleEmailPopup}>
               <img className="w-5 h-5" src={Image.mail_img} alt="" />
-              <button className="font-semibold text-primaryColor-500">Continue with Email</button>
+              <button className="font-semibold text-primaryColor-500">{isemail?'Continue with Username':'Continue with Email'}</button>
             </div>
             <div className="flex items-center justify-center gap-3 cursor-pointer w-full bg-grey-300 p-4 text-center text-bg-primaryColor-900 rounded-xl" onClick={handleGoogleSignup}>
               <img className="w-5 h-5" src={Image.google_img} alt="" />
