@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import Loader from "../Loader";
 import { getLocalStorage } from "@/utills/LocalStorageUtills";
+import EditModalCalendar from "../Calendar/EditModalCalendar";
 
 const DatePickerModal = ({ show, onClose, editdate }) => {
   const formatDate = (date) => {
@@ -117,10 +118,10 @@ const DatePickerModal = ({ show, onClose, editdate }) => {
           </div>
 
           {/* Calendar Component */}
-          <EditDateCalendar date={selectedDate} onDateChange={handleDateChange} />
+          <EditModalCalendar date={selectedDate} onDateChange={handleDateChange} />
 
           {/* Display available slots */}
-          <div className="my-2">
+          {/* <div className="my-2">
             <div className="mb-2">
               <h3 className="text-lg font-semibold mb-2">Next availability:</h3>
               <div className="flex space-x-2">
@@ -135,7 +136,7 @@ const DatePickerModal = ({ show, onClose, editdate }) => {
                 )}
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Selected Date Display */}
           <div className="mt-4">
