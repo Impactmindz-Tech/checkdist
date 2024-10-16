@@ -86,7 +86,7 @@ const MapComponent = ({ selectPosition, setHeight, payment }) => {
       const now = moment();
       const diff = targetTime.diff(now, "minutes");
 
-      if (diff <= 5) {
+      if (diff <= 2) {
         setDisablePayment(true);
         toast.error("Payment is disabled because less than 5 minutes remaining.");
       } else {
