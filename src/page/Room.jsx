@@ -11,6 +11,7 @@ import { getmeetdata } from "@/utills/service/userSideService/userService/UserHo
 import { useNavigate } from "react-router-dom";
 import { getAvailableApi } from "@/utills/service/avtarService/AddExperienceService";
 import moment from 'moment-timezone';
+import { useLocation } from "react-router-dom";
 
 // Replace with your ngrok URL or server URL
 const SOCKET_SERVER_URL = `${import.meta.env.VITE_APP_MAINURL}/`;
@@ -18,6 +19,7 @@ const SOCKET_SERVER_URL = `${import.meta.env.VITE_APP_MAINURL}/`;
 const socket = io(SOCKET_SERVER_URL);
 
 const Room = () => {
+  const location = useLocation();
   const [avtTimezone, setTimezone] = useState(null);
   const [videoDevices, setVideoDevices] = useState([]);
   const [selectedCameraId, setSelectedCameraId] = useState('');
@@ -39,6 +41,7 @@ const Room = () => {
   const [meetdata, setdata] = useState(null);
   const [type, settype] = useState(null);
   const params = useParams();
+  console.log(params);
   const navigate = useNavigate();
   const [viewerTimer, setViewerTimer] = useState(0);
   const [timer, setTimer] = useState(0);
@@ -48,6 +51,10 @@ const Room = () => {
   const [remaintime, setremaintimer] = useState(0);
   const [remainingTime, setRemainingTime] = useState(0);
   const[expid,setexpid] = useState(null);
+  const queryParams = new URLSearchParams(location.search);
+
+  // Example: Get the value of a query parameter called 'id'
+  const aid = queryParams.get('admin');
 
   const configuration = {
     iceServers: [
@@ -638,7 +645,7 @@ const Room = () => {
               {/* You can add broadcaster-specific controls here */}
             </>
           )}
-          {!isBroadcaster && (
+          {!isBroadcaster && aid!=1&&(
             <>
               <div className="flex gap-x-5">
                 <div className=" text-white">
@@ -716,7 +723,7 @@ const Room = () => {
                 </div>
               ))}
             </div>
-            {!isBroadcaster && (
+            {!isBroadcaster && aid != 1 && (
               <form
                 className="flex flex-wrap justify-between pb-[20px] sm:pb-[10px]"
                 onSubmit={handleSendMessage}
