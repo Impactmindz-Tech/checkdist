@@ -15,7 +15,7 @@ import cardImage from "../assets/images/cardImage.svg";
 import InstantLiveBtn from "../assets/images/InstantLiveBtn.svg";
 import user from "../assets/images/user.svg";
 import user2 from "../assets/images/User2.svg";
-import user4 from "../assets/images/profileIcon/user2.png"
+import user4 from "../assets/images/profileIcon/user2.svg"
 import arrowLeft from "../assets/images/arrowLeft.svg";
 import add from "../assets/images/add.svg";
 import star from "../assets/images/Star.svg";
