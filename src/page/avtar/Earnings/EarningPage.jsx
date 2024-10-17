@@ -49,7 +49,7 @@ function EarningPage() {
     try {
       const response = await withdrawAmountApi(body);
     } catch (error) {
-      toast.error(error.response.message);
+      toast.error("Please add the Stripe Email");
     }
   };
 
