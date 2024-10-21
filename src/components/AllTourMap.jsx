@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap, LayersControl, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-
+import PaymentPage from "@/page/user/Payment";
+import moment from "moment";
+import toast from "react-hot-toast";
+import { setLocalStorage } from "@/utills/LocalStorageUtills";
+import { DivIcon } from "leaflet";
 // Extend the L.Icon.Default class to set the default options
 class DefaultIcon extends L.Icon.Default {
   constructor() {
@@ -14,6 +18,7 @@ class DefaultIcon extends L.Icon.Default {
 }
 L.Icon.Default.mergeOptions({
   iconUrl: 'https://res.cloudinary.com/dzmy6os8w/image/upload/v1728554690/marker-icon_q27bnu.png'
+  
 });
 
 // Apply the extended default icon options
@@ -42,7 +47,7 @@ const CurrentLocationButton = ({ onClick }) => {
       onClick();
     },
   });
- 
+
   return (
     <div
       style={{
@@ -62,13 +67,22 @@ const CurrentLocationButton = ({ onClick }) => {
   );
 };
 
-const AllTourMap = ({ selectPosition }) => {
+const MapComponent = ({ selectPosition, setHeight, payment }) => {
 
   const [newMarkerPosition, setNewMarkerPosition] = useState(null);
-  const [selectedExperience, setSelectedExperience] = useState(null); // New state to track the selected experience
+  const [payemntDetails, setPayemntDetails] = useState(false);
+  const [test, settest] = useState(null);
+  const [disablePayment, setDisablePayment] = useState(false);
+  const [countdown, setCountdown] = useState(null);
 
   const safeSelectPosition = Array.isArray(selectPosition) ? selectPosition : [];
+
   const initialPosition = safeSelectPosition.length > 0 ? [safeSelectPosition[0].lat, safeSelectPosition[0].lon] : defaultPosition;
+
+  const handleMarkerClick = (position) => {
+ 
+  }
+      
 
   const handleCurrentLocationClick = () => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -78,26 +92,16 @@ const AllTourMap = ({ selectPosition }) => {
       map.setView([latitude, longitude], 100, { animate: true });
     });
   };
-
-  const handleMarkerClick = (position) => {
-    setSelectedExperience(position); // Store the selected experience data when the marker popup is clicked
-  };
-
+  localStorage.setItem('r',test?.roomId);
   return (
     <>
       <MapContainer center={initialPosition} zoom={1} style={{ height: "100%", width: "100%" }}>
         <LayersControl position="topright">
-          <LayersControl.BaseLayer checked name="Basic Map">
-            <TileLayer
-              url="https://api.maptiler.com/maps/basic/256/{z}/{x}/{y}.png?key=eA3MBleCC9aTtUBJHL6C"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
+          <LayersControl.BaseLayer  checked name="Basic Map">
+            <TileLayer url="https://api.maptiler.com/maps/basic/256/{z}/{x}/{y}.png?key=eA3MBleCC9aTtUBJHL6C" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
           </LayersControl.BaseLayer>
           <LayersControl.BaseLayer name="Satellite View">
-            <TileLayer
-              url="https://api.maptiler.com/maps/hybrid/256/{z}/{x}/{y}.jpg?key=eA3MBleCC9aTtUBJHL6C"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
+            <TileLayer url="https://api.maptiler.com/maps/hybrid/256/{z}/{x}/{y}.jpg?key=eA3MBleCC9aTtUBJHL6C" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
           </LayersControl.BaseLayer>
         </LayersControl>
 
@@ -106,57 +110,50 @@ const AllTourMap = ({ selectPosition }) => {
             <Marker
               key={index}
               position={[position.lat, position.lon]}
+              icon={L.divIcon({
+                className: 'custom-marker',
+                html: `<div style="position: relative; display: inline-block; text-align: center;">
+    <img src="https://res.cloudinary.com/dzmy6os8w/image/upload/v1728554690/marker-icon_q27bnu.png" />
+    <div style="position: absolute; top: -38px; left: 50%; transform: translateX(-50%); background-color: white; padding: 4px 10px; border-radius: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); font-size: 14px; font-weight: bold;">
+        $${position?.ExpId?.AmountsperMinute}
+        <!-- Arrow -->
+        <div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>
+    </div>
+</div>
+
+`
+              })}
               eventHandlers={{
-                click: () => handleMarkerClick(position), // Call when marker is clicked
+                click: () => handleMarkerClick(position),
               }}
-              ref={(marker) => marker && marker.openPopup()}
             >
-              <Popup>
-                <div onClick={() => handleMarkerClick(position)}>
-                  {`$ ${position?.ExpId?.AmountsperMinute}`} 
-                  <br />
-                  <small>Click for more details</small>
-                </div>
-              </Popup>
+               <Popup>
+                  <div>
+                    <h3>Experience Details</h3>
+                    <p><strong>Experience ID:</strong> {position?.ExpId?.ExperienceName}</p>
+                    <p><strong>Amount per Minute:</strong> ${position?.ExpId?.AmountsperMinute}</p>
+                    <p><strong>Description:</strong> {position?.ExpId?.about || "No description available"}</p>
+                    <p><strong>Country:</strong> {position?.ExpId?.country || "No description available"}</p>
+                    <p><strong>State:</strong> {position?.ExpId?.State || "No description available"}</p>
+                    <p><strong>Rating:</strong> {position?.ExpId?.avgRating || 0.0}</p>
+                  </div>
+                </Popup>
             </Marker>
           ))}
 
         {newMarkerPosition && (
-          <Marker
-            ref={(marker) => marker && marker.openPopup()}
-            position={[newMarkerPosition.lat, newMarkerPosition.lon]}
-            icon={new DefaultIcon()}
-          >
+          <Marker position={[newMarkerPosition.lat, newMarkerPosition.lon]} icon={new DefaultIcon()}>
             <Popup>Your Current Location</Popup>
-          </Marker>
-        )}
-
-        {/* Display detailed popup if selectedExperience is set */}
-        {selectedExperience && (
-          <Marker
-            position={[selectedExperience.lat, selectedExperience.lon]}
-            icon={new DefaultIcon()}
-            ref={(marker) => marker && marker.openPopup()}
-          >
-            <Popup>
-              <div>
-                <h3>Experience Details</h3>
-                <p><strong>Experience ID:</strong> {selectedExperience?.ExpId?.ExperienceName}</p>
-                <p><strong>Amount per Minute:</strong> ${selectedExperience?.ExpId?.AmountsperMinute}</p>
-                <p><strong>Description:</strong> {selectedExperience?.ExpId?.about || "No description available"}</p>
-                <p><strong>Country:</strong> {selectedExperience?.ExpId?.country || "No description available"}</p>
-                <p><strong>State:</strong> {selectedExperience?.ExpId?.State || "No description available"}</p>
-                <p><strong>Rating:</strong>{selectedExperience?.ExpId?.avgRating || 0.0}</p>
-              </div>
-            </Popup>
           </Marker>
         )}
 
         <RecentCenterView positions={safeSelectPosition} />
         <CurrentLocationButton onClick={handleCurrentLocationClick} />
+
+        {!disablePayment && payemntDetails && payment && <PaymentPage payemntDetails={payemntDetails} setPayemntDetails={setPayemntDetails} selectPosition={selectPosition} tourDetails={test} />}
       </MapContainer>
     </>
   );
 };
 
-export default AllTourMap;
+export default MapComponent;

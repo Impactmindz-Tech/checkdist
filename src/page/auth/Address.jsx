@@ -181,11 +181,7 @@ const Address = () => {
         // Determine city
         const userCity = city || "";
        
-        if (!country || !userState || !userCity) {
-          toast.error("Incomplete location details fetched.");
-          setLoader(false);
-          return;
-        }
+        
 
         const coordinates = await fetchCoordinates(country, userState, userCity);
 

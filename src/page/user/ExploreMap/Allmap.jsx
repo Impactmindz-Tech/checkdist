@@ -14,38 +14,12 @@ const Allmap = () => {
   const navigate = useNavigate();
   const [tour, setTour] = useState(null);
   
-  // Tabs data
-  // const tabLabels = [
-  //   {
-  //     name: "publiclive",
-  //     image: Images.iconRadar,
-  //   },
-  //   {
-  //     name: "tours",
-  //     image: Images.toursIconLight,
-  //   },
-  //   {
-  //     name: "mostpopular",
-  //     image: Images.popularIconWhite,
-  //   },
-  //   {
-  //     name: "below$5",
-  //     image: Images.creditCardLight,
-  //   },
-  // ];
-
-  // Parse query parameters
-  // const query = new URLSearchParams(location.search);
-  // const tab = query.get("tab");
-
-  // Calculate initial value based on the URL tab parameter
-  // const initialValue = tab ? tabLabels.findIndex(label => label.name === tab) : 0;
-  // const [value, setValue] = useState(initialValue);
 
   // Fetch live tour data based on the selected tab
   const getLiveTour = async () => {
     try {
       const response = await getalltourlocation();
+      
     
     
       if (response?.isSuccess) {
@@ -81,7 +55,7 @@ useEffect(()=>{
      
 
       {/* Map component with dynamic tour data */}
-      <div className="h-[calc(100svh-138px)] md:h-[calc(100svh-217px)] sm:h-[calc(100svh-192px)] relative z-10">
+      <div className="h-[calc(100svh-138px)] md:h-[calc(100svh-217px)] sm:h-[calc(100svh-0px)] relative z-10">
         <AllTourMap selectPosition={tour?.data} />
       </div>
 

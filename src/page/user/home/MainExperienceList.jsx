@@ -143,7 +143,7 @@ const utcOffset = getUTCOffsetFromTimezone(timezone);
           </p>
           <div className="flex  items-center justify-between">
             <p className="text-gray-700 text-base w-[100%] lg:w-[100%] sm:text-[13px] font-medium">
-              {`Mon-Fri ${fromto} to ${too} • ${utcOffset}`}
+              {`${fromto} to ${too} • ${utcOffset}`}
             </p>
         
           </div>

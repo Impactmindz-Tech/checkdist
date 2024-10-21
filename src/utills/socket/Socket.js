@@ -11,6 +11,7 @@ let userId = getLocalStorage("user")?._id;
 
 const socket = io(`${import.meta.env.VITE_APP_MAINURL}/`, {
 //const socket = io(`http://localhost:3000/`, {
+  withCredentials: true,
   query: {user:userId},
   reconnectionAttempts: 5, 
   transports: ['websocket'],

@@ -24,7 +24,7 @@ export default function AvatarProfileCard({ avatardetail }) {
       <div className="flex items-center">
         <div className="w-[150px] sm:w-[100px]">
           <img
-            src={avatardetail?.avatarImage || Images.user}
+            src={avatardetail?.avatarImage || Images.imagePlaceholder}
             alt="avatarProfile"
             className="w-full rounded-full aspect-square"
           />
