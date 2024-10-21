@@ -29,6 +29,7 @@ import Booking from "@/page/user/home/Booking";
 import Confirm_Pay from "@/page/user/home/Confirm_Pay";
 import OfferConfirmPay from "@/page/user/home/OfferConfirmPay";
 import Payment_Success from "@/page/user/Payment_Success";
+import OfferPayment_Success from "@/page/user/OfferPayment_Success";
 import Experience from "@/page/user/experience/Experience";
 import Update_Experience from "@/page/user/Update_Experience";
 import ChatWithAvatar from "@/page/user/ChatWithAvatar";
@@ -404,6 +405,14 @@ const router = createBrowserRouter([
         element: (
           <DashboardLayout>
             <Payment_Success />
+          </DashboardLayout>
+        ),
+      },
+      {
+        path: "offerpaymentsuccess",
+        element: (
+          <DashboardLayout>
+            <OfferPayment_Success/>
           </DashboardLayout>
         ),
       },

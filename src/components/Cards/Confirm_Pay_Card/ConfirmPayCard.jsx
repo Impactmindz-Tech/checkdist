@@ -1,6 +1,10 @@
 import Images from "@/constant/Images";
 
 const ConfirmPayCard = ({ bookingDetails }) => {
+
+  const totalrating = bookingDetails?.data?.packageInfo?.totalRating;
+  const peoplerating = totalrating?.length;
+ 
   const images = bookingDetails?.data?.packageInfo?.images;
 
   // Determine if 'images' is an array or a single string
@@ -38,7 +42,7 @@ const ConfirmPayCard = ({ bookingDetails }) => {
           </div>
           <div className="text text-grey-800 py-2">
             <h2 className="text-sm">
-              {bookingDetails?.data?.packageInfo?.rating} (20)
+              {bookingDetails?.data?.packageInfo?.rating.toFixed(1)} ({peoplerating})
             </h2>
           </div>
         </div>
