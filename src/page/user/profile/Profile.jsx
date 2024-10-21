@@ -41,7 +41,7 @@ function Profile() {
       if (res?.isSuccess) {
         setDisableButtons(true);
         setLocalStorage("disableButton", true);
-        console.log(res,'jdshfjk');
+    
         let user = getLocalStorage("user");
         if (user) {
           user.totalRoles = res.totalRoles;

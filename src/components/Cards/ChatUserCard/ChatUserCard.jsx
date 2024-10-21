@@ -47,7 +47,7 @@ const ChatUserCard = ({ setUserData }) => {
       setLoader(true);
       const response = await ChatMessageGetByConversationIdApi(conversationId, body.senderId, body.receiverId);
       if (response?.isSuccess) {
-        console.log(response);
+    
         // setMessage(response.messages.message);
         setSelectedConversationId(response?.conversationId);
         setReceiverId(item?.user?.receiverId);

@@ -47,7 +47,7 @@ function OfferConfirmPay() {
     try {
       setLoader(true);
       const response = await getOfferDetails(params?.id);
-      console.log(response);
+      
       setOfferDetails(response);
       setStartTime(response.data.bookingTime);
       setEndTime(formatTimeAMPM(response.data.endTime));

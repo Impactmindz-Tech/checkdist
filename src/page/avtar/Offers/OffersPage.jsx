@@ -35,7 +35,7 @@ const acceptOffer = async()=>{
     }
 
   }catch(err){
-    console.log("hello")
+    
   }
  
 }

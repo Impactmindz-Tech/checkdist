@@ -24,15 +24,15 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime, currentTime }) 
   const [loading, setLoading] = useState(false); // State for loading
   const params = useParams();
 
-  console.log(currentTime, "currentTime");
+
 
   // Retrieve avatar timezone from local storage
   const avatarTimeZone = getLocalStorage("avatarTime");
-  console.log(avatarTimeZone, "Avatar Time Zone");
+  
 
   // Get the current time in the avatar's timezone
   const getCurrentTimeOfAvatar = dayjs().tz(avatarTimeZone);
-  console.log(getCurrentTimeOfAvatar.format("YYYY-MM-DD HH:mm:ss"), "Current Time of Avatar");
+
 
   // Helper function to round up time to the nearest 5 minutes
   const roundUpToNearestFive = (minutes) => {
@@ -93,10 +93,10 @@ const EditDateCalendar = ({ date, onDateChange, setSelectedTime, currentTime }) 
       try {
         const body = { bookingDate: selectedDate.format("YYYY-MM-DD") }; // Format the date properly
         const response = await bookingSlotsApi(params?.id, body); // Call the API
-        console.log("response", response);
+       
 
         if (response.isSuccess) {
-          console.log(response.remainingSlots); // Log the response data
+       
           const allSlots = [];
 
           // Iterate over all remaining slots to generate time slots

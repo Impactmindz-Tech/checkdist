@@ -1,7 +1,7 @@
 import axiosInstance from "@/utills/AxiosInstance";
 
 export const getLiveTourApi = async (setValue) => {
-  console.log(setValue);
+
   
 
  

@@ -29,7 +29,7 @@ function PaymentPage({ setPayemntDetails, payemntDetails, tourDetails }) {
   });
   const packageprice = totalCharges;
   const adminfee = tourDetails?.Adminfee/100*packageprice;
-console.log(adminfee+totalCharges);
+
 
   
   const changeSelectedState = (name) => {

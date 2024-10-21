@@ -146,7 +146,7 @@ const EditModalCalendar = ({ date, onDateChange }) => {
       // Reset selected time when date changes
       const formattedDate = newDate.format("YYYY-MM-DD");
       onDateChange(formattedDate); // Notify parent component if necessary
- console.log(formattedDate);
+
     }
   };
 

@@ -66,7 +66,7 @@ function Offers() {
       return;
     }
     const coordinates = await fetchCoordinates(selectedCountry.name, selectedState?.name, selectedCity)
-    console.log(coordinates);
+
     let body = {
       ...formData,
       Country: selectedCountry.name,

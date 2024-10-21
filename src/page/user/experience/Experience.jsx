@@ -64,7 +64,7 @@ function Experience() {
 ;
   const renderCard = (item) => {
     if (item?.Type === "Offers") {
-      console.log(item, "sanju");
+     
 
       return <UseroffersCard key={item._id} item={item} />;
     }

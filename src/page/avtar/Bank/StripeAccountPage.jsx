@@ -88,7 +88,7 @@ function StripeAccountPage() {
       setLoader(true);
       try {
         const res = await fetchstripeApi();
-        console.log(res.data)
+    
         if (res?.isSuccess) {
           // Update the form with fetched values using reset()
           reset({

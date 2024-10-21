@@ -29,7 +29,7 @@ const RequestedCard = ({ item, getRequests, role }) => {
   const updateSignInStatus = (isSignedIn) => {
     setIsSignedIn(isSignedIn);
   };
-console.log(item,'sanju');
+
   useEffect(() => {
     initClient(updateSignInStatus);
   }, []);

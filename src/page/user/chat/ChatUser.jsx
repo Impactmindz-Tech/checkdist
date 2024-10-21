@@ -103,7 +103,7 @@ const ChatUser = () => {
         body.receiverId
       );
       if (response?.isSuccess) {
-        console.log(response.messages);
+   
         setMessages(response.messages || []);
         setSelectedConversationId(response?.conversationId || "");
       }

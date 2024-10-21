@@ -16,7 +16,7 @@ const ShareYourProfileModal = ({
     if (user) {
       const currentUrl = `${window.location.origin}/avatar-profile/${user._id}`;
       setShareUrl(currentUrl);
-      console.log(currentUrl)
+ 
     }
   }, [user]);
 

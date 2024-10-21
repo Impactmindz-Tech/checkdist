@@ -40,7 +40,7 @@ export const SocketProvider = (props) => {
       socket.on("getMessage", handleIncomingMessage);
 
       socket.on("meetLink", (data) => {
-        console.log(data, 'hello meet link');
+     
         setMeetLink(data.link);
         setMeetingData(data);
         dispatch(setRoomData(data))
@@ -48,7 +48,7 @@ export const SocketProvider = (props) => {
       });
 
       socket.on("roomIds",(data)=>{
-        console.log(data,'sanju');
+  
    
         setid(data?.generatedRoomId);
         setofferData(data);
@@ -63,7 +63,7 @@ export const SocketProvider = (props) => {
       })
 
       socket.on('created',(data)=>{
-        console.log(data,'created')
+ 
       })
       return () => {
         socket.off("getMessage", handleIncomingMessage);

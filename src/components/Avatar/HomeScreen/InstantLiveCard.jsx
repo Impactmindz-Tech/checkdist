@@ -19,7 +19,7 @@ export default function InstantLiveCard() {
     // Send the updated state to the backend via the offernoti API
     try {
       await offernoti({ offer: newState });
-      console.log("Switch state updated successfully");
+  
 
       // Save the new state to localStorage
       localStorage.setItem("publicLiveOffers", newState);

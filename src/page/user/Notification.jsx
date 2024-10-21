@@ -68,7 +68,7 @@ function Notification() {
       NewTour: stateName === "New Tour in Your Area" ? newState : newTourState,
       Support: stateName === "Support" ? newState : supportState,
     };
-    console.log(body);
+ 
     setLoader(true);
     try {
       const response = await notificationApi(body);

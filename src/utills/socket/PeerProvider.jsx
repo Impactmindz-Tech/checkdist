@@ -18,7 +18,7 @@ export const PeerProvider = ({ children }) => {
     useEffect(() => {
         const handleIceCandidate = (event) => {
             if (event.candidate) {
-                console.log('New ICE candidate:', event.candidate);
+              
                 setIceCandidates((prev) => [...prev, event.candidate]);
             }
         };
@@ -34,7 +34,7 @@ export const PeerProvider = ({ children }) => {
         try {
             const offer = await peer.createOffer();
             await peer.setLocalDescription(new RTCSessionDescription(offer));
-            console.log('Offer created:', offer);
+          
             return offer;
         } catch (error) {
             console.error('Error creating offer:', error);
@@ -47,7 +47,7 @@ export const PeerProvider = ({ children }) => {
             await peer.setRemoteDescription(new RTCSessionDescription(offer));
             const answer = await peer.createAnswer();
             await peer.setLocalDescription(new RTCSessionDescription(answer));
-            console.log('Answer created:', answer);
+   
             return answer;
         } catch (error) {
             console.error('Error creating answer:', error);
@@ -68,7 +68,7 @@ export const PeerProvider = ({ children }) => {
         stream.getTracks().forEach((track) => {
             // Only add the track if it is not already being sent
             if (!peer.getSenders().find(sender => sender.track === track)) {
-                console.log('Adding track:', track);
+            
                 peer.addTrack(track, stream);
             }
         });
@@ -77,7 +77,7 @@ export const PeerProvider = ({ children }) => {
     useEffect(() => {
         const handleTrackEvent = (event) => {
             if (event.streams && event.streams[0]) {
-                console.log('Remote stream received:', event.streams[0]);
+           
                 setRemoteStream(event.streams[0]);
             }
         };
